@@ -5,6 +5,9 @@ description:
   Then the harder part — deciding which of what you saw is worth acting on.
 question: What did watching three people tell you that you could not have worked out at your own desk?
 week: 11
+outcomes:
+  - LO3
+  - LO4
 date: 2027-05-20
 teachers:
   - marisol-quaye

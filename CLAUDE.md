@@ -140,6 +140,71 @@ that keeps catching me out, a fact about the platform the agent keeps getting
 wrong --- it gets written down here. The rules below carried across from earlier
 weeks; each came from something that actually went wrong.
 
+## The course this site runs (SLOP2805)
+
+The platform rules above are the starter's. These are mine, and they came from
+designing the course rather than from the template.
+
+**Voice.** Deadpan-sincere. This is a real course that happens to be absurdly
+narrow, and the narrowness is the joke --- so the prose never makes the joke.
+No winks, no "yes, we know this is a lot about progress bars", no self-aware
+asides. A reader should finish the home page unsure whether to laugh, and
+certain they could enrol.
+
+**The course's own rule binds the course's own pages.** SLOP2805 teaches that
+nothing may assert more than its evidence supports. So no page on this site
+says "users feel", "research shows" or "studies have found" without naming what
+was observed and by whom. If a sentence can't be sourced, it gets deleted, not
+softened. A course about honest interfaces whose marketing copy overclaims has
+already failed its own assessment.
+
+**Studios own the exercise; lectures own the concept.** A studio page carries
+four sections, in this order: the question, *In the room* (timed, with the
+framing and reading named), *What you build*, and *What this week cannot tell
+you*. A lecture page carries *What this lecture carries*, *What it builds on*
+and *What it sets up*. If a lecture page starts explaining how to do the
+exercise, or a studio page starts teaching the concept from scratch, the
+boundary has slipped and one of them is now redundant --- which is exactly the
+"twelve weeks that repeat one another" the brief penalises.
+
+**Only four weeks have a lecture (1, 4, 7, 11).** The other eight open with a
+short framing in the studio, and that framing must be *named on the page* with
+its reading. Deleting a lecture without relocating what it taught is how an
+assessment ends up resting on nothing.
+
+**Lectures Tuesday 11:00, studios Thursday 14:00.** Teaching precedes the
+exercise inside the same week --- that ordering is the reason for the days, not
+a coincidence. Tue/Thu also misses all three Monday public holidays in the 2027
+S1 window (Canberra Day, Easter Monday, ANZAC Day observed). Don't move a day
+without re-checking both.
+
+**Publishing a standard early is not teaching it.** Checklist v0 goes up in week
+2 so nobody is surprised; the teaching is week 7 and the first marks are
+Assignment 2, due after it. Any future "we told them in week N" argument gets
+tested against a studio date, not an announcement.
+
+**`outcomes:` is the alignment record, and `spec/course-shape.test.ts` enforces
+it.** Adding an outcome to an assessment asserts that a studio dated earlier
+teaches it. The test names the violation with both dates, so read its message
+rather than guessing. Falsified deliberately once, by giving Assignment 2's
+accessibility outcome to Assignment 1 --- it failed, with the right message.
+
+## Platform facts this course cost me
+
+All three were found by a red check, not by reading.
+
+- **A bare `related:` slug resolves inside the same collection.** From
+  `lectures/` or `assessments/`, a ref to a studio must be written
+  `sessions/<slug>`; a bare slug silently becomes `lectures/<slug>` and dangles.
+  Twenty dangling refs in one build, all from the same mistake.
+- **A markdown table with an empty header cell fails axe.** `| | |` compiles
+  fine, renders fine, and fails `empty-table-header` on every page that uses it
+  --- nine pages at once. Every table gets real column headers, including the
+  timetables where the header feels redundant.
+- **A colon in an unquoted YAML value ends the build with a parser stack
+  trace**, not a content error. `description: Eight minutes: drive...` needs
+  `>-`. The error names the file and column; it does not name the cause.
+
 ## Working method (carried forward from week 3)
 
 For substantial tasks, follow this sequence:

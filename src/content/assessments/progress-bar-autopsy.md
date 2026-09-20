@@ -4,6 +4,9 @@ description:
   Take a waiting interface you did not build, list every claim it makes, and
   say what evidence each one could possibly have.
 week: 3
+outcomes:
+  - LO1
+  - LO4
 due: 2027-03-12T17:00:00+11:00
 weight: 20
 draft: true

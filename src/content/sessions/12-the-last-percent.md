@@ -5,6 +5,11 @@ description: >-
   defend one claim you knowingly kept.
 question: Can you defend every number left on your screen?
 week: 12
+outcomes:
+  - LO1
+  - LO2
+  - LO3
+  - LO4
 date: 2027-05-27
 teachers:
   - marisol-quaye

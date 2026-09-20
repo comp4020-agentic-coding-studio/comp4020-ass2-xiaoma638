@@ -5,6 +5,8 @@ description:
   and the rule that none of them may imply a fraction.
 question: What should the interface show when there is nothing to divide?
 week: 4
+outcomes:
+  - LO2
 date: 2027-03-18
 teachers:
   - marisol-quaye

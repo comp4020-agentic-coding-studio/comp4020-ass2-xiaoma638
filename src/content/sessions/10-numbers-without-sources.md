@@ -5,6 +5,9 @@ description:
   traced back to the event that produced it — or deleted.
 question: Which of the promises your interface makes can you actually keep?
 week: 10
+outcomes:
+  - LO1
+  - LO4
 date: 2027-05-13
 teachers:
   - idris-fenn

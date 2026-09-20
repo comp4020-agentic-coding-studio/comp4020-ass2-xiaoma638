@@ -5,6 +5,10 @@ description:
   to itself, then decide what to round to.
 question: You have a denominator. What can you honestly say about time?
 week: 5
+outcomes:
+  - LO1
+  - LO2
+  - LO4
 date: 2027-03-25
 teachers:
   - idris-fenn

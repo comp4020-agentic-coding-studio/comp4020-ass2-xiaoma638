@@ -5,6 +5,9 @@ description:
   claim it makes, and find the ones that cannot have a source.
 question: Looking only at what is on the screen, what has this interface claimed?
 week: 1
+outcomes:
+  - LO1
+  - LO4
 date: 2027-02-25
 teachers:
   - marisol-quaye

@@ -5,6 +5,9 @@ description:
   whether your code keeps it.
 question: When the user presses Cancel, what exactly have you promised them?
 week: 9
+outcomes:
+  - LO2
+  - LO3
 date: 2027-05-06
 teachers:
   - marisol-quaye

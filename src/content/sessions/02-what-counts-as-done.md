@@ -5,6 +5,9 @@ description:
   you actually have, and which of them a user is entitled to hear about.
 question: What has to be true before the interface is allowed to say "complete"?
 week: 2
+outcomes:
+  - LO1
+  - LO2
 date: 2027-03-04
 teachers:
   - idris-fenn

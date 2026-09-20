@@ -5,6 +5,8 @@ description:
   whether your interface was ever carrying its information in text.
 question: Does your interface still work with the motion off, the mouse gone, and the screen unseen?
 week: 7
+outcomes:
+  - LO3
 date: 2027-04-22
 teachers:
   - marisol-quaye

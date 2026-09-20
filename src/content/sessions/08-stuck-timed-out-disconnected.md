@@ -5,6 +5,9 @@ description:
   be true when it does.
 question: Nothing has moved for thirty seconds. What do you say?
 week: 8
+outcomes:
+  - LO2
+  - LO3
 date: 2027-04-29
 teachers:
   - idris-fenn

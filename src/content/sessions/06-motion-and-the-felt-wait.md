@@ -5,6 +5,9 @@ description:
   and a careful account of why that ranking is weak evidence.
 question: Does how the bar moves change how long the wait feels, and how would you know?
 week: 6
+outcomes:
+  - LO2
+  - LO4
 date: 2027-04-01
 teachers:
   - marisol-quaye

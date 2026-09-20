@@ -5,6 +5,11 @@ description:
   state reference, an evaluation record, and a register of every claim left on
   screen.
 week: 12
+outcomes:
+  - LO1
+  - LO2
+  - LO3
+  - LO4
 due: 2027-05-28T17:00:00+10:00
 weight: 50
 marking:

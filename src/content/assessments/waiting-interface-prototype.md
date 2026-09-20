@@ -5,6 +5,10 @@ description:
   estimate, an indeterminate case with no fractions, and an accessibility audit
   that records its failures.
 week: 8
+outcomes:
+  - LO1
+  - LO2
+  - LO3
 due: 2027-04-27T10:00:00+10:00
 weight: 30
 draft: true

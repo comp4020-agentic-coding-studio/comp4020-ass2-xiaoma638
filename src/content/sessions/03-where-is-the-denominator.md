@@ -5,6 +5,8 @@ description:
   stages — and find where the two disagree.
 question: When your bar says 40%, forty per cent of what has happened?
 week: 3
+outcomes:
+  - LO1
 date: 2027-03-11
 teachers:
   - idris-fenn
