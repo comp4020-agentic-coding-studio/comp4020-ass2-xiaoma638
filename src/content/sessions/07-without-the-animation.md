@@ -130,8 +130,8 @@ Thursday 22 April, 14:00–17:00.
 ## Before next week
 
 About three hours — this is the heaviest week of homework in the course, because
-[Assignment 2](/assessments/waiting-interface-prototype/) is due the Tuesday
-after next.
+[Assignment 2](/assessments/waiting-interface-prototype/) is due on Tuesday
+27 April, five days from now.
 
 1. Fix what the pair swap found and you did not finish in the room.
 2. Complete the Checklist v0 lines on the same sheet. They have been published

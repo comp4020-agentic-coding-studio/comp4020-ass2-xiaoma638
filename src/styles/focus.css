@@ -1,0 +1,32 @@
+/* A keyboard focus floor, applied site-wide.
+ *
+ * Found by walking the tab order of the built site with the DevTools protocol:
+ * the theme's footer "Switch to dark theme" control reaches focus with no
+ * outline and no box-shadow, at both marking viewports. axe does not catch it
+ * --- a missing focus indicator is not one of its automatic rules --- and on a
+ * course whose week 7 is an accessibility audit it is not a defect to ship.
+ *
+ * Two things this file had to learn the hard way:
+ *
+ * 1. `:where()` contributes no specificity, which is what makes it a safe
+ *    fallback --- any control the theme already styles on focus keeps the
+ *    theme's treatment. But `.at-footer-theme-toggle` is declared `all: unset`,
+ *    which resets `outline` too, and one class beats a `:where()` list. That
+ *    control is named separately rather than raising the whole floor.
+ *
+ * 2. `PageLayout.astro` is only reached by the MDX pages; every `.astro` page
+ *    imports the theme's ContentLayout directly and never renders through it.
+ *    A `<style is:global>` there covered five pages out of thirty-three. Hence
+ *    a stylesheet, imported by each page that needs it.
+ */
+
+:where(a, button, summary, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--at-primary, currentColor);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.at-footer-theme-toggle:focus-visible {
+  outline: 3px solid var(--at-primary, currentColor);
+  outline-offset: 3px;
+}

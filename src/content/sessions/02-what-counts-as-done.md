@@ -100,7 +100,7 @@ Thursday 4 March, 14:00–17:00. No lecture in week 2.
 | --- | --- |
 | 14:00 | **Framing (25 min).** The section above, at the whiteboard, with `upload-ui`'s `isUploading` on the projector as the worked example. |
 | 14:25 | **Reading (15 min).** The S3 multipart lifecycle below. Read it for one thing only: which of those events a *browser client* can observe, and which it can only infer. |
-| 14:40 | **Build.** The work below, both tutors circulating. |
+| 14:40 | **Build.** The work below, with the tutor circulating. |
 | 16:30 | **Round the room.** Three people put a state diagram on the projector and name the state they were surprised to need. |
 
 ## What you build

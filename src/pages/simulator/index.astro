@@ -1,7 +1,15 @@
 ---
+import { getCollection } from "astro:content";
 import ContentLayout from "astro-theme-university/layouts/ContentLayout.astro";
+import "../../styles/focus.css";
 import { href } from "../../lib/links";
 import { siteConfig } from "../../site-config";
+
+// Look the week up by number rather than hardcoding a slug, so a renamed week
+// cannot leave this page pointing somewhere else.
+const studioByWeek = new Map(
+  (await getCollection("sessions")).map((studio) => [studio.data.week, studio]),
+);
 
 const scenarios = [
   { id: "steady", label: "Steady", week: 3, note: "Even rate. The easy case, and the one most bars are designed for." },
@@ -118,7 +126,14 @@ const scenarios = [
         <dt>{scenario.label}</dt>
         <dd>
           {scenario.note}{" "}
-          <a href={href(`/sessions/`)}>Week {scenario.week}</a>.
+          {(() => {
+            const studio = studioByWeek.get(scenario.week);
+            return studio ? (
+              <a href={href(`/sessions/${studio.id}/`)}>
+                Week {scenario.week}: {studio.data.title}
+              </a>
+            ) : null;
+          })()}
         </dd>
       </>
     ))}
