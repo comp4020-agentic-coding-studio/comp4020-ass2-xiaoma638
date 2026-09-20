@@ -1,17 +1,24 @@
 ---
 title: Idris Fenn
 description:
-  A tutor working across the course's first reviews and the practical work that
-  follows them.
+  Tutor. Runs the eight studios with no lecture, and wrote the simulator every
+  exercise in the course runs against.
 affiliation: Slop University School of Invented Disciplines
 role: tutor
 email: idris.fenn@slop.university
-contact: Ask during sessions, or email when a question cannot wait until the next one.
-photo: ./idris-fenn.avif
-photoAlt: A stylised portrait of a person facing the viewer, flat gold and black shapes on warm cream, in a two-ink risograph print
+contact: In the studio every Thursday, 14:00–17:00. That is the fastest way to reach him.
 ---
 
-<!-- STARTER_CONTENT: replace this person entry, then remove this comment. -->
+Tutor, and the author of `upload-ui` — including the two-state boolean in
+[week 2](/sessions/02-what-counts-as-done/) that students spend the afternoon
+dismantling, and the seven unsourced claims planted in the
+[week 10](/sessions/10-numbers-without-sources/) checkpoint.
 
-Replace this entry. A second person makes the listing, role ordering and
-teacher-reference fields visible before you replace the cast with your own.
+He maintains the transfer traces the estimator exercises run against, and is
+firm that they are **recorded sample data** rather than live captures: the point
+of the course is reproducibility, and an exercise you cannot run twice is not an
+exercise.
+
+His standing request in the studio: bring the thing that is broken rather than a
+description of it. Most of what looks like a conceptual problem in this subject
+turns out, at the machine, to be a state that was never named.

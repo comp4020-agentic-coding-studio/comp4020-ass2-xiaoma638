@@ -1,21 +1,29 @@
 ---
 title: Marisol Quaye
 description:
-  The founding convenor, responsible for the course's shape and its weekly
-  teaching programme.
+  Convenor. Spent eleven years building upload and sync interfaces before
+  deciding the interesting problem was what they were allowed to say.
 affiliation: Slop University School of Invented Disciplines
 role: convenor
 email: marisol.quaye@slop.university
-contact: Email for course-level questions; use the weekly session for feedback on work.
-photo: ./marisol-quaye.avif
-photoAlt: A stylised portrait of a person in three-quarter view, flat gold and black shapes on warm cream, in a two-ink risograph print
+contact: Ask in the Thursday studio. Email for anything that cannot wait until then.
 ---
 
-<!-- STARTER_CONTENT: replace this person entry, then remove this comment. -->
+Convenor of SLOP2805, and responsible for the four lectures.
 
-Replace this entry. A people page carries a short bio and whatever a student
-needs in order to contact the right person for the right thing --- and nothing
-that will be stale by week 3.
+Before Slop she worked on file sync and backup clients, which is where the
+course comes from. The specific origin is a support ticket: a customer whose
+backup client had shown **Backup complete** for three weeks while silently
+failing to upload anything after the first day. Every component was working as
+specified. The interface was reporting the state of the *scheduler*, not the
+state of the *data*, and nobody had ever written down which one it was supposed
+to report.
 
-Consultation hours, contact preferences and the escalation path (who to ask
-first, who to ask when that does not work) are the parts students actually read.
+That is the course. Not a bug, not a bad designer — a completion criterion
+nobody had been required to state.
+
+She teaches [week 1](/sessions/01-what-99-percent-promises/),
+[week 4](/sessions/04-no-idea-how-long/),
+[week 7](/sessions/07-without-the-animation/) and
+[week 11](/sessions/11-watching-someone-wait/), and takes the view that a course
+with twelve lectures in it has usually not decided what only a lecture can do.

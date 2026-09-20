@@ -143,7 +143,50 @@ weeks; each came from something that actually went wrong.
 ## The course this site runs (SLOP2805)
 
 The platform rules above are the starter's. These are mine, and they came from
-designing the course rather than from the template.
+designing this particular course. None of them is a general coding maxim; each
+one names a way this site could go wrong that nothing in the build would catch.
+
+### The six content rules
+
+| # | Rule | Enforced by |
+| --- | --- | --- |
+| 1 | Every week answers a **different** question about a waiting interface | machine — `course-shape.test.ts` compares `question:` across all twelve |
+| 2 | Every week's exercise produces a **concrete, checkable output** | machine — each studio declares 2+ `spec:` lines and a *Done when* section; **human** — whether the output is worth a student's afternoon |
+| 3 | Nothing is assessed that was not **taught and practised** before the deadline | machine — `outcomes:` plus studio dates; **human** — whether the studio really practised it or only mentioned it |
+| 4 | Percentages, states and completion conditions carry a **stated meaning** | **human, mostly** — machine only checks that the simulator names its completion condition on the page |
+| 5 | Fictional demonstration data is **labelled as simulated** | machine — the simulator page must carry the marker; **human** — every figure elsewhere |
+| 6 | No **fabricated** research, user feedback, references, or development history | machine — `readings.test.ts` against a committed, hand-checked manifest; **human** — everything else |
+
+Rule 6 is the one with teeth and the least automation. Concretely, on this site
+that means:
+
+- **Every reading is a real page that was opened and checked**, and its entry
+  says what it has to do with that week. **The build does not do this for me.**
+  `astro-theme-university` passes `checkExternalLinks: false` to the link
+  checker, so `pnpm build` resolves internal links only. I wrote the opposite in
+  this file before checking it, which is exactly the failure rule 6 is about;
+  the correction is why the mechanism below exists rather than a sentence.
+  `node scripts/verify-readings.mjs` fetches every reading URL the built site
+  sets and writes `docs/verified-readings.tsv`. `spec/readings.test.ts` fails if
+  the site sets a reading the manifest does not vouch for with a 2xx. The
+  network call stays out of `pnpm check` deliberately: a suite that goes red on
+  somebody else's rate limit teaches you to ignore it.
+- **No invented study, statistic, or "research shows".** Where the course
+  refers to published work on perceived duration, it links the work and says
+  what it measured. Where it has no source, it says the claim is a teaching
+  example.
+- **No invented student quotes, cohort feedback, or testimonials.** SlopU is
+  fictional; its evidence is not allowed to be.
+- **Worked examples are labelled as worked examples.** An original scenario is
+  fine and often better than a real one; presenting it as something that
+  happened is not.
+
+Rule 4 is the course's subject turned on the course's own pages. Any percentage
+this site displays has to say what it is a percentage *of*, and any state name
+has to say what is true while the interface is in it. The simulator is the
+strictest case: its 100% corresponds to a completion condition printed on the
+page beside it, not to the end of an animation.
+
 
 **Voice.** Deadpan-sincere. This is a real course that happens to be absurdly
 narrow, and the narrowness is the joke --- so the prose never makes the joke.
@@ -158,14 +201,36 @@ was observed and by whom. If a sentence can't be sourced, it gets deleted, not
 softened. A course about honest interfaces whose marketing copy overclaims has
 already failed its own assessment.
 
-**Studios own the exercise; lectures own the concept.** A studio page carries
-four sections, in this order: the question, *In the room* (timed, with the
-framing and reading named), *What you build*, and *What this week cannot tell
-you*. A lecture page carries *What this lecture carries*, *What it builds on*
-and *What it sets up*. If a lecture page starts explaining how to do the
-exercise, or a studio page starts teaching the concept from scratch, the
-boundary has slipped and one of them is now redundant --- which is exactly the
-"twelve weeks that repeat one another" the brief penalises.
+**Studios own the exercise; lectures own the concept.** A lecture page carries
+*What this lecture carries*, *What it builds on* and *What it sets up*. If a
+lecture page starts explaining how to do the exercise, or a studio page starts
+teaching the concept from scratch, the boundary has slipped and one of them is
+now redundant --- which is exactly the "twelve weeks that repeat one another"
+the brief penalises.
+
+**Every studio page carries these sections, in this order.** The shape is
+fixed so that a student can find the same thing in the same place in week 11 as
+in week 2, and so that a missing section is visible rather than merely thin:
+
+1. an opening that states **the week's concrete question or case** --- a
+   situation, not a topic;
+2. `## By the end of this week` --- two to four **observable** capabilities,
+   written so a student can tell whether they have them;
+3. `## The idea` --- the explanation that makes the exercise possible. This is
+   the part a "content-shaped chunk" skips, and in the eight weeks with no
+   lecture it is the teaching;
+4. `## In the room` --- a timed table of what actually happens;
+5. `## What you build` and `## Done when` --- the artefact and the standard;
+6. `## Before next week` --- the work between studios, sized in hours;
+7. `## Reading` --- verified links, each with a line saying what it has to do
+   with this week;
+8. `## If you are joining late` --- the stage checkpoint, always described as
+   "a floor, not an answer";
+9. `## What this week cannot tell you` --- the limits of the week's method.
+
+`spec/course-shape.test.ts` checks that 2, 6, 7 and 9 are present on every
+rendered studio page, because those four are the ones that vanish first when a
+page is filled rather than written.
 
 **Only four weeks have a lecture (1, 4, 7, 11).** The other eight open with a
 short framing in the studio, and that framing must be *named on the page* with
@@ -201,6 +266,12 @@ All three were found by a red check, not by reading.
   fine, renders fine, and fails `empty-table-header` on every page that uses it
   --- nine pages at once. Every table gets real column headers, including the
   timetables where the header feels redundant.
+- **A deck rejects multi-line `{/* … */}` comments.** astromotion fails the
+  build with an explanation: a formatter escapes the `*` and the broken output
+  is a fixed point. Single-line comments and directives are fine; anything
+  longer goes in a fenced ```comment``` block. In practice the better fix was to
+  stop hiding the note and put it on the slide, since it was a simulated-data
+  label and rule 5 wants those visible.
 - **A colon in an unquoted YAML value ends the build with a parser stack
   trace**, not a content error. `description: Eight minutes: drive...` needs
   `>-`. The error names the file and column; it does not name the cause.

@@ -1,0 +1,55 @@
+---
+import { getCollection } from "astro:content";
+import ContentLayout from "astro-theme-university/layouts/ContentLayout.astro";
+import ReadingList from "../../components/ReadingList.astro";
+import { siteConfig } from "../../site-config";
+
+// Read from the same `readings:` frontmatter the week pages render, so the
+// list exists once. Every URL is resolved by the build's link checker.
+const studios = (await getCollection("sessions")).sort((a, b) => a.data.week - b.data.week);
+const withReadings = studios.filter((s) => (s.data.readings ?? []).length > 0);
+const total = withReadings.reduce((n, s) => n + s.data.readings.length, 0);
+const distinct = new Set(
+  withReadings.flatMap((s) => s.data.readings.map((r: { url: string }) => r.url)),
+).size;
+---
+
+<ContentLayout
+  title="Readings"
+  description="Every reading the course sets, grouped by the week that sets it, with what each one has to do with that week."
+  {...siteConfig}
+>
+  <p>
+    {total} readings across {withReadings.length} weeks, {distinct} distinct
+    sources. All of them are short; none is a textbook chapter. This course sets
+    specification text, platform documentation and published research summaries
+    rather than commentary, because the recurring question &mdash;
+    <em>what does this claim rest on?</em> &mdash; is easier to practise on a
+    primary source.
+  </p>
+
+  <p>
+    Two of them are set twice, in different weeks and for different reasons.
+    That is deliberate: re-reading something after you have built the thing it
+    describes is a different activity from reading it first.
+  </p>
+
+  <p>
+    This page and each week page render the same list from the same frontmatter,
+    so there is one copy. The build resolves every link on every run and fails
+    if one has rotted, which is the only guarantee worth making about a link
+    list.
+  </p>
+
+  {withReadings.map((studio) => (
+    <ReadingList
+      readings={studio.data.readings}
+      heading={`Week ${studio.data.week} — ${studio.data.title}`}
+    />
+  ))}
+
+  <h2>Week 12</h2>
+  <p>
+    No reading. The last week is a defence of work that is already finished.
+  </p>
+</ContentLayout>

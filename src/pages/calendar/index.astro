@@ -1,0 +1,178 @@
+---
+import { getCollection } from "astro:content";
+import ContentLayout from "astro-theme-university/layouts/ContentLayout.astro";
+import { courseMeta } from "../../course-config";
+import { href } from "../../lib/links";
+import { siteConfig } from "../../site-config";
+
+// Every date, weight and name on this page is read from the content
+// collections. Nothing here is typed twice: change a studio's `date:` or an
+// assessment's `weight:` and this table follows.
+const studios = (await getCollection("sessions")).sort((a, b) => a.data.week - b.data.week);
+const lectures = await getCollection("lectures");
+const assessments = await getCollection("assessments");
+
+const lectureByWeek = new Map(lectures.map((l) => [l.data.week, l]));
+const assessmentsByWeek = new Map<number, typeof assessments>();
+for (const a of assessments) {
+  assessmentsByWeek.set(a.data.week, [...(assessmentsByWeek.get(a.data.week) ?? []), a]);
+}
+
+const day = new Intl.DateTimeFormat("en-AU", {
+  weekday: "short", day: "numeric", month: "short", timeZone: "Australia/Canberra",
+});
+const dayTime = new Intl.DateTimeFormat("en-AU", {
+  weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit",
+  timeZone: "Australia/Canberra",
+});
+const totalWeight = assessments.reduce((t, a) => t + a.data.weight, 0);
+
+// The break is the gap between the week 6 and week 7 studios.
+const breakAfter = 6;
+---
+
+<ContentLayout
+  title="Calendar"
+  description="Every teaching date and every deadline in one table, read from the same content the week pages are built from."
+  {...siteConfig}
+>
+  <p>
+    {courseMeta.session} {courseMeta.year}. Teaching runs from
+    <strong>{day.format(new Date(courseMeta.startDate))}</strong> to
+    <strong>{day.format(new Date(courseMeta.endDate))}</strong>, with a two-week
+    break after week {breakAfter}.
+  </p>
+  <p>
+    <strong>Lectures</strong> are Tuesdays 11:00&ndash;12:00 and there are four
+    of them. <strong>Studios</strong> are Thursdays 14:00&ndash;17:00, every
+    week. Teaching precedes the exercise inside each week, which is why the
+    lecture is the earlier day.
+  </p>
+
+  <table class="calendar">
+    <caption>The twelve teaching weeks, four lectures and three deadlines</caption>
+    <thead>
+      <tr>
+        <th scope="col">Week</th>
+        <th scope="col">Lecture (Tue)</th>
+        <th scope="col">Studio (Thu)</th>
+        <th scope="col">Due</th>
+      </tr>
+    </thead>
+    <tbody>
+      {studios.map((studio) => {
+        const lecture = lectureByWeek.get(studio.data.week);
+        const due = assessmentsByWeek.get(studio.data.week) ?? [];
+        return (
+          <>
+            <tr>
+              <th scope="row">{studio.data.week}</th>
+              <td>
+                {lecture ? (
+                  <>
+                    <a href={href(`/lectures/${lecture.id}/`)}>{lecture.data.title}</a>
+                    <span class="date">{day.format(lecture.data.date)}</span>
+                  </>
+                ) : (
+                  <span class="none">no lecture &mdash; framing in the studio</span>
+                )}
+              </td>
+              <td>
+                <a href={href(`/sessions/${studio.id}/`)}>{studio.data.title}</a>
+                <span class="date">{day.format(studio.data.date)}</span>
+              </td>
+              <td>
+                {due.length === 0 ? <span class="none">&mdash;</span> :
+                  due.map((a) => (
+                    <>
+                      <a href={href(`/assessments/${a.id}/`)}>{a.data.title}</a>
+                      <span class="date">{dayTime.format(a.data.due)} · {a.data.weight}%</span>
+                    </>
+                  ))}
+              </td>
+            </tr>
+            {studio.data.week === breakAfter && (
+              <tr class="break">
+                <th scope="row">&mdash;</th>
+                <td colspan="3">Two-week teaching break</td>
+              </tr>
+            )}
+          </>
+        );
+      })}
+    </tbody>
+  </table>
+
+  <h2>Deadlines on their own</h2>
+  <ul>
+    {assessments
+      .sort((a, b) => a.data.due.getTime() - b.data.due.getTime())
+      .map((a) => (
+        <li>
+          <a href={href(`/assessments/${a.id}/`)}>{a.data.title}</a> &mdash;{" "}
+          {dayTime.format(a.data.due)}, worth {a.data.weight}%
+        </li>
+      ))}
+  </ul>
+  <p>Total: {totalWeight}%.</p>
+
+  <h2>Public holidays</h2>
+  <p>
+    Nothing in this course falls on a Monday, which is not an accident: Canberra
+    Day, Easter Monday and the ANZAC Day holiday all land on Mondays in this
+    teaching period. Tuesday and Thursday miss all three, so no week loses its
+    lecture or its studio.
+  </p>
+</ContentLayout>
+
+<style>
+  .calendar {
+    width: 100%;
+    border-collapse: collapse;
+    margin-block: 1.5rem 2.5rem;
+  }
+
+  .calendar caption {
+    text-align: left;
+    padding-block-end: 0.5rem;
+    color: var(--at-text-secondary);
+    font-size: 0.9rem;
+  }
+
+  .calendar th,
+  .calendar td {
+    text-align: left;
+    vertical-align: top;
+    padding: 0.6rem 0.75rem 0.6rem 0;
+    border-block-end: 1px solid var(--at-border, currentColor);
+  }
+
+  .calendar tbody th {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .calendar .date {
+    display: block;
+    color: var(--at-text-secondary);
+    font-size: 0.85rem;
+  }
+
+  .calendar .none {
+    color: var(--at-text-secondary);
+  }
+
+  .calendar .break td {
+    color: var(--at-text-secondary);
+    font-style: italic;
+  }
+
+  @media (max-width: 48rem) {
+    .calendar thead { display: none; }
+    .calendar tr { display: block; padding-block: 0.6rem; }
+    .calendar th, .calendar td { display: block; border: 0; padding: 0.15rem 0; }
+    .calendar tbody tr { border-block-end: 1px solid var(--at-border, currentColor); }
+    .calendar tbody th::before { content: "Week "; }
+    .calendar tbody th { color: var(--at-text-secondary); font-size: 0.85rem; }
+    .calendar .break td { padding-block: 0.4rem; }
+  }
+</style>

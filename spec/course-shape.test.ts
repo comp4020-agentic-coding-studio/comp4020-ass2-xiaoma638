@@ -127,6 +127,63 @@ describe("twelve studios that do not repeat each other", () => {
 // "content-shaped chunks" will not produce unprompted, so its absence is the
 // earliest signal a week has been filled rather than designed.
 // ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// The studio page shape (CLAUDE.md). These four sections are the ones that
+// vanish first when a page is filled rather than written, so their presence is
+// checked on the rendered page rather than trusted.
+// ---------------------------------------------------------------------------
+describe("every studio page carries the sections a week is made of", () => {
+  const pageOf = (studio: ApiNode): string => {
+    const slug = studio.id.split("/").at(-1) ?? "";
+    return readFileSync(resolve("dist/sessions", slug, "index.html"), "utf8");
+  };
+
+  const sections: [string, RegExp][] = [
+    ["observable outcomes", /by the end of this week/i],
+    ["work between studios", /before next week|there is no next week/i],
+    ["a reading list", /<h2[^>]*>\s*Reading\s*<\/h2>|No reading\./i],
+  ];
+
+  for (const [label, pattern] of sections) {
+    it(`states ${label}`, () => {
+      const missing = studios.filter((studio) => !pattern.test(pageOf(studio)));
+      expect(missing.map((s) => s.id)).toEqual([]);
+    });
+  }
+
+  it("sizes the work between studios in hours", () => {
+    // "About two hours" rather than "some reading" --- a week that cannot say
+    // how long its homework takes has not been planned.
+    const vague = studios.filter((studio) => {
+      const html = pageOf(studio);
+      if (/there is no next week/i.test(html)) return false;
+      return !/about (one|two|three|four|two to three|2|3) ?(to \w+)? ?hours?/i.test(html);
+    });
+    expect(vague.map((s) => s.id)).toEqual([]);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Content rule 4 and rule 5, on the one page that displays a live percentage.
+// The simulator is the site practising what the course teaches: its 100% has a
+// stated meaning, and its data says it is invented.
+// ---------------------------------------------------------------------------
+describe("the progress simulator holds itself to the course's rules", () => {
+  const html = readFileSync(resolve("dist/simulator/index.html"), "utf8");
+
+  it("prints the completion condition the bar's 100% corresponds to", () => {
+    expect(/reaches 100% only when a <code[^>]*>committed<\/code> event/i.test(html)).toBe(true);
+  });
+
+  it("labels its data as simulated", () => {
+    expect(/Everything here is simulated/i.test(html)).toBe(true);
+  });
+
+  it("names the denominator its percentage counts", () => {
+    expect(/work units across four stages/i.test(html)).toBe(true);
+  });
+});
+
 describe("every studio names its own limits", () => {
   it("carries a 'what this week cannot tell you' section", () => {
     // Read the rendered page rather than the source: the index API carries no

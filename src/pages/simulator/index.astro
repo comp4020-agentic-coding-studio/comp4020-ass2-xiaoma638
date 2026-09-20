@@ -1,0 +1,635 @@
+---
+import ContentLayout from "astro-theme-university/layouts/ContentLayout.astro";
+import { href } from "../../lib/links";
+import { siteConfig } from "../../site-config";
+
+const scenarios = [
+  { id: "steady", label: "Steady", week: 3, note: "Even rate. The easy case, and the one most bars are designed for." },
+  { id: "variable", label: "Stage speeds vary", week: 3, note: "Same total work, wildly different rates per stage. Watch the estimate." },
+  { id: "unknown", label: "Unknown total", week: 4, note: "No denominator. Nothing on screen may imply a fraction." },
+  { id: "stall", label: "Stall, then recover", week: 8, note: "Live connection, no data for eight seconds, then it resumes." },
+  { id: "failure", label: "Fail, then retry", week: 9, note: "Fails in verification. Retry resumes from the last completed stage." },
+];
+---
+
+<ContentLayout
+  title="Progress simulator"
+  description="The five behaviours this course spends a semester on, in one page — with the completion condition printed beside the bar."
+  {...siteConfig}
+>
+  <p class="sim-notice" role="note">
+    <strong>Everything here is simulated.</strong> No file is read, nothing is
+    uploaded, and no network request is made. The byte counts, stage durations
+    and failures are generated in your browser from a fixed script so that every
+    behaviour is reproducible on demand — which is the whole reason this course
+    can set exercises about failure at all.
+  </p>
+
+  <p>
+    This is a demonstration of the five behaviours the twelve weeks work
+    through. It is not the prototype students build; theirs is a repository they
+    keep for the semester. Use the <strong>×4</strong> speed if you do not want
+    to wait — a site about waiting should not make you do any.
+  </p>
+
+  <div class="sim" data-sim>
+    <fieldset class="sim-scenarios">
+      <legend>Scenario</legend>
+      {scenarios.map((scenario, index) => (
+        <label>
+          <input
+            type="radio"
+            name="scenario"
+            value={scenario.id}
+            data-note={scenario.note}
+            checked={index === 0}
+          />
+          <span>{scenario.label}</span>
+        </label>
+      ))}
+    </fieldset>
+
+    <p class="sim-note" data-sim-note>{scenarios[0].note}</p>
+
+    <div class="sim-controls">
+      <button type="button" data-sim-start>Start</button>
+      <button type="button" data-sim-pause disabled>Pause</button>
+      <button type="button" data-sim-reset>Reset</button>
+      <label class="sim-speed">
+        <input type="checkbox" data-sim-fast />
+        <span>×4 speed</span>
+      </label>
+    </div>
+
+    <div class="sim-display">
+      <p class="sim-stage" id="sim-stage-label" data-sim-stage>Idle</p>
+
+      <div
+        class="sim-track"
+        role="progressbar"
+        aria-labelledby="sim-stage-label"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="0"
+        aria-valuetext="Not started"
+        data-sim-bar
+      >
+        <div class="sim-fill" data-sim-fill></div>
+      </div>
+
+      <p class="sim-readout">
+        <span data-sim-percent>—</span>
+        <span class="sim-elapsed" data-sim-elapsed>0.0 s elapsed</span>
+      </p>
+
+      <p class="sim-status" data-sim-status aria-live="polite">
+        Nothing has started. Press Start.
+      </p>
+    </div>
+
+    <details class="sim-log-wrap">
+      <summary>Source events (<span data-sim-count>0</span>)</summary>
+      <p>
+        Every number above is derived from one of these. An event the simulator
+        does not emit is a number the interface is not entitled to show.
+      </p>
+      <ol class="sim-log" data-sim-log></ol>
+    </details>
+  </div>
+
+  <h2>The completion condition</h2>
+  <p class="sim-condition">
+    <strong>
+      The bar reaches 100% only when a <code>committed</code> event has been
+      received.
+    </strong>
+    Not when the last byte is sent, and not when the transfer stage ends —
+    verification runs after that and can still fail. The percentage counts
+    <strong>work units across four stages</strong> (read 5, hash 15, transfer
+    60, verify 20), weighted by their duration in the steady scenario. It is not
+    a percentage of bytes, and in the <em>Stage speeds vary</em> scenario you can
+    watch those two disagree.
+  </p>
+
+  <h2>What each scenario is for</h2>
+  <dl class="sim-index">
+    {scenarios.map((scenario) => (
+      <>
+        <dt>{scenario.label}</dt>
+        <dd>
+          {scenario.note}{" "}
+          <a href={href(`/sessions/`)}>Week {scenario.week}</a>.
+        </dd>
+      </>
+    ))}
+  </dl>
+
+  <h2>Things to notice</h2>
+  <ul>
+    <li>
+      <strong>Unknown total shows no number at all.</strong> Not 0%, not a bar
+      creeping to 90 — the percentage readout is removed and
+      <code>aria-valuenow</code> is omitted, because omitting it is how the
+      platform says <em>indeterminate</em>, while setting it to zero claims
+      nothing has happened.
+    </li>
+    <li>
+      <strong>The bar stops asserting during a stall.</strong> No shimmer, no
+      creep. The elapsed counter keeps running, which is what tells you something
+      is wrong without the interface having to guess that something is wrong.
+    </li>
+    <li>
+      <strong>Only state changes are announced.</strong> The status line is a
+      polite live region and it fires on transitions, never on percentage ticks.
+      A bar that announces every integer from 0 to 100 has not been made
+      accessible.
+    </li>
+    <li>
+      <strong>Retry resumes from the last completed stage.</strong> The log shows
+      it: verification restarts, the 60 transfer units are not re-sent, and the
+      elapsed clock does not reset.
+    </li>
+  </ul>
+</ContentLayout>
+
+<style>
+  .sim-notice {
+    border-inline-start: 4px solid var(--at-accent, currentColor);
+    padding: 0.75rem 0 0.75rem 1rem;
+    margin-block: 1.5rem;
+  }
+
+  .sim {
+    border: 1px solid var(--at-border, currentColor);
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-block: 2rem;
+  }
+
+  .sim-scenarios {
+    border: 0;
+    padding: 0;
+    margin: 0 0 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.1rem;
+  }
+
+  .sim-scenarios legend {
+    padding: 0;
+    margin-block-end: 0.5rem;
+    font-weight: 700;
+  }
+
+  .sim-scenarios label,
+  .sim-speed {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+  }
+
+  .sim-note {
+    color: var(--at-text-secondary);
+    margin-block: 0 1rem;
+    min-height: 2.6em;
+  }
+
+  .sim-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    margin-block-end: 1.5rem;
+  }
+
+  .sim-controls button {
+    font: inherit;
+    padding: 0.45rem 1.1rem;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .sim-controls button[disabled] {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .sim-speed {
+    margin-inline-start: auto;
+    color: var(--at-text-secondary);
+  }
+
+  .sim-stage {
+    font-weight: 700;
+    margin-block: 0 0.5rem;
+  }
+
+  .sim-track {
+    height: 1.5rem;
+    border: 1px solid currentColor;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .sim-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--at-accent, currentColor);
+    transition: width 200ms linear;
+  }
+
+  /* Indeterminate: a slow sweep that never reaches an edge, so it cannot be
+     read as a position. No easing, so it cannot be read as a rate either. */
+  .sim-track[data-indeterminate="true"] .sim-fill {
+    width: 28%;
+    animation: sim-sweep 1.6s linear infinite;
+    transition: none;
+  }
+
+  @keyframes sim-sweep {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(357%); }
+  }
+
+  /* A stall is the absence of a claim, so the fill stops moving entirely. */
+  .sim-track[data-stalled="true"] .sim-fill {
+    animation: none;
+    transition: none;
+    opacity: 0.45;
+  }
+
+  .sim-readout {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-variant-numeric: tabular-nums;
+    margin-block: 0.5rem 0.75rem;
+  }
+
+  .sim-elapsed {
+    color: var(--at-text-secondary);
+  }
+
+  .sim-status {
+    margin: 0;
+    min-height: 3.2em;
+  }
+
+  .sim-log-wrap {
+    margin-block-start: 1.25rem;
+    border-block-start: 1px solid var(--at-border, currentColor);
+    padding-block-start: 0.75rem;
+  }
+
+  .sim-log-wrap summary {
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .sim-log {
+    font-variant-numeric: tabular-nums;
+    max-height: 14rem;
+    overflow-y: auto;
+    margin-block: 0.5rem 0;
+    padding-inline-start: 1.5rem;
+  }
+
+  .sim-log li {
+    padding-block: 0.1rem;
+  }
+
+  .sim-condition {
+    border-inline-start: 4px solid var(--at-accent, currentColor);
+    padding: 0.75rem 0 0.75rem 1rem;
+  }
+
+  .sim-index {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.4rem 1rem;
+  }
+
+  .sim-index dt { font-weight: 700; }
+  .sim-index dd { margin: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sim-fill {
+      transition: none;
+    }
+
+    .sim-track[data-indeterminate="true"] .sim-fill {
+      /* The sweep carried liveness. With motion off it has to be carried by
+         something else, so the fill is held still and the status line and
+         elapsed counter do the work instead. */
+      animation: none;
+      width: 100%;
+      opacity: 0.3;
+    }
+  }
+
+  @media (max-width: 34rem) {
+    .sim-speed { margin-inline-start: 0; }
+    .sim-index { grid-template-columns: 1fr; gap: 0.1rem; }
+    .sim-index dd { margin-block-end: 0.8rem; }
+  }
+</style>
+
+<script>
+  // A deliberately small state machine. Everything the display shows is derived
+  // from an emitted event, and the event log is the proof -- the same discipline
+  // the course asks of students in week 10.
+  type StageName = "read" | "hash" | "transfer" | "verify";
+
+  interface Stage {
+    name: StageName;
+    units: number;
+    label: string;
+  }
+
+  const STAGES: Stage[] = [
+    { name: "read", units: 5, label: "Reading the file" },
+    { name: "hash", units: 15, label: "Hashing" },
+    { name: "transfer", units: 60, label: "Transferring" },
+    { name: "verify", units: 20, label: "Verifying" },
+  ];
+  const TOTAL_UNITS = STAGES.reduce((sum, stage) => sum + stage.units, 0);
+
+  // Units per second, per stage, per scenario. Steady is a flat 10 u/s, so a
+  // clean run is ten seconds.
+  const RATES: Record<string, Record<StageName, number>> = {
+    steady: { read: 10, hash: 10, transfer: 10, verify: 10 },
+    variable: { read: 25, hash: 4, transfer: 22, verify: 2.6 },
+    unknown: { read: 10, hash: 8, transfer: 9, verify: 6 },
+    stall: { read: 10, hash: 10, transfer: 10, verify: 10 },
+    failure: { read: 10, hash: 10, transfer: 12, verify: 5 },
+  };
+
+  const STALL_AT = 45; // units into the run
+  const STALL_FOR = 8; // seconds of nothing
+  const FAIL_AFTER = 8; // units into the verify stage
+
+  const GUARANTEES: Record<string, string> = {
+    idle: "Nothing has started. Press Start.",
+    read: "Reading from disk. Nothing has left this machine, and cancelling now costs you nothing.",
+    hash: "Computing a checksum locally. Still nothing sent.",
+    transfer: "Sending. Bytes have left this machine but nothing is stored yet — cancelling discards them.",
+    verify: "All bytes are received and are being checked. The file is not yet safe, and this stage can still reject it.",
+    committed: "Stored durably. This is the first moment the file would survive a power cut.",
+    stalled: "The connection is up and nothing has arrived. The bytes already sent are still held. This may resume on its own.",
+    failed: "Verification rejected the file. Nothing has been stored. Retry resumes from the last completed stage.",
+    paused: "Paused by you. Nothing is lost; the clock is stopped too.",
+  };
+
+  function init(root: HTMLElement) {
+    const q = <T extends HTMLElement>(sel: string) => root.querySelector(sel) as T;
+    const bar = q<HTMLElement>("[data-sim-bar]");
+    const fill = q<HTMLElement>("[data-sim-fill]");
+    const stageEl = q<HTMLElement>("[data-sim-stage]");
+    const percentEl = q<HTMLElement>("[data-sim-percent]");
+    const elapsedEl = q<HTMLElement>("[data-sim-elapsed]");
+    const statusEl = q<HTMLElement>("[data-sim-status]");
+    const logEl = q<HTMLOListElement>("[data-sim-log]");
+    const countEl = q<HTMLElement>("[data-sim-count]");
+    const noteEl = q<HTMLElement>("[data-sim-note]");
+    const startBtn = q<HTMLButtonElement>("[data-sim-start]");
+    const pauseBtn = q<HTMLButtonElement>("[data-sim-pause]");
+    const resetBtn = q<HTMLButtonElement>("[data-sim-reset]");
+    const fastBox = q<HTMLInputElement>("[data-sim-fast]");
+    const radios = Array.from(
+      root.querySelectorAll<HTMLInputElement>('input[name="scenario"]'),
+    );
+    // Each radio carries its own note, rendered server-side, so the client
+    // never holds a second copy of the scenario text.
+    const notes = new Map(radios.map((radio) => [radio.value, radio.dataset.note ?? ""]));
+
+    let scenario = "steady";
+    let raf = 0;
+    let last = 0;
+    let running = false;
+    let done = false;
+    let elapsed = 0;
+    let units = 0;
+    let stageIndex = 0;
+    let stalledFor = 0;
+    let hasStalled = false;
+    let hasFailed = false;
+    let state = "idle";
+    let events = 0;
+
+    const noteFor = (id: string) => notes.get(id) ?? "";
+
+    function emit(name: string, detail = "") {
+      events += 1;
+      const li = document.createElement("li");
+      li.textContent = `${elapsed.toFixed(1).padStart(5)} s  ${name}${detail ? ` — ${detail}` : ""}`;
+      logEl.append(li);
+      logEl.scrollTop = logEl.scrollHeight;
+      countEl.textContent = String(events);
+    }
+
+    // State transitions are announced; percentage ticks are not. That split is
+    // the whole point of the live region.
+    function setState(next: string, announce = true) {
+      if (state === next) return;
+      state = next;
+      if (announce) statusEl.textContent = GUARANTEES[next] ?? next;
+    }
+
+    function stageLabel() {
+      if (state === "committed") return "Complete";
+      if (state === "failed") return "Failed";
+      if (state === "stalled") return `${STAGES[stageIndex].label} — stalled`;
+      if (state === "paused") return `${STAGES[stageIndex].label} — paused`;
+      if (state === "idle") return "Idle";
+      return STAGES[stageIndex].label;
+    }
+
+    function render() {
+      const indeterminate = scenario === "unknown" && state !== "committed" && state !== "idle";
+      const stalled = state === "stalled";
+      bar.dataset.indeterminate = String(indeterminate);
+      bar.dataset.stalled = String(stalled);
+      stageEl.textContent = stageLabel();
+      elapsedEl.textContent = `${elapsed.toFixed(1)} s elapsed`;
+
+      if (indeterminate) {
+        // No denominator: no number anywhere, and aria-valuenow is removed
+        // rather than set to zero.
+        bar.removeAttribute("aria-valuenow");
+        bar.setAttribute("aria-valuetext", `${STAGES[stageIndex].label}, total unknown`);
+        percentEl.textContent = "Total unknown";
+        return;
+      }
+
+      const percent = Math.min(100, Math.round((units / TOTAL_UNITS) * 100));
+      fill.style.width = `${percent}%`;
+      bar.setAttribute("aria-valuenow", String(percent));
+      bar.setAttribute(
+        "aria-valuetext",
+        state === "committed"
+          ? "Complete — stored durably"
+          : `${percent}% of 100 work units, ${STAGES[stageIndex].label.toLowerCase()}`,
+      );
+      percentEl.textContent = `${percent}% of 100 work units`;
+    }
+
+    function finishStage() {
+      emit(`stage:${STAGES[stageIndex].name}:done`);
+      if (stageIndex < STAGES.length - 1) {
+        stageIndex += 1;
+        setState(STAGES[stageIndex].name);
+        emit(`stage:${STAGES[stageIndex].name}:start`);
+      }
+    }
+
+    function step(now: number) {
+      if (!running) return;
+      const dt = Math.min(0.1, (now - last) / 1000) * (fastBox.checked ? 4 : 1);
+      last = now;
+      elapsed += dt;
+
+      if (state === "stalled") {
+        stalledFor += dt;
+        if (stalledFor >= STALL_FOR) {
+          emit("progress", "resumed after 8.0 s of silence");
+          setState(STAGES[stageIndex].name);
+        }
+        render();
+        raf = requestAnimationFrame(step);
+        return;
+      }
+
+      const stage = STAGES[stageIndex];
+      const before = units;
+      units = Math.min(TOTAL_UNITS, units + RATES[scenario][stage.name] * dt);
+
+      // Stall: a live connection that stops reporting.
+      if (scenario === "stall" && !hasStalled && units >= STALL_AT) {
+        units = STALL_AT;
+        hasStalled = true;
+        stalledFor = 0;
+        setState("stalled");
+        emit("stall:detected", "no progress event for 3.0 s");
+        render();
+        raf = requestAnimationFrame(step);
+        return;
+      }
+
+      const stageEnd = STAGES.slice(0, stageIndex + 1).reduce((s, x) => s + x.units, 0);
+
+      // Failure: rejected part-way through verification.
+      if (
+        scenario === "failure" &&
+        !hasFailed &&
+        stage.name === "verify" &&
+        units >= stageEnd - stage.units + FAIL_AFTER
+      ) {
+        hasFailed = true;
+        units = stageEnd - stage.units; // roll back to the start of verify
+        running = false;
+        setState("failed");
+        emit("verify:rejected", "checksum mismatch — nothing stored");
+        startBtn.textContent = "Retry";
+        startBtn.disabled = false;
+        pauseBtn.disabled = true;
+        render();
+        return;
+      }
+
+      if (Math.floor(before / 10) !== Math.floor(units / 10)) {
+        emit("progress", `${Math.round(units)} of ${TOTAL_UNITS} units`);
+      }
+
+      if (units >= stageEnd) {
+        if (stageIndex === STAGES.length - 1) {
+          units = TOTAL_UNITS;
+          running = false;
+          done = true;
+          // 100% is this event, and nothing else.
+          emit("committed", "durable — this is what 100% means");
+          setState("committed");
+          startBtn.disabled = true;
+          pauseBtn.disabled = true;
+          render();
+          return;
+        }
+        finishStage();
+      }
+
+      render();
+      raf = requestAnimationFrame(step);
+    }
+
+    function start() {
+      if (done) return;
+      if (state === "failed") {
+        // Retry resumes from the last completed stage: the transfer units are
+        // not re-sent and the clock is not reset.
+        emit("retry", `resuming from ${STAGES[stageIndex].name}, ${Math.round(units)} units kept`);
+        startBtn.textContent = "Start";
+      } else if (state === "idle") {
+        emit("upload:started", scenario === "unknown" ? "lengthComputable = false" : `total = ${TOTAL_UNITS} units`);
+        emit(`stage:${STAGES[0].name}:start`);
+      }
+      setState(STAGES[stageIndex].name);
+      running = true;
+      last = performance.now();
+      startBtn.disabled = true;
+      pauseBtn.disabled = false;
+      raf = requestAnimationFrame(step);
+    }
+
+    function pause() {
+      running = false;
+      cancelAnimationFrame(raf);
+      setState("paused");
+      emit("paused", "by the user");
+      startBtn.disabled = false;
+      pauseBtn.disabled = true;
+      render();
+    }
+
+    function reset() {
+      running = false;
+      done = false;
+      cancelAnimationFrame(raf);
+      elapsed = 0;
+      units = 0;
+      stageIndex = 0;
+      stalledFor = 0;
+      hasStalled = false;
+      hasFailed = false;
+      events = 0;
+      state = "idle";
+      logEl.replaceChildren();
+      countEl.textContent = "0";
+      statusEl.textContent = GUARANTEES.idle;
+      fill.style.width = "0%";
+      startBtn.textContent = "Start";
+      startBtn.disabled = false;
+      pauseBtn.disabled = true;
+      render();
+    }
+
+    startBtn.addEventListener("click", start);
+    pauseBtn.addEventListener("click", pause);
+    resetBtn.addEventListener("click", reset);
+    for (const radio of radios) {
+      radio.addEventListener("change", () => {
+        scenario = radio.value;
+        noteEl.textContent = noteFor(radio.value);
+        reset();
+      });
+    }
+
+    render();
+  }
+
+  for (const root of document.querySelectorAll<HTMLElement>("[data-sim]")) {
+    init(root);
+  }
+</script>

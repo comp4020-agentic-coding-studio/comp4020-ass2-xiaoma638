@@ -1,14 +1,96 @@
 ---
 title: Policies and support
 description:
-  The course-wide rules for late work, extensions, academic integrity and
-  getting help.
+  "Extensions, academic integrity, the week 11 consent arrangements, and what
+  the course prototype is and is not allowed to do."
+heroTitle: Policies and support
 ---
 
-# Policies and support
+Course-wide rules, so the briefs can link to one place instead of restating
+them. Anything not covered here is covered by Slop University's general
+coursework rules.
 
-{/* STARTER_CONTENT: replace this policy page, then remove this comment. */}
+## Extensions
 
-Replace this page. Course-wide rules live here so an assessment brief can link
-to one place; a course with no rules worth a page can delete it, along with its
-entry in `src/site-config.ts`.
+Ask before the deadline. A short extension — up to five days — needs a sentence
+saying what happened and does not need a document. Longer than that, or after
+the deadline has passed, goes through the University's standard process.
+
+The reason short extensions are easy is that this course's deadlines are
+deliberately placed to be movable: none of the three assessments blocks the next
+week's teaching, and [Assignment 2](/assessments/waiting-interface-prototype/) is
+due on a day with no class precisely so that a late submission does not cost you
+a studio.
+
+## Academic integrity
+
+The ordinary rule applies: the work you submit is yours, and anything that is
+not yours is attributed.
+
+Two things worth being explicit about, because this course invites both:
+
+**Working together is expected in the studio.** The pair audits in
+[week 7](/sessions/07-without-the-animation/) and the observation rotation in
+[week 11](/sessions/11-watching-someone-wait/) are collaborative by design. What
+you submit afterwards is your own analysis of what happened. If a classmate
+found the bug, say so — "my partner broke my cancel guarantee by cancelling
+mid-stall" is a stronger sentence than one that quietly takes the credit, and it
+is marked as such.
+
+**Generated code is allowed and must be declared.** Say what you used it for, in
+a line. The thing this course actually assesses — whether you can say what your
+interface claims and what supports each claim — is not made easier by generating
+the interface, and is usually made harder, because you end up defending
+decisions you did not make.
+
+## The week 11 observation: consent and data
+
+[Week 11](/sessions/11-watching-someone-wait/) has students observe each other
+using their prototypes. The arrangements are fixed and not negotiable by
+individual students or tutors.
+
+**Participation is voluntary, in both roles.** You may decline to be observed,
+to observe, or both, for any reason, and you do not have to give one. Tell a
+tutor before the session and you are given the
+[structured walkthrough](/sessions/11-watching-someone-wait/) instead. It is
+graded identically, on the same criterion, and it is not a lesser task.
+
+**Consent is read aloud before each round**, from a supplied script, and a
+participant may stop at any point without explanation. Stopping mid-round is not
+a failed session; it is a recorded outcome.
+
+**What is recorded.** Handwritten notes only: what the participant did, and
+what they said, in their words. **No audio, no video, no screen recording, and
+no names.** Record sheets identify participants as P1, P2, P3.
+
+**Where it goes.** Record sheets are the student's own; they are quoted in the
+[Assignment 3](/assessments/honest-waiting-kit/) evaluation record and are not
+collected by the course. Nothing from the session is published, and a quoted
+line may not be attributed to an identifiable person.
+
+**Marking does not depend on participating.** The criterion asks whether your
+conclusions are proportionate to your evidence. It does not ask how many people
+you watched, or whether you watched anybody.
+
+## What the prototype may and may not do
+
+The course prototype, `upload-ui`, simulates every transfer locally. That is a
+requirement, not a convenience, and it has a policy dimension:
+
+- **No student prototype uploads to a real service.** Not to the University's,
+  not to a third party's, not to your own. The simulator is the only backend, all
+  semester.
+- **No real personal files as test data.** The file picker accepts a real file so
+  the interaction is honest, but the prototype never reads its contents — only
+  its reported size. If your prototype reads bytes, that is a bug and a policy
+  breach at once.
+- **Demonstration data is labelled.** The supplied traces are recorded sample
+  data shipped with the course, and anything built on them says so. The
+  [progress simulator](/simulator/) on this site carries the same label.
+
+## Getting help
+
+Ask in the studio first — that is what three hours with two tutors is for. Email
+is for things that cannot wait until Thursday. Anything you think is wrong with
+this site, including a broken link or a page that contradicts another page, is
+worth reporting and will be fixed rather than defended.

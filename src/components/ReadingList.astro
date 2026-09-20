@@ -1,0 +1,63 @@
+---
+// Readings live in each studio's `readings:` frontmatter and are rendered both
+// here and on /readings/, so the list exists once. `pnpm build` resolves every
+// URL below and records it in .link-checker/verified-external-links.tsv --- a
+// dead reading is a red build rather than a reader's problem.
+export interface Reading {
+  title: string;
+  source: string;
+  url: string;
+  why: string;
+}
+
+interface Props {
+  readings?: Reading[];
+  headingLevel?: "h2" | "h3";
+  heading?: string;
+}
+
+const { readings = [], headingLevel = "h2", heading = "Reading" } = Astro.props;
+const Heading = headingLevel;
+---
+
+{
+  readings.length > 0 && (
+    <section class="readings">
+      <Heading>{heading}</Heading>
+      <ul>
+        {readings.map((reading) => (
+          <li>
+            <a href={reading.url}>{reading.title}</a>
+            <span class="source"> — {reading.source}</span>
+            <p>{reading.why}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .readings ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .readings li {
+    padding-block: 0.85rem;
+    border-block-start: 1px solid var(--at-border, currentColor);
+  }
+
+  .readings li:last-child {
+    border-block-end: 1px solid var(--at-border, currentColor);
+  }
+
+  .readings .source {
+    color: var(--at-text-secondary);
+  }
+
+  .readings p {
+    margin-block: 0.3rem 0;
+  }
+</style>

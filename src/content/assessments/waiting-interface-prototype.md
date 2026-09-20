@@ -11,7 +11,6 @@ outcomes:
   - LO3
 due: 2027-04-27T10:00:00+10:00
 weight: 30
-draft: true
 marking:
   mode: weighted
   criteria:
@@ -45,46 +44,75 @@ related:
 The accessibility work is taught on Tuesday 20 April
 ([lecture](/lectures/week-07/)) and practised in the
 [week 7 studio](/sessions/07-without-the-animation/) on Thursday 22 April, with
-tutors in the room. The deadline is the following Tuesday at 10:00 — five days
-later, across a weekend and a public holiday.
+tutors in the room. This falls the following Tuesday at 10:00 — five days later,
+across a weekend and a public holiday.
 
 The Waiting Interface Checklist v0 was published in
-[week 2](/sessions/02-what-counts-as-done/), but publishing a standard is not
-teaching it, and it carries no marks before now. The gap between the last
+[week 2](/sessions/02-what-counts-as-done/), but **publishing a standard is not
+teaching it**, and it carries no marks before now. The gap between the last
 teaching and this deadline is what makes the audit criterion fair.
 
-There is no class on the day this is due. The
-[week 8 studio](/sessions/08-stuck-timed-out-disconnected/) is on the Thursday
-and is not shortened for it.
+There is no class on the day this is due, and the
+[week 8 studio](/sessions/08-stuck-timed-out-disconnected/) on the Thursday is
+not shortened for it.
 
 ## What you submit
 
-The deployed prototype, plus an `/audit/` page in the repo.
+The deployed prototype, plus an `/audit/` page in the repository.
 
-The prototype must handle all four of these from the same interface, each
-triggerable by a marker from exposed simulator controls:
+### The prototype: four conditions from one interface
 
-1. **Known size, determinate.** The denominator is named on screen.
-2. **Time remaining.** The estimator, its rounding rule and its refresh interval
-   are named on screen.
-3. **Unknown size.** No fractional reading anywhere — not in the bar, the text,
-   the document title or the favicon.
-4. **Completion.** The criterion for claiming completion is stated.
+Each must be reachable by a marker from your exposed simulator controls, without
+reading your code.
 
-The `/audit/` page carries Checklist v0 completed, plus the week 7 audit sheet:
-keyboard path, progressbar semantics, live-region behaviour, reduced-motion
-variant. Each line marked pass, fail or not-applicable, with its evidence.
+**(a) Known size, determinate.** A bar driven by real progress events, with
+**the denominator named on screen** — "bytes sent, excluding server-side
+verification", not "upload progress".
+
+**(b) Time remaining.** A readout naming, on the page, **which estimator, what
+rounding, what refresh interval**. Any of the three from
+[week 5](/sessions/05-why-the-estimate-jumps/) is acceptable. Being unable to
+say which one you shipped is not.
+
+**(c) Unknown size.** No fractional reading **anywhere** — not in the bar, the
+text, the document title, or the favicon. Use one or more of the three registers
+from [week 4](/sessions/04-no-idea-how-long/).
+
+**(d) Completion.** The criterion for claiming completion is stated where a user
+can read it, and the interface only claims completion when that criterion is
+met.
+
+### The audit page
+
+Checklist v0 completed, plus the week 7 audit sheet: keyboard path, progressbar
+semantics, live-region behaviour, reduced-motion variant. Each line marked
+**pass / fail / not applicable**, with the evidence that settled it.
 
 ## How the criteria are read
 
-- **Behaviour.** A marker reproduces all four conditions without asking you how.
-- **Evidence discipline.** Nothing on screen implies precision the state does
-  not support.
-- **Accessibility audit.** A failure recorded as a failure scores. A pass your
-  marker can break does not, and costs more than the failure would have.
-- **Both viewports.** Bar, text and controls all work at 1920×1080 and 390×844.
+**Behaviour across the four conditions (35).** A marker reproduces all four using
+your controls. A condition that works but cannot be triggered scores nothing,
+because the marker cannot tell it apart from one that does not work.
 
-Estimator *accuracy* is not assessed — [week 5](/sessions/05-why-the-estimate-jumps/)
-is practice. Neither are failure states or cancellation; those are
+**Evidence discipline (25).** Nothing on screen implies precision the state does
+not support. Specifics that get checked: a percentage displayed to one decimal
+place from an integer-valued source; a time estimate refreshing faster than it
+can be read; a fraction surviving in the tab title during condition (c).
+
+**Accessibility audit (25).** Honesty is the scored property. **A line recorded
+as a failure scores. A line recorded as a pass that your marker can break does
+not, and costs more than the failure would have.** Four passes with no notes
+reads as an audit that was not run.
+
+**Both viewports (15).** Bar, text and controls all work at 1920×1080 and
+390×844. The usual failure is a control row that wraps behind the bar at 390px,
+which is invisible until you look.
+
+## What is not assessed here
+
+Estimator **accuracy** — [week 5](/sessions/05-why-the-estimate-jumps/) is
+practice, and the honest answer is often that your estimator is poor. Motion
+preference from [week 6](/sessions/06-motion-and-the-felt-wait/). Failure
+states, cancellation and retry: those are
 [week 8](/sessions/08-stuck-timed-out-disconnected/) onward and belong to
 [Assignment 3](/assessments/honest-waiting-kit/).

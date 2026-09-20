@@ -1,8 +1,8 @@
 ---
 title: The last percent
-description: >-
-  Eight minutes: drive the interface through success, stall and failure, then
-  defend one claim you knowingly kept.
+description:
+  Eight minutes each. Drive the interface through success, stall and failure,
+  then defend one claim you knowingly kept.
 question: Can you defend every number left on your screen?
 week: 12
 outcomes:
@@ -14,36 +14,137 @@ date: 2027-05-27
 teachers:
   - marisol-quaye
   - idris-fenn
-draft: true
 spec:
   - the demonstration drives the deployed interface through success, a stall and a failure, live
   - the presenter names one claim kept without a source event and gives the reason
-  - two challenges from the room are answered without appeal to how something feels
+  - two challenges from the room are answered from evidence, without appeal to how something feels
 related:
   - 10-numbers-without-sources
   - 11-watching-someone-wait
+  - 01-what-99-percent-promises
   - assessments/honest-waiting-kit
 ---
 
-The last studio is a showcase, and it carries part of
-[Assignment 3](/assessments/honest-waiting-kit/). Eight minutes each.
+Twelve weeks ago you watched a bar sit at 99% for eleven seconds and then fail.
+You could say something was wrong with it and not much more.
+
+Today you show an interface that does not do that, and you take questions about
+the parts of it you could not make honest.
+
+The demonstration is part of
+[Assignment 3](/assessments/honest-waiting-kit/) and carries its **Defence**
+criterion. The written kit is due tomorrow, so today is a defence of finished
+work, not a deadline.
+
+## By the end of this week
+
+You can:
+
+- demonstrate a stateful interface through success and two failure paths, live,
+  without a rehearsed happy path;
+- state a design decision you made without sufficient evidence, and say what it
+  cost;
+- answer a challenge from evidence rather than from preference, or concede;
+- recognise when you are about to defend something with "it felt better", and
+  say something true instead.
+
+## The idea
+
+No lecture this week. The 14:00 briefing sets the rules of the room.
+
+**Why a defence and not a presentation.** Everything else in this course is
+marked on artefacts you control. A defence tests the one thing an artefact
+cannot show: whether you know *why*. A well-built interface whose maker cannot
+say which of its numbers are invented is a weaker outcome than a rougher one
+whose maker can.
+
+**What a good answer sounds like.** The challenge will usually be some version of
+*why is that there?* Three answers score:
+
+- *"It holds — that string comes from the acknowledgement event, here."*
+- *"It doesn't hold. I kept it because of X, and it costs Y."*
+- *"I don't know, and here is how I would find out."*
+
+One answer does not score, and the room has been trained since week 1 to call
+it: **"it felt better."** Not because preference is illegitimate — week 6 was an
+entire studio on preference — but because *"I preferred it and I have no evidence"*
+is available, true, and takes the same breath.
+
+**The claim you choose matters.** Choose a `kept with reason` row from your
+[week 10](/sessions/10-numbers-without-sources/) register that you genuinely
+find uncomfortable. A safe choice produces a safe two minutes and a low
+Defence mark. The room is not hostile and nobody is trying to catch you out; the
+criterion rewards the difficulty of the question you volunteered for.
 
 ## In the room
 
-Thursday 27 May, 14:00–17:00. The written kit is due the following day, so today
-is a defence of work that is finished, not a deadline.
+Thursday 27 May, 14:00–17:00.
+
+| Time | What happens |
+| --- | --- |
+| 14:00 | **Briefing (10 min).** The rules: eight minutes, live on the deployed URL, three paths, two challenges. |
+| 14:10 | **Showcases.** Eight minutes each, in two blocks with a break. |
+| 16:40 | **Close (20 min).** Everyone re-reads their own week 1 claims table. Nothing is submitted; it is the last ten minutes of the course and the comparison is the point. |
 
 ## What you build
 
-Nothing new. You demonstrate the deployed interface through a success, a stall
-and a failure, using the simulator controls, live. Then you name one claim you
-kept without a source event, give your reason, and take two challenges from the
-room.
+Nothing new. You demonstrate what exists:
 
-"It felt better" is not an answer, and the room has been trained all semester to
-say so.
+1. **Three paths, live**, on your deployed URL, using the exposed simulator
+   controls: a success, a stall, and one failure of your choosing.
+2. **One kept claim**, named, with the reason and its cost.
+3. **Two challenges**, answered.
+
+## Done when
+
+- The three paths ran on the deployed site, not on `localhost`, and not from a
+  recording.
+- You named a claim from your own register rather than a general limitation of
+  progress bars.
+- Both challenges got an answer of one of the three shapes above. "I don't know,
+  and here is how I'd find out" is a full-credit answer.
+
+## Before next week
+
+There is no next week. [Assignment 3](/assessments/honest-waiting-kit/) is due
+**Friday 28 May at 17:00** — the day after this studio.
+
+By design there is nothing left to write today. The state reference came out of
+weeks 2 and 8, the claims register is the week 10 deliverable, and the evaluation
+record is the week 11 deliverable. If you followed the weeks, tomorrow is
+assembly and a final read-through.
+
+
+## Reading
+
+No reading. The last week is a defence of work that is already finished.
+
+## Where the course's material lives
+
+Twelve weeks of readings are collected on the [readings page](/readings/), and
+the [glossary](/glossary/) has the terms this course used in a specific way —
+`source event`, `denominator`, `liveness`, `kept with reason`. Both outlive the
+semester; the prototype probably does not.
+
+## If you are joining late
+
+`git checkout stage-11` is the last checkpoint — there is no `stage-12`, because
+this week builds nothing. If you are arriving now, you are demonstrating the
+checkpoint prototype and defending decisions somebody else made, which is a
+legitimate and quite difficult version of the exercise. Tell your tutor
+beforehand so the questions are pitched at that.
 
 ## What this week cannot tell you
 
-Whether you were right. It tells you whether you can say why, which is the only
-part anybody can assess.
+Whether you were right.
+
+A defence establishes that you can say why, from evidence, and that you know
+which of your decisions are unsupported. It does not establish that the
+decisions were good ones. Nobody in this room has watched a stranger use your
+interface under real pressure with a file they needed, and that is the test that
+would settle it.
+
+What you can take away is smaller and more portable: you can now look at any
+waiting interface — including one you are about to build at work — and say what
+it is claiming, what could support each claim, and which parts of it were
+invented to fill a silence.

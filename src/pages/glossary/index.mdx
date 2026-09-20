@@ -1,0 +1,135 @@
+---
+title: Glossary
+description:
+  "The dozen terms this course uses in a narrower sense than the industry does,
+  and what each one is narrowed to."
+heroTitle: Glossary
+---
+
+Most of these words are in ordinary use. This course uses them in a narrower
+sense, and the narrowing is usually the teaching. Where a term is this course's
+own coinage rather than standard vocabulary, it says so.
+
+## claim
+
+Anything a reader can take from a waiting interface. Numbers and words are the
+obvious ones; **motion, rate and absence** are claims too. A bar that shimmers
+asserts the process is alive. A screen with no error asserts there is nothing to
+report. Introduced in [week 1](/sessions/01-what-99-percent-promises/).
+
+## source event
+
+Something the process **reports**, at a moment you could write down — not
+something the process *does*. A server writing bytes to disk is an activity;
+`progress: 4.2 MB of 11 MB` is a source event. Only the second can support a
+claim on a screen, and the gap between the two is where invented progress lives.
+
+*Course term.* Standard vocabulary would say "telemetry" or just "an event"; the
+narrowing is the insistence that it be reported and timestamped.
+
+## verdict
+
+The judgement pairing a claim with its source. Outside a system you have three:
+`sourced`, `unsourceable`, `not determinable from outside`. Inside your own code
+([week 10](/sessions/10-numbers-without-sources/)) the third is withdrawn and
+replaced by **kept with reason**.
+
+## kept with reason
+
+A claim with no source event that you are displaying anyway, knowingly, with a
+written justification naming the deception, the reason and its cost. A rounded
+figure or a minimum display duration is usually this. Distinguished from an
+excuse by whether a reader could argue with it: *"it looks better"* is not a
+reason.
+
+*Course term.*
+
+## denominator
+
+The bottom of the fraction a percentage is. Interfaces are careful about the
+numerator and careless about the denominator, which is how a bar can be accurate
+and useless at once. Every percentage on a screen should be able to say what it
+is a percentage **of**, and what that excludes.
+[Week 3](/sessions/03-where-is-the-denominator/).
+
+## determinate / indeterminate
+
+Whether a denominator exists. The platform is explicit about this: a
+`ProgressEvent` carries `lengthComputable`, and the `<progress>` element spells
+indeterminate by omitting `value` — which is deliberately not the same as
+`value="0"`.
+
+## liveness
+
+The weakest honest thing an interface can say: *something is still happening*.
+Asserts nothing about position, duration, or eventual success. Requires a
+heartbeat event; a looping animation is not one.
+[Week 4](/sessions/04-no-idea-how-long/).
+
+## elapsed
+
+*You have been waiting this long.* A fact about the user rather than about the
+process, which is why it is the only register that cannot be wrong — and the one
+that makes a wait feel longest. That trade is not resolvable and the course does
+not pretend otherwise.
+
+## named stage
+
+*This particular thing is happening now.* Requires the state model from
+[week 2](/sessions/02-what-counts-as-done/), and says nothing about how many
+stages remain.
+
+## fractional reading
+
+What a reader can take as a ratio from a display containing no numbers. A
+spinner that slows down reads as "nearly there"; a three-dot animation on its
+third dot reads as two-thirds. An indeterminate display that admits a fractional
+reading has made a determinate claim with indeterminate data.
+
+*Course term.*
+
+## state
+
+A claim about the process, as opposed to a **phase**, which is a claim about the
+display. "The bar is at 60%" is a phase. "The final chunk is acknowledged and we
+are waiting on durability confirmation" is a state. You can pass through several
+states in one phase, which is how an interface says nothing true for eleven
+seconds.
+
+## completion criterion
+
+The one sentence naming what has to be true before the interface may say
+*complete*. "The last byte left this machine", "the service acknowledged the
+final chunk" and "the object is durable" are three different criteria, seconds
+apart, and only the last survives a power cut.
+
+## instability
+
+How much a displayed estimate contradicts itself: the mean absolute change in
+the shown value between consecutive refreshes, in seconds. Deliberately **not**
+a measure of accuracy — it measures what the user experiences. An estimator can
+be more accurate and more annoying. [Week 5](/sessions/05-why-the-estimate-jumps/).
+
+## guarantee
+
+A one-sentence, **falsifiable** statement of what an action promises about a
+user's data. "Cancel stops the upload" cannot fail and is therefore not a
+guarantee. "No bytes from this attempt are retained after the button returns"
+can fail, which is what makes it testable.
+[Week 9](/sessions/09-cancel-and-retry/).
+
+## existence proof / rate
+
+*At least one person read the stall as a failure* is established by one
+observation. *Most people read the stall as a failure* is not established by
+three, or thirty. Small-n observation yields the first and never the second, and
+conflating them is the most common overreach in a write-up.
+[Week 11](/sessions/11-watching-someone-wait/).
+
+## stall, timeout, disconnection
+
+Three ways a transfer stops without finishing, distinguished by what can still
+be happening. A **stall** has a live connection and may resume. A **timeout** is
+a decision *you* made; the server may still be working and succeeding. A
+**disconnection** means the transport is gone. Telling a user the wrong one
+makes them do the wrong thing. [Week 8](/sessions/08-stuck-timed-out-disconnected/).

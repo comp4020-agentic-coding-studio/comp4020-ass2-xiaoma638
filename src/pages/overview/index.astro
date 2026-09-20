@@ -1,0 +1,225 @@
+---
+import { getCollection } from "astro:content";
+import Card from "astro-theme-university/components/Card.astro";
+import CardGrid from "astro-theme-university/components/CardGrid.astro";
+import ContentLayout from "astro-theme-university/layouts/ContentLayout.astro";
+import { courseMeta } from "../../course-config";
+import { href } from "../../lib/links";
+import { siteConfig } from "../../site-config";
+
+// Weights, names and dates come from the assessments collection so this page
+// and /calendar/ and each brief cannot drift apart.
+const assessments = (await getCollection("assessments")).sort(
+  (a, b) => a.data.due.getTime() - b.data.due.getTime(),
+);
+const studios = await getCollection("sessions");
+const lectures = await getCollection("lectures");
+const totalWeight = assessments.reduce((t, a) => t + a.data.weight, 0);
+const due = new Intl.DateTimeFormat("en-AU", {
+  day: "numeric", month: "long", timeZone: "Australia/Canberra",
+});
+
+const outcomes = [
+  { id: "LO1", text: "Trace each claim a waiting interface makes — a percentage, a time, a word, a motion — to the event in the underlying process that could support it, and mark the ones that have no possible source." },
+  { id: "LO2", text: "Implement a file-upload waiting interface that behaves correctly under known duration, unknown duration, stall, timeout, disconnection, cancellation and retry, using a local simulator." },
+  { id: "LO3", text: "Audit and repair a waiting interface's keyboard path, status text and reduced-motion behaviour against a stated checklist, recording failures as failures." },
+  { id: "LO4", text: "Justify a design decision from evidence you actually gathered, and state a conclusion no stronger than that evidence supports — including deciding, with reasons, not to change anything." },
+];
+---
+
+<ContentLayout
+  title="Course overview"
+  description="What the course studies, who it is for, what you make, and how the twelve weeks are put together."
+  {...siteConfig}
+>
+  <h2>What it studies</h2>
+  <p>
+    One widget. A file-upload waiting interface, and the question of what it is
+    entitled to say while the upload is in flight.
+  </p>
+  <p>
+    That sounds small and it is. The narrowness is the design: a progress bar is
+    where a system's uncertainty about itself becomes something a user reads, and
+    a semester is about the right length to work out how much of what a typical
+    one says is supportable. The course spends twelve weeks moving one interface
+    from <em>two states and a shimmer</em> to something whose every displayed
+    number can be traced to an event.
+  </p>
+
+  <h2>Who it is for</h2>
+  <p>
+    Second-year students who can write HTML and CSS, and enough JavaScript to
+    write a function that takes a callback and to reason about a promise. That is
+    the whole prerequisite.
+  </p>
+  <p>
+    You do not need a background in psychology, statistics, or human-computer
+    interaction. Where the course touches published work on perceived duration it
+    links the work and says what it measured; where it has no evidence it says so.
+    You are not expected to arrive with an opinion about design.
+  </p>
+
+  <h2>What you make</h2>
+  <p>
+    Everyone starts from the same deliberately broken prototype, <code
+      >upload-ui</code
+    >: two states, one of which is a lie, and a bar that sits at 99% for eleven
+    seconds before failing silently. You keep the same repository for twelve
+    weeks.
+  </p>
+  <p>
+    By week 12 it handles known and unknown durations, names its own denominator
+    and estimator on screen, survives a stall, a timeout and a disconnection with
+    messages that say what happened to the file, keeps written guarantees for
+    cancel and retry, works from the keyboard and with motion off, and ships with
+    a register of every claim left on its screen.
+  </p>
+  <p>
+    Every transfer is simulated locally. No server is involved at any point, which
+    is what lets you reproduce a stall on demand — the thing you can never do with
+    a real network, and the reason the subject is teachable at all. You can try
+    the same mechanism on the <a href={href("/simulator/")}>progress simulator</a>.
+  </p>
+
+  <h2>Learning outcomes</h2>
+  <p>At the end of the course you can:</p>
+  <dl class="outcomes">
+    {outcomes.map((outcome) => (
+      <>
+        <dt>{outcome.id}</dt>
+        <dd>{outcome.text}</dd>
+      </>
+    ))}
+  </dl>
+  <p>
+    Every week page names the outcomes it teaches, and every assessment names the
+    outcomes it assesses. Nothing is assessed that a studio dated before the
+    deadline has not taught — that is checked mechanically rather than promised.
+  </p>
+
+  <h2>How the semester runs</h2>
+  <p>
+    {studios.length} studios, {lectures.length} lectures, one artefact.
+  </p>
+  <ul>
+    <li>
+      <strong>Studios</strong> — Thursdays, 14:00&ndash;17:00, every week. Three
+      hours at the machine on the same prototype.
+    </li>
+    <li>
+      <strong>Lectures</strong> — Tuesdays, 11:00&ndash;12:00, in weeks 1, 4, 7
+      and 11 only. Four, not twelve. Each carries something you could not arrive
+      at at a keyboard, and the studio two days later applies it. The other eight
+      weeks open with a framing and a set reading in the studio itself, named on
+      each week's page.
+    </li>
+    <li>
+      <strong>Between studios</strong> — two to three hours. Each week page ends
+      with a <em>Before next week</em> section that says what and how long.
+    </li>
+  </ul>
+  <p>
+    If you miss a week, each studio has a stage checkpoint (<code
+      >git checkout stage-07</code
+    >) that restores the mechanism the next week needs and leaves every judgement
+    in it unmade. A floor, not an answer: you can rejoin without having finished
+    the week before.
+  </p>
+
+  <h2>Assessment</h2>
+  <table class="assessments">
+    <caption>Three pieces, totalling {totalWeight}%</caption>
+    <thead>
+      <tr>
+        <th scope="col">Assessment</th>
+        <th scope="col">Weight</th>
+        <th scope="col">Due</th>
+      </tr>
+    </thead>
+    <tbody>
+      {assessments.map((a) => (
+        <tr>
+          <th scope="row"><a href={href(`/assessments/${a.id}/`)}>{a.data.title}</a></th>
+          <td>{a.data.weight}%</td>
+          <td>{due.format(a.data.due)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p>
+    There is no examination. Each piece assesses what came before it and nothing
+    that comes after, and the third is largely assembled from work already done in
+    weeks 10 and 11.
+  </p>
+
+  <h2>Where to go next</h2>
+  <CardGrid columns={2}>
+    <Card title="Calendar" href="/calendar/">
+      <p>Every teaching date and deadline in one table.</p>
+    </Card>
+    <Card title="Studios" href="/sessions/">
+      <p>The twelve weeks, each listed by the question it answers.</p>
+    </Card>
+    <Card title="Readings" href="/readings/">
+      <p>Everything the course sets, and why each week sets it.</p>
+    </Card>
+    <Card title="Glossary" href="/glossary/">
+      <p>The terms this course narrows, and what it narrows them to.</p>
+    </Card>
+    <Card title="Progress simulator" href="/simulator/">
+      <p>The five behaviours the course spends the semester on, in one page.</p>
+    </Card>
+    <Card title="Policies and support" href="/policies/">
+      <p>Extensions, integrity, and the week 11 consent arrangements.</p>
+    </Card>
+  </CardGrid>
+</ContentLayout>
+
+<style>
+  .outcomes {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.4rem 1rem;
+    margin-block: 1rem 2rem;
+  }
+
+  .outcomes dt {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .outcomes dd {
+    margin: 0;
+  }
+
+  .assessments {
+    width: 100%;
+    border-collapse: collapse;
+    margin-block: 1rem 1.5rem;
+  }
+
+  .assessments caption {
+    text-align: left;
+    padding-block-end: 0.5rem;
+    color: var(--at-text-secondary);
+    font-size: 0.9rem;
+  }
+
+  .assessments th,
+  .assessments td {
+    text-align: left;
+    padding: 0.55rem 0.75rem 0.55rem 0;
+    border-block-end: 1px solid var(--at-border, currentColor);
+  }
+
+  @media (max-width: 34rem) {
+    .outcomes {
+      grid-template-columns: 1fr;
+      gap: 0.1rem;
+    }
+
+    .outcomes dd {
+      margin-block-end: 0.9rem;
+    }
+  }
+</style>

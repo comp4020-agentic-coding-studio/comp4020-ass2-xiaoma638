@@ -21,10 +21,16 @@ export const siteConfig = defineSiteConfig({
   ...slopBranding,
   name: "Slop University",
 
+  // Eight items is the ceiling before the nav stops being scannable at
+  // 390px. Readings and the glossary are reachable from Overview, from every
+  // week page, and from the footer of the course rather than from here.
   links: [
-    { text: "Lectures", href: "/lectures/" },
+    { text: "Overview", href: "/overview/" },
+    { text: "Calendar", href: "/calendar/" },
     { text: sessionLabels.plural, href: "/sessions/" },
+    { text: "Lectures", href: "/lectures/" },
     { text: "Assessment", href: "/assessments/" },
+    { text: "Simulator", href: "/simulator/" },
     { text: "People", href: "/people/" },
     { text: "Policies", href: "/policies/" },
   ],

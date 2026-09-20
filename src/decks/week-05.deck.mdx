@@ -1,0 +1,162 @@
+---
+title: Why the estimate keeps jumping
+description: SLOP2805 week 5 — three estimators, one trace, and what "rate" is allowed to mean
+---
+
+# Why the estimate keeps jumping
+
+SLOP2805 · Week 5
+
+**"About 4 minutes remaining" is not a measurement. It is a prediction** — and
+predictions have error. Today is not about removing that error. It is about what
+you are allowed to put on the screen once you know how big it is.
+
+---
+
+## The case
+
+`trace-office-wifi.json` — a real-shaped upload, recorded once and replayed
+identically for everybody in this room.
+
+- 60 MB
+- finished in **94 seconds**
+- fast for 40 s, then **12 seconds of almost nothing**, then recovery
+
+Everything today runs over this one file, so when your number differs from your
+neighbour's, the estimator is the only thing that differs.
+
+**Simulated data.** The trace is recorded sample data shipped with the course
+prototype, not a live capture taken during class. That is what makes it
+replayable, and replayable is the whole reason the exercise works.
+
+---
+
+## What the user saw
+
+A naive estimate, refreshed every two seconds, across the stall:
+
+| t | displayed |
+| --- | --- |
+| 36 s | 41 s remaining |
+| 40 s | 39 s remaining |
+| 44 s | **2 min 10 s** |
+| 48 s | **6 min 40 s** |
+| 52 s | **11 min** |
+| 56 s | 3 min 20 s |
+| 60 s | 52 s |
+
+Every one of those was **correctly computed**.
+
+---
+
+## One equation, three readings of one word
+
+```
+remaining work  ÷  rate
+```
+
+The work is settled — you chose a denominator in
+[week 3](/sessions/03-where-is-the-denominator/).
+
+So the entire design space is: **what does "rate" mean?**
+
+---
+
+## 1 · Naive linear
+
+`rate = progress / elapsed`
+
+Assumes the future looks like **the whole past**.
+
+- very stable while conditions hold
+- early fast seconds keep propping the average up
+- so it is wrong for a long time *after* things change — and wrong in the
+  reassuring direction
+
+---
+
+## 2 · Sliding window
+
+`rate = Δprogress over the last n seconds`
+
+Assumes the future looks like **the recent past**.
+
+- reacts to the stall quickly — that is the point
+- reacts to every ordinary fluctuation — that is the cost
+- **the window length is the whole design**: too short is noise, too long is
+  the naive estimator wearing a hat
+
+---
+
+## 3 · Exponentially weighted
+
+`rate = α · sample + (1 − α) · rate`
+
+Assumes the future looks like the recent past, **smoothly**.
+
+- one parameter, no buffer
+- gentler response to a spike
+- α is doing the same job the window length did, and is just as much of a
+  design decision
+
+---
+
+## None of them knows about the stall — and they should not
+
+An estimator turns a rate into a time.
+
+Noticing that the process has **stopped** is a different job, from a different
+signal — the timestamp of the last progress event — and it belongs to
+[week 8](/sessions/08-stuck-timed-out-disconnected/).
+
+Two clean mechanisms beat one clever one. Keep them apart.
+
+---
+
+## Measuring instability
+
+Same measure for all three, or you cannot compare them:
+
+> **mean absolute change in the displayed value between consecutive refreshes**,
+> in seconds
+
+Note what this does **not** measure: how close the estimate got to 94 seconds.
+
+It measures what the user experiences — how much the number jumps.
+
+---
+
+## The counterexample
+
+Run the same three over `trace-steady.json`: 60 MB, no stall, even rate.
+
+The ranking **reverses**. Sliding window and exponential smoothing now spend
+their reactivity on noise that means nothing, while naive linear — the estimator
+that failed so badly ten slides ago — is the calmest and the most accurate.
+
+**There is no best estimator. There is a best estimator for a traffic pattern,
+and you do not get to know the pattern in advance.**
+
+---
+
+## Discuss — 25 minutes
+
+> A smooth estimate that is wrong for twenty seconds,
+> or a correct estimate that visibly panics.
+>
+> **Which do you ship, and who does your answer disadvantage?**
+
+Consider: someone deciding whether to leave their desk. Someone on a metered
+connection. Someone who has already lost this file once.
+
+---
+
+## What leaves this room
+
+1. Three `estimate()` bodies over two traces
+2. Six instability figures, one measure
+3. A decision, printed **on your interface**: which estimator, rounded to what,
+   refreshed how often
+
+And the thing the table cannot decide for you: the calmest estimator is not the
+most honest one, and this course does not treat those as the same.
