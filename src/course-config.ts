@@ -44,19 +44,20 @@ export const slopCourseMetaSchema = z
 // this API contract when the course is published.
 //
 // The code's last three digits were assigned to this repo when it was
-// provisioned, and no other course in the cohort has them. Change the first
-// digit to your course's level (and `level` to match); keep the other three.
-// STARTER_CONTENT: replace this course record, then remove this comment.
+// provisioned, and no other course in the cohort has them. `805` stays; the
+// leading `2` is the ANU level, chosen because the only prerequisite is one
+// introductory web unit -- no HCI, no statistics.
 export const courseMeta = slopCourseMetaSchema.parse({
-  code: "SLOP1805",
-  title: "Course Title Goes Here",
+  code: "SLOP2805",
+  title: "Still Loading: The Design of Progress Bars",
   session: "Semester 1",
   year: 2027,
-  level: 1,
+  level: 2,
   startDate: "2027-02-22",
   endDate: "2027-05-28",
   description:
-    "One concise paragraph explaining what this course is, who it is for, " +
-    "and why somebody would choose to spend a semester taking it.",
-  tags: ["replace me"],
+    "A progress bar is a promise made under uncertainty. Twelve weeks on one " +
+    "file-upload interface: what it may claim about progress, time remaining " +
+    "and completion, and what it has to admit it cannot know.",
+  tags: ["interface design", "waiting", "evidence"],
 }) satisfies CourseMetaInput;

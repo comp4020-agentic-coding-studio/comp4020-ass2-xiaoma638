@@ -1,48 +1,81 @@
 ---
-title: Opening lecture
-description: The placeholder deck — replace it with a real deck for your course
+title: What 99% Promises
+description: SLOP2805 week 1 — claim, source event, verdict
 ---
 
-# Opening lecture
+# What 99% promises
 
-{/* STARTER_CONTENT: replace this deck, then remove this comment. */}
+SLOP2805 · Week 1
 
-Replace this deck. It is here to show that slides are part of the site, built
-from the same markdown as everything else.
+Still Loading: The Design of Progress Bars
 
 ---
 
-## Slides are markdown
+{/* _class: quote */}
 
-A `---` starts a new slide. Everything else is ordinary markdown: headings,
-lists, links, tables, images, fenced code.
+## It sat at 99% for eleven seconds
 
-- one idea per slide
-- the fewest words that carry it
-- the deck is a performance artefact, so it can say things a page wouldn't
+Then it said the upload failed.
+
+Which of those two things was the lie?
+
+---
+
+## A claim is anything the interface asserts
+
+- a **number** — "99%", "about 4 minutes remaining"
+- a **word** — "Finalising", "Almost done", "Complete"
+- a **motion** — a bar that accelerates is claiming something about rate
+- an **absence** — a screen showing nothing claims nothing needs saying
+
+If a reader can take something from it, it is a claim.
+
+---
+
+## A source event is something the process *reports*
+
+Not something it does. Something it emits, at a time you could write down.
+
+| the process does | the process reports |
+| --- | --- |
+| writes bytes to a socket | `progress: 4.2 MB of 11 MB` |
+| waits on a server lock | *(nothing)* |
+| finishes durably | `committed` |
+
+The middle row is where progress bars are invented.
+
+---
+
+## Three verdicts, this week only
+
+- `sourced` — an event exists that could support it
+- `unsourceable` — nothing the process emits could support it
+- `not determinable from outside` — you are out here, and you cannot tell
+
+In **week 10** you do this to your own code, and the third verdict is taken
+away.
 
 ---
 
 {/* _class: impact */}
 
-# A slide class
-
-`{/* _class: impact */}` fills the slide with the brand colour. `quote`,
-`banner` and `centered` are the others the theme styles.
+# Every transfer this semester is fake
 
 ---
 
-## What else is here
+## Which is the point
 
-```sh
-pnpm dev
-pnpm check
-```
+A claim about a failure you cannot reproduce is not a claim anybody can check.
 
-The second command proves the deck compiles with the rest of the site. Use the
-first to inspect every slide at the desktop and phone marking viewports; slide
-fit and legibility are visual judgements.
+The simulator is not a convenience. It is what makes the next eleven weeks
+falsifiable.
 
-The [astromotion](https://github.com/ANUcybernetics/astromotion) README has the
-rest of the syntax: speaker notes, backgrounds, QR codes, fragments, and
-components hydrated per slide.
+---
+
+## Thursday
+
+Six recordings. One claims table. Bring the laptop that runs `upload-ui`.
+
+> Nothing on your screen may assert more than your evidence supports.
+
+That rule applies to your interface, and to everything you write about it.

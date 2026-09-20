@@ -1,18 +1,138 @@
 ---
+import { getCollection } from "astro:content";
 import ContentLayout from "astro-theme-university/layouts/ContentLayout.astro";
 import SessionsGrid from "../../components/SessionsGrid.astro";
 import { sessionLabels, siteConfig } from "../../site-config";
+
+const studios = (await getCollection("sessions")).sort(
+  (a, b) => a.data.week - b.data.week,
+);
+const lectureWeeks = new Set(
+  (await getCollection("lectures")).map((lecture) => lecture.data.week),
+);
+const weekday = new Intl.DateTimeFormat("en-AU", {
+  day: "numeric",
+  month: "short",
+  timeZone: "UTC",
+});
 ---
 
 <ContentLayout
   title={sessionLabels.plural}
-  description={`The twelve-week teaching schedule: what happens in each ${sessionLabels.singular.toLowerCase()}, what to prepare, and what leaves the room.`}
+  description="Twelve weeks, twelve questions, one file-upload interface that gets progressively harder to lie with."
   {...siteConfig}
 >
   <p>
-    The internal collection and URL stay <code>sessions</code>. Set the visible
-    singular and plural names once in <code>src/site-config.ts</code> and use
-    the language your course deserves everywhere readers see it.
+    Every studio runs Thursdays, 14:00&ndash;17:00, on the same artefact. Four
+    weeks open with a lecture on the Tuesday; the other eight open with a short
+    framing in the room. Each week below is listed by the question it answers,
+    because the week numbers are not the point.
   </p>
+
+  <table class="week-index">
+    <caption>The twelve weeks by question</caption>
+    <thead>
+      <tr>
+        <th scope="col">Week</th>
+        <th scope="col">The question</th>
+        <th scope="col">Studio</th>
+      </tr>
+    </thead>
+    <tbody>
+      {studios.map((studio) => (
+        <tr>
+          <th scope="row">
+            {studio.data.week}
+            {lectureWeeks.has(studio.data.week) && (
+              <span class="has-lecture" title="This week has a lecture"
+                >&nbsp;&middot; lecture</span
+              >
+            )}
+          </th>
+          <td>{studio.data.question ?? studio.data.description}</td>
+          <td>{weekday.format(studio.data.date)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  <h2>The Waiting Interface Checklist v0</h2>
+
+  <p>
+    Published in week 2 and standing from then on. It is a standard, not a
+    lesson: week 7 is where you are taught how to meet it, and Assignment 2 is
+    the first time it carries marks.
+  </p>
+
+  <ol class="checklist">
+    <li>Focus is never trapped, and never lost without somewhere to go.</li>
+    <li>Every state the interface can be in has a text form.</li>
+    <li>No state is signalled by motion alone.</li>
+  </ol>
+
+  <h2>Every studio</h2>
+
   <SessionsGrid />
 </ContentLayout>
+
+<style>
+  .week-index {
+    width: 100%;
+    border-collapse: collapse;
+    margin-block: 1.5rem 2.5rem;
+  }
+
+  .week-index caption {
+    text-align: left;
+    padding-block-end: 0.5rem;
+    color: var(--at-text-secondary);
+    font-size: 0.9rem;
+  }
+
+  .week-index th,
+  .week-index td {
+    text-align: left;
+    padding: 0.55rem 0.75rem 0.55rem 0;
+    border-block-end: 1px solid var(--at-border, currentColor);
+    vertical-align: top;
+  }
+
+  .week-index tbody th {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .has-lecture {
+    color: var(--at-text-secondary);
+    font-weight: 400;
+    font-size: 0.85em;
+  }
+
+  .checklist {
+    margin-block-end: 2.5rem;
+  }
+
+  @media (max-width: 40rem) {
+    .week-index thead {
+      display: none;
+    }
+
+    .week-index tr {
+      display: block;
+      padding-block: 0.75rem;
+      border-block-end: 1px solid var(--at-border, currentColor);
+    }
+
+    .week-index th,
+    .week-index td {
+      display: block;
+      border: 0;
+      padding: 0.1rem 0;
+    }
+
+    .week-index tbody th {
+      color: var(--at-text-secondary);
+      font-size: 0.85rem;
+    }
+  }
+</style>

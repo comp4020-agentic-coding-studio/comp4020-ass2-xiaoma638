@@ -21,29 +21,98 @@ import { sessionLabels, siteConfig } from "../site-config";
     {courseMeta.tags.map((tag) => <li>{tag}</li>)}
   </ul>
 
-  <!-- STARTER_CONTENT: replace the authored page below, then remove this comment. -->
-  <h2>What you will do</h2>
+  <p class="lede">
+    Every upload bar you have ever watched was lying to you, and most of them
+    were lying for good reasons.
+  </p>
+
   <p>
-    Say what a student spends their time on — the making, reading, arguing or
-    measuring that fills the weeks. Name the artefact they walk out with.
+    A progress bar is a promise made under uncertainty. The system does not know
+    how long this will take, and it has to say something anyway. This course
+    spends a semester on that one sentence.
+  </p>
+
+  <p>
+    It is not a course about UX. It is a course about the twelve inches of
+    screen between a user pressing <strong>Upload</strong> and finding out
+    whether it worked.
+  </p>
+
+  <h2>What you will do</h2>
+
+  <p>
+    The whole semester is one artefact. In week 1 you inherit a file-upload
+    interface that sits at 99% for eleven seconds and then fails silently. By
+    week 12 it tells the truth &mdash; including when the truth is
+    <em>I don&rsquo;t know</em>.
+  </p>
+
+  <p>
+    Everything in between is you finding out what your interface actually has
+    evidence for: bytes, stages, elapsed time, an estimate, or nothing at all.
+    You will build a state model and discover it was wrong. You will write three
+    time estimators and measure how much each one lies to itself. You will turn
+    the animation off and find out whether it was carrying information. You will
+    watch three people use the thing and resist the urge to change everything
+    they touched.
+  </p>
+
+  <p>
+    No server is involved. Every transfer, stall, timeout and dropped connection
+    is simulated locally, so you can reproduce any failure on demand. That is
+    the thing you can never do with a real network, and it is the reason this
+    subject can be taught at all.
+  </p>
+
+  <h2>How it runs</h2>
+
+  <p>
+    Twelve weekly studios, three hours each, and <strong>four</strong> lectures.
+    The lectures are set pieces: each one introduces something you could not
+    work out at the machine, and the studio two days later applies it. The other
+    eight weeks open with a short framing and then get out of the way.
   </p>
 
   <h2>Who it is for</h2>
+
   <p>
-    Say who this is aimed at and what they need to already know. Be specific
-    enough that someone can rule themselves in or out without emailing you.
+    Second-year students who can write HTML and CSS and enough JavaScript to
+    write a function that takes a callback. You will not need a background in
+    psychology, and you are not permitted to cite one you do not have.
   </p>
 
+  <h2>What this course is not</h2>
+
+  <ul>
+    <li>
+      <strong>Not a general interface design course.</strong> One widget, one
+      interaction, twelve weeks.
+    </li>
+    <li>
+      <strong>Not a psychology course.</strong> We read what the published work
+      on perceived duration claims, and then we fail to replicate it in a room
+      of twenty classmates, on purpose.
+    </li>
+    <li>
+      <strong>Not a course about making users feel better.</strong> Sometimes an
+      honest interface is the more irritating one. That trade is the subject.
+    </li>
+  </ul>
+
   <h2>Where to go next</h2>
+
   <CardGrid columns={2}>
     <Card title={sessionLabels.plural} href="/sessions/">
-      <p>The weekly schedule and what happens in each teaching session.</p>
+      <p>The twelve weeks, each with the question it answers.</p>
+    </Card>
+    <Card title="Lectures" href="/lectures/">
+      <p>All four of them, and what each one carries.</p>
     </Card>
     <Card title="Assessment" href="/assessments/">
-      <p>What is marked, what it is worth, and when it is due.</p>
+      <p>Three pieces, 20/30/50, none of them a final exam.</p>
     </Card>
     <Card title="People" href="/people/">
-      <p>Who teaches the course and how to reach them.</p>
+      <p>Who teaches this and how to reach them.</p>
     </Card>
   </CardGrid>
 </ContentLayout>
@@ -64,5 +133,12 @@ import { sessionLabels, siteConfig } from "../site-config";
     color: var(--at-text-secondary);
     background: var(--at-bg-alt);
     font-size: 0.9rem;
+  }
+
+  .lede {
+    font-size: 1.25rem;
+    line-height: 1.5;
+    font-weight: 600;
+    text-wrap: balance;
   }
 </style>
