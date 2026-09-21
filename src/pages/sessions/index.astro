@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import ContentLayout from "astro-theme-university/layouts/ContentLayout.astro";
 import "../../styles/focus.css";
 import SessionsGrid from "../../components/SessionsGrid.astro";
+import { href } from "../../lib/links";
 import { sessionLabels, siteConfig } from "../../site-config";
 
 const studios = (await getCollection("sessions")).sort(
@@ -37,6 +38,7 @@ const weekday = new Intl.DateTimeFormat("en-AU", {
         <th scope="col">Week</th>
         <th scope="col">The question</th>
         <th scope="col">Studio</th>
+        <th scope="col">Slides</th>
       </tr>
     </thead>
     <tbody>
@@ -52,10 +54,25 @@ const weekday = new Intl.DateTimeFormat("en-AU", {
           </th>
           <td>{studio.data.question ?? studio.data.description}</td>
           <td>{weekday.format(studio.data.date)}</td>
+          <td>
+            <a href={href(`/decks/week-${String(studio.data.week).padStart(2, "0")}/`)}>
+              Week {studio.data.week} deck
+            </a>
+          </td>
         </tr>
       ))}
     </tbody>
   </table>
+
+  <h2>Slides</h2>
+
+  <p>
+    Every week has a deck, and the table above links all twelve. Four of them
+    are lecture decks (weeks 1, 4, 7 and 11); the other eight are the slides the
+    studio's opening framing runs from. They are web pages, so they open in a
+    tab &mdash; arrow keys move through them, and <kbd>?</kbd> lists the rest of
+    the shortcuts.
+  </p>
 
   <h2>The Waiting Interface Checklist v0</h2>
 

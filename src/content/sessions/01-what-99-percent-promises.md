@@ -91,6 +91,10 @@ analysis, and using it correctly is a marked skill. In
 [week 10](/sessions/10-numbers-without-sources/) you do this exercise again from
 *inside* your own code, and that verdict is withdrawn.
 
+**[View this week's slides](/decks/week-01/)** — Tuesday's lecture deck. Worth a pass before the studio, and the reference while you build.
+On a phone they are small — the deck is built for a projector, and this
+page carries the same material as prose.
+
 ## In the room
 
 Thursday 25 February, 14:00–17:00.
@@ -103,6 +107,14 @@ Thursday 25 February, 14:00–17:00.
 | 16:15 | **Swap.** Take a recording another pair has already done, and build your table before you read theirs. |
 | 16:45 | **One claim each.** Everybody names the claim they found least defensible, and says which verdict they gave it. |
 
+## What you start with
+
+- `upload-ui`, cloned and running locally. If it does not run, say so in the
+  first twenty minutes rather than in week 3.
+- **Six screen recordings** of real waiting interfaces, supplied in
+  `materials/week-01/`. Each is under 30 seconds.
+- A blank claims table, as a markdown file you will keep adding to.
+
 ## What you build
 
 A **claims table** for one recorded interface, one row per claim:
@@ -113,6 +125,20 @@ A **claims table** for one recorded interface, one row per claim:
 | **Possible source** | an event the process could emit that would support it |
 | **Verdict** | `sourced` · `unsourceable` · `not determinable from outside` |
 
+## A worked example
+
+Four rows from the case above, to show the shape:
+
+| Claim | Possible source event | Verdict |
+| --- | --- | --- |
+| "99%" | a `progress` event carrying `loaded` and `total` | `sourced` |
+| the bar still shimmering during the 11 seconds | none — nothing fires in that window | `unsourceable` |
+| reaching 99% in 9 s implies about 0.1 s left | derived from the bar's own rate, never reported | `unsourceable` |
+| "Upload failed" | a server response you cannot see from out here | `not determinable from outside` |
+
+The shimmer row is the interesting one: the only claim on that screen that was
+false for eleven seconds, and it was made without a word.
+
 ## Done when
 
 - Every claim visible in your recording has a row. Pause the recording and scan
@@ -120,6 +146,19 @@ A **claims table** for one recorded interface, one row per claim:
 - No row is blank. "I don't know" is spelled `not determinable from outside`.
 - You have at least one row of each of the three verdicts, or you can say why
   the recording genuinely had none of that kind.
+
+## The mistake to expect
+
+**A table with only text in it.**
+
+Motion and absence are claims. A table listing three strings and no movement is
+an incomplete table, and it is the commonest way
+[Assignment 1](/assessments/progress-bar-autopsy/) loses marks on *Evidence
+tracing* — 40 of its 100.
+
+The second: reaching for `unsourceable` when the honest verdict is
+`not determinable from outside`. From outside you cannot tell a lie from a
+shortcut from a constraint you cannot see.
 
 ## Before next week
 

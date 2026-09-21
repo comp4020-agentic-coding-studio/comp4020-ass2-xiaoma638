@@ -1,0 +1,141 @@
+---
+title: Three people is not a study
+description: SLOP2805 week 11 — existence proofs, rates, and why deciding to change nothing is a finding
+---
+
+# Three people is not a study
+
+SLOP2805 · Week 11 · Lecture
+
+Somebody who has never seen your interface is about to use it,
+
+hit a stall you did not warn them about,
+
+and say out loud what they think is happening.
+
+---
+
+## Where we were, and where we are going
+
+**Week 10** produced a register of every claim your interface makes, all of them
+now traced to an event.
+
+**Today** is the only evidence in the course that comes from outside your own
+head — and it is much weaker than you will want it to be.
+
+---
+
+## Existence proofs and rates
+
+> **"At least one person read the stall as a failure."**
+> Established by **one** observation. Real, reportable, often enough to act on.
+
+> **"Most people read the stall as a failure."**
+> Not established by three observations, or thirty, or any number you will reach.
+
+Nearly every overreach in a write-up is the first sentence rewritten as the
+second.
+
+**Do not write proportions.** "Two of three" counts this room. It is not a rate.
+
+---
+
+## Records, not readings
+
+> ✗ **"The user was confused."**
+> A conclusion with its evidence deleted.
+
+> ✓ **"They moved the pointer to Cancel, stopped, and said *is it stuck or is it
+> me*."**
+> A record.
+
+Only the second survives next week, when you disagree with yourself about what
+it meant.
+
+---
+
+## Name your sample precisely
+
+Not "a small sample". **These** people:
+
+- they are in this course
+- they know a stall is coming, because stalls were week 8
+- they have built the same interface
+- they are simultaneously the most forgiving and the most suspicious users your
+  prototype will ever have
+
+Generic humility is not a limitation statement. Specific bias is.
+
+---
+
+## Worked example — one observation, three legitimate answers
+
+**What was recorded (P2, simulated stall at 45%):**
+
+> *pointer to Cancel at 0:38 · did not click · "is it frozen or is it just
+> slow" · pressed Cancel at 0:52*
+
+| Answer | When it is right |
+| --- | --- |
+| **Change it.** Show elapsed-since-last-progress after 10 s | you saw it twice, you understand the cause, the fix is smaller than the problem |
+| **Leave it, say why.** One person, first use, cannot separate novelty | you saw it once |
+| **Leave it, name the test.** "Show 5 people a 60 s stall; count who cancels before 45 s" | you think it is real and one observation cannot settle it |
+
+All three score. **Only the unexamined change loses marks.**
+
+```comment
+P2's words are an illustrative record written for this slide, not a transcript
+of an observation that took place.
+```
+
+---
+
+## Your turn — Thursday
+
+1. **Rotation**, groups of four. Three rounds of 15 minutes each way.
+2. **Consent read aloud** before each round; stop if asked.
+3. **Fill your sheets before discussing anything with anyone.**
+4. **Three handling decisions**, each naming the observation behind it.
+5. **At most three changes.** A ceiling, not a target.
+
+**Not compulsory** — in either role, for any reason, with no explanation. Tell a
+tutor and you get the structured walkthrough, graded identically.
+
+---
+
+## The mistake to expect
+
+Manufacturing a change to look responsive.
+
+> Three changes on one thin observation apiece is a **worse** outcome than one
+> change and two honest deferrals, and it is marked as one.
+
+The other mistake belongs to the alternative task: a **walkthrough written up as
+though somebody had been watched**. A walkthrough is evidence about internal
+consistency, not about people. That is the one way to lose this criterion
+outright.
+
+---
+
+## What this week cannot tell you
+
+How often anything happens. Whether your interface is good. Whether a stranger
+under real pressure, with a file they needed, would do what P2 did.
+
+You are marked on whether your conclusions are **proportionate to your
+evidence** — never on how many people you watched, whether you watched anybody,
+or how many things you changed.
+
+**A confident claim from three observations loses marks. A careful claim from one
+does not.**
+
+---
+
+## What leaves the room
+
+- three observation records, in participants' words
+- three handling decisions, each traced to a line
+- at most three changes, deployed, register still matching
+
+**Where it goes:** the *Evaluation record* is deliverable 3 of **Assignment 3**,
+and *Evaluation and revision* is 20 marks.

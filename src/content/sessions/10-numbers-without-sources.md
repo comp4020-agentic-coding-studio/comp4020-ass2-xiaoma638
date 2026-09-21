@@ -112,6 +112,10 @@ That names the deception, the justification and the price. A marker may still
 disagree, and that is fine — a reason you can lose an argument about is still a
 reason.
 
+**[View this week's slides](/decks/week-10/)** — the 14:00 framing runs from these. They carry the worked example and the exercise brief.
+On a phone they are small — the deck is built for a projector, and this
+page carries the same material as prose.
+
 ## In the room
 
 Thursday 13 May, 14:00–17:00. No lecture this week.
@@ -123,6 +127,14 @@ Thursday 13 May, 14:00–17:00. No lecture this week.
 | 15:15 | **Trace.** Each row to an event, or not. |
 | 16:30 | **Read your week 1 table (10 min).** Beside your new one. Silently, no discussion. |
 | 16:40 | **One row each.** The claim you were most surprised to find had no source. |
+
+## What you start with
+
+- Your complete prototype through week 9.
+- **Seven planted claims with no source event**, of varying obviousness, in the
+  `stage-10` checkpoint. You will not be told how many you found.
+- Your week 1 claims table, which you read again at 16:30.
+- An empty page at `/claims/`, which ships as part of Assignment 3.
 
 ## What you build
 
@@ -138,6 +150,26 @@ A **claims register** for your own prototype, as a page in your repo at
 | **Verdict** | `holds` · `removed` · `kept with reason` |
 | **Reason** | required for the third verdict; empty for the others |
 
+## A worked example
+
+One row, fully worked, in the verdict week 1 had no use for:
+
+| Rendered | Where | Source event | Verdict |
+| --- | --- | --- | --- |
+| "Verifying…" held for 400 ms | verifying | `verify:start`, but the state lasts ~80 ms | **kept with reason** |
+
+> The verification state completes in under 80 ms. A state that flashes for
+> 80 ms is harder to read than one held for 400 ms, so this state is displayed
+> **longer than it exists**. The cost is that a reader comparing it with the
+> elapsed counter will see them disagree by up to 320 ms.
+
+It names the deception, the justification **and the price**. A marker may still
+disagree; a reason you can lose an argument about is still a reason.
+
+Not reasons: "it looks better", "users expect it", "it felt too abrupt".
+
+The 80 ms figure is the simulator's verify stage, not a measured service.
+
 ## Done when
 
 - Every distinct thing your interface renders has a row. Walk every state with
@@ -147,6 +179,17 @@ A **claims register** for your own prototype, as a page in your repo at
   cost.
 - Anything marked `removed` is actually gone from the interface, not just from
   the register.
+
+## The mistake to expect
+
+**Going straight to the suspicious number.**
+
+The claims you are least likely to examine are the ones you wrote so early you
+no longer see them. Most people's worst row is something added in week 2 and
+never looked at since. Inventory everything before judging anything.
+
+The second: marking a row `removed` in the register while it is still on the
+screen. The register describes the deployed interface, not your intentions.
 
 ## Before next week
 

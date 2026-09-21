@@ -1,0 +1,143 @@
+---
+title: What counts as done?
+description: SLOP2805 week 2 — states, phases, and the sentence that decides when you may say "complete"
+---
+
+# What counts as done?
+
+SLOP2805 · Week 2 · Studio framing
+
+`upload-ui` ships with two states. One of them is a lie.
+
+---
+
+## Where we were, and where we are going
+
+**Last week** you took an interface you did not build and asked, of every claim
+on it: what event could support this?
+
+**"Complete" is a claim.** Today you turn that question on your own code and
+find out what it would have to know before it is allowed to make it.
+
+By 17:00 you can:
+
+- name the states of a process from the events it emits, not from the phases of
+  your animation
+- write a completion criterion someone else can check
+- drive your interface into every state you declared
+
+---
+
+## The one bit you are replacing
+
+```js
+// src/upload.js — as shipped
+let isUploading = false;         // true on file pick
+onDone(() => { isUploading = false; });
+```
+
+Everything the interface says comes out of that.
+
+Between those two moments the file is **read, hashed, sent, acknowledged,
+written**. Six or seven distinguishable things, reported as one.
+
+---
+
+## A state is not a phase
+
+| Term | Claim about | Example |
+| --- | --- | --- |
+| **Phase** | the display | "the bar is at 60%" |
+| **State** | the process | "the final chunk is acknowledged; waiting on durability" |
+
+You can pass through **several states inside one phase**.
+
+That is exactly how an interface says nothing true for eleven seconds.
+
+---
+
+## Two shapes a boolean cannot hold
+
+**Finished, then rejected.** All bytes arrived; the server refused the file.
+A boolean has nowhere to put this, so the screen shows 100% *and then* an error
+— which reads as a contradiction.
+
+**Still verifying.** All bytes arrived; nothing has confirmed they are safe.
+The boolean must pick "uploading" or "done". Most pick done. Most are
+occasionally wrong.
+
+---
+
+## Worked example — three sentences, three meanings
+
+Simulated run, `upload-ui` default trace:
+
+```
+t=0.41s  transfer:last-chunk-sent      ← "the last byte left this machine"
+t=0.93s  transfer:acknowledged         ← "the service has it in memory"
+t=2.10s  storage:committed             ← "it survives a power cut"
+```
+
+**1.7 seconds** between the first and the last.
+
+Pick one. That sentence is your completion criterion, and everything on your
+screen has to agree with it for the rest of the semester.
+
+```comment
+Timings are from the shipped simulator trace, not a measurement of a real service.
+```
+
+---
+
+## Your turn — the build
+
+1. **Enumerate** the states, replacing `isUploading`. Only states you can
+   justify from an event the simulator actually emits.
+2. **A debug readout** showing the current state *and the event that caused the
+   last transition*. It stays in the interface all semester.
+3. **The criterion**, one sentence, as a comment above the state that claims
+   completion.
+
+> A defensible five beats an imitated nine.
+
+---
+
+## The mistake to expect
+
+Naming states after **what the bar is doing** rather than what the process is
+doing:
+
+```js
+const State = { IDLE, STARTING, MOVING, NEARLY_DONE, DONE };   // ✗ phases
+const State = { IDLE, READING, HASHING, SENDING, VERIFYING,
+                COMMITTED, REJECTED, CANCELLED };              // ✓ states
+```
+
+The tell: `NEARLY_DONE` cannot be produced by any event. If you cannot point at
+the line that emits it, it is a phase wearing a state's name.
+
+---
+
+## What this week cannot tell you
+
+Whether your states are the **right** states.
+
+Your only evidence is a simulator someone else wrote to behave plausibly. You
+are modelling a model.
+
+Two tests come later: **week 8** fails in ways your model did not anticipate,
+and **week 10** checks whether the states you declared are the ones your screen
+actually reports.
+
+---
+
+## What leaves the room
+
+- a state enumeration in code
+- a debug readout that stays all semester
+- one written completion criterion
+
+**Where it goes:** the state model is the denominator in **week 3**, the stage
+names in **week 4**, and the *State and message reference* that is deliverable 2
+of **Assignment 3**. The completion criterion is assessed in **Assignment 1**'s
+*State reading*, 25 marks.

@@ -51,6 +51,23 @@ and most of it is already written. The state reference comes out of
 evaluation record is the [week 11](/sessions/11-watching-someone-wait/) studio
 deliverable. Week 12 is assembly and defence, not a week of writing from zero.
 
+## What Assignments 1 and 2 give you
+
+Every part of this kit is a continuation, and none of it is a resubmission.
+
+- **Assignment 1** gave you the claim → source → verdict move. Deliverable 4
+  turns it on your own code, with the outside-observer verdict withdrawn and
+  `kept with reason` put in its place.
+- **Assignment 2** gave you a working interface and an audit sheet with failures
+  on it. Those failures are the shortlist; this assignment marks whether they
+  are closed, and whether the fixes for weeks 8 and 9 broke any of the lines that
+  passed.
+- **Assignment 2's** four conditions are the normal path. Nothing about them is
+  re-marked; what is marked is what your interface does when that path stops.
+
+If your A2 feedback said a recorded pass did not survive the marker, that line is
+the obvious first row of your claims register.
+
 ## What you submit
 
 **1 — The deployed prototype.** Success, stall, timeout, disconnection, cancel
@@ -101,6 +118,26 @@ reduced-motion variant; 1920×1080 and 390×844.
 **Defence (10).** At the showcase, two challenges from the room on a claim you
 kept, answered from evidence. "It felt better" scores zero on this criterion,
 and everyone has been told so since week 1.
+
+## Meeting the requirement, and arguing it well
+
+The rubric above is the same for everyone; this is what separates a submission
+that satisfies it from one that is well argued. **Nothing in the right-hand
+column is an extra requirement** — it is the same work, done with a reason
+attached.
+
+| Criterion | Meets the requirement | Argues it well |
+| --- | --- | --- |
+| **Behaviour under abnormal conditions** | every named failure is reproducible and the bar stops claiming | you can say *why* your stall threshold is the number it is, and what a user loses at half and at double it |
+| **Claims register** | every rendered thing has a row and a verdict | your `kept with reason` rows name the deception, the justification **and its cost**, in terms a reader could disagree with |
+| **Evaluation and revision** | three decisions, each traced to a record | the decisions include at least one deliberate non-change, and the limits statement names *this* session's bias rather than small-sample humility |
+| **Accessibility and both viewports** | the four audit lines pass on the deployed site | the sheet still shows the failures you found and closed, with what the fix cost elsewhere |
+| **Defence** | both challenges answered without "it felt better" | you volunteered the row you find hardest to defend, and said what you would do with another week |
+
+The pattern across all five: **the requirement is about the artefact, the
+argument is about the decision behind it.** A register with a verdict in every
+row meets the requirement. A register whose difficult rows you could lose an
+argument about is the one that reads as HD.
 
 ## What is deliberately not assessed
 

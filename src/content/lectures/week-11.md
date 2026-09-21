@@ -7,12 +7,15 @@ week: 11
 date: 2027-05-18
 teachers:
   - marisol-quaye
+slides: /decks/week-11/
 related:
   - sessions/11-watching-someone-wait
   - sessions/06-motion-and-the-felt-wait
   - sessions/10-numbers-without-sources
   - assessments/honest-waiting-kit
 ---
+
+[Slides](/decks/week-11/)
 
 ## What this lecture carries
 

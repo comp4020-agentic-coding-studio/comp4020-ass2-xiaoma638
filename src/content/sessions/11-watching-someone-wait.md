@@ -74,6 +74,10 @@ evidence deleted. "They moved the pointer to Cancel, stopped, and said *is it
 stuck or is it me*" is a record — and only the second survives next week, when
 you disagree with yourself about what it meant.
 
+**[View this week's slides](/decks/week-11/)** — Tuesday's lecture deck. Worth a pass before the studio, and the reference while you build.
+On a phone they are small — the deck is built for a projector, and this
+page carries the same material as prose.
+
 ## In the room
 
 Thursday 20 May, 14:00–17:00. **The session time is the recruitment.** You do not
@@ -102,6 +106,16 @@ internal consistency — where your own state list and your own screen disagree.
 Your write-up must say so plainly. **A walkthrough written up as though somebody
 had been watched is the one way to actually lose marks here.**
 
+## What you start with
+
+- The build you will be tested on, deployed and frozen — **no edits from 14:15
+  until 16:00**.
+- A **task script**, a **consent statement** to read aloud, and a **record
+  sheet**, all supplied at 14:00.
+- Your claims register from [week 10](/sessions/10-numbers-without-sources/),
+  which tells you what is worth watching for.
+- Your written prediction of what two or three people will say at the stall.
+
 ## What you build
 
 Three **handling decisions**, each naming the observation behind it, and **at
@@ -122,6 +136,26 @@ these are legitimate:
 observation apiece is a worse outcome than one change and two honest deferrals,
 and it is marked as one.
 
+## A worked example
+
+One record, and the three answers it legitimately supports.
+
+**What was written down (P2, simulated stall at 45%):**
+
+> pointer to Cancel at 0:38 · did not click · *"is it frozen or is it just
+> slow"* · pressed Cancel at 0:52
+
+| Decision | When it is the right one |
+| --- | --- |
+| **Change it** — show time-since-last-progress after 10 s | you saw it more than once, you understand the cause, the fix is smaller than the problem |
+| **Leave it, say why** — one person, first use, cannot separate novelty from the interface | you saw it once |
+| **Leave it, name the test** — "show 5 people a 60 s stall, count who cancels before 45 s" | you think it is real and one observation cannot settle it |
+
+All three score. Only the unexamined change loses marks.
+
+P2's words are an illustration written for this page, not a transcript of an
+observation that took place.
+
 ## Done when
 
 - Your record sheets contain things people said, in their words, and things they
@@ -131,6 +165,17 @@ and it is marked as one.
   this session did **not** test.
 - Whatever you changed is deployed, and your [claims register](/sessions/10-numbers-without-sources/)
   still matches the screen.
+
+## The mistake to expect
+
+**Manufacturing a change to look responsive.**
+
+Three changes on one thin observation apiece is a worse outcome than one change
+and two honest deferrals, and it is marked as one.
+
+The mistake belonging to the alternative task is different and more serious: a
+walkthrough written up as though somebody had been watched. A walkthrough is
+evidence about internal consistency, not about people.
 
 ## Before next week
 

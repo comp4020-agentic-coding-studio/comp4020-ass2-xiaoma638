@@ -103,6 +103,23 @@ paragraph nine then disclaims.
 argument, and the table is readable at 390px. Check it on a phone; a five-column
 table usually is not.
 
+## Where this goes
+
+Nothing here is resubmitted. Three things you produce become **inputs** to the
+next piece of work:
+
+| From this assignment | Becomes, in [Assignment 2](/assessments/waiting-interface-prototype/) |
+| --- | --- |
+| the **claim → source → verdict** move | the habit behind *Evidence discipline*, 25 marks: nothing on your screen may imply precision the state does not support |
+| the **inferred state model** and the states your subject collapsed | the reason condition (d) asks you to state a completion criterion at all — you have now seen an interface that had none |
+| the **limits section** | the form the week 7 audit sheet takes, where an honest "fail" scores and an unverifiable "pass" does not |
+
+Feedback on this assignment lands on the *analysis*, not on a prototype. So the
+way to use it is to apply the correction to your **own** interface in weeks 4 to
+7, where the same reasoning is being marked on something you built. If your
+marker says a verdict was asserted past the evidence, the place that shows up
+next is your on-screen denominator statement.
+
 ## A worked example
 
 The [week 1 studio](/sessions/01-what-99-percent-promises/) opens with a worked

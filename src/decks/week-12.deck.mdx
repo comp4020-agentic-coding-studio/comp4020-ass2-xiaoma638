@@ -1,0 +1,144 @@
+---
+title: The last percent
+description: SLOP2805 week 12 — eight minutes, three paths, and one claim you knowingly kept
+---
+
+# The last percent
+
+SLOP2805 · Week 12 · Showcase briefing
+
+Eight minutes. Three paths, live.
+
+Then two challenges on a claim you chose to keep.
+
+---
+
+## Where we were, and where we are going
+
+Twelve weeks ago you watched a bar sit at 99% for eleven seconds and then fail.
+You could say something was wrong with it and not much more.
+
+Today you show an interface that does not do that — and you take questions about
+the parts of it you **could not** make honest.
+
+There is nothing new to build. The written kit is due tomorrow.
+
+---
+
+## Why a defence and not a presentation
+
+Everything else in this course is marked on artefacts you control.
+
+A defence tests the one thing an artefact cannot show: **whether you know why.**
+
+> A well-built interface whose maker cannot say which of its numbers are invented
+> is a weaker outcome than a rougher one whose maker can.
+
+---
+
+## The eight minutes
+
+| Time | What you do |
+| --- | --- |
+| **~4 min** | drive the deployed site through a **success**, a **stall**, and one **failure**, using the exposed controls |
+| **~1 min** | name one `kept with reason` row, its reason, and its cost |
+| **~3 min** | two challenges from the room |
+
+Live, on the deployed URL. Not `localhost`. Not a recording.
+
+---
+
+## Three answers that score
+
+> **"It holds."** — that string comes from the acknowledgement event, here.
+
+> **"It doesn't hold."** — I kept it because of X, and it costs Y.
+
+> **"I don't know."** — and here is how I would find out.
+
+The third is a **full-credit answer**. It is the sentence week 11 spent an
+afternoon teaching.
+
+---
+
+## One answer that does not
+
+> **"It felt better."**
+
+Not because preference is illegitimate — week 6 was an entire studio on
+preference — but because
+
+> *"I preferred it and I have no evidence"*
+
+is available, true, and takes the same breath.
+
+The room has been trained to call it since week 1.
+
+---
+
+## Worked example — a defence that earns the marks
+
+**Claim:** the verification state is held on screen for 400 ms when it lasts ~80 ms.
+
+> **Challenge:** "So the interface is lying about a duration."
+>
+> **Answer:** "Yes, by up to 320 ms, and the register says so. I kept it because
+> at 80 ms the state is unreadable — it reads as a flicker, and two testers in
+> week 11 asked what had flashed. The cost is that anyone comparing it with the
+> elapsed counter sees them disagree. If I had another week I would hold it only
+> when the stage is shorter than 200 ms, rather than always."
+
+Names the deception, the evidence, the cost, and the thing not done.
+
+```comment
+The 80 ms verify stage is the shipped simulator's; the tester reaction is an
+illustration written for this slide, not a recorded observation.
+```
+
+---
+
+## Your turn — choose the uncomfortable row
+
+Pick the `kept with reason` row you genuinely find hard to defend.
+
+A safe choice produces a safe two minutes and a low *Defence* mark. The room is
+not hostile and nobody is trying to catch you out — the criterion rewards the
+**difficulty of the question you volunteered for**.
+
+---
+
+## The mistake to expect
+
+Rehearsing the happy path.
+
+A demo that only shows a success has not shown the course. The three paths are
+in the spec line, and a stall you cannot trigger on demand is a stall you cannot
+claim to handle.
+
+Second: demoing from `localhost` because the deploy is slow. The deployed URL is
+what the criterion names, and base-path bugs only appear there.
+
+---
+
+## What this week cannot tell you
+
+Whether you were **right**.
+
+A defence establishes that you can say why, from evidence, and that you know
+which decisions are unsupported. It does not establish they were good.
+
+What you take away is smaller and more portable: you can look at any waiting
+interface — including one you are about to build at work — and say what it
+claims, what could support each claim, and which parts were invented to fill a
+silence.
+
+---
+
+## What leaves the room
+
+- a defence, worth 10 marks of **Assignment 3**
+- your week 1 claims table, read one last time beside your register
+
+**Tomorrow, 17:00:** the Honest Waiting Kit. Assembly, not writing — the state
+reference came from weeks 2 and 8, the register from week 10, the evaluation
+record from week 11.

@@ -1,0 +1,146 @@
+---
+title: Cancel and retry
+description: SLOP2805 week 9 — guarantees that can fail, and tests that assert them instead of current behaviour
+---
+
+# Cancel and retry
+
+SLOP2805 · Week 9 · Studio framing
+
+Cancel is the only control a user presses to make something **not** happen.
+
+Which makes it the only one whose correctness they can never observe.
+
+---
+
+## Where we were, and where we are going
+
+**Week 8** gave the system's failures a vocabulary. **This week** is the user's
+two actions, and what they are owed.
+
+By 17:00 you can:
+
+- write a guarantee: one sentence, about their data, that **can be false**
+- implement cancel and retry so it holds on the awkward paths
+- write a test that asserts a guarantee rather than current behaviour
+
+---
+
+## The situation
+
+A user cancels at 24 of 40 MB. Button greys out, bar disappears, page says
+**Cancelled**.
+
+Two completely different realities are consistent with that screen:
+
+- the 24 MB were discarded
+- the 24 MB sit in a server-side buffer that a scheduled job assembles in four
+  hours
+
+The user cannot tell. They may find out from a storage bill.
+
+---
+
+## A guarantee is a sentence that can fail
+
+> ✗ **"Cancel stops the upload."** — true of any implementation, including one
+> that leaks. Cannot fail, so it is not a guarantee.
+
+> ✓ **"Cancel: no bytes from this attempt are retained anywhere after the button
+> returns."**
+
+> ✓ **"Retry: resumes from the last stage the server acknowledged, and re-sends
+> nothing before it."**
+
+Both can be false. That is what makes them testable.
+
+---
+
+## The three awkward paths
+
+**Cancel during a stall** — no progress event for thirty seconds. What are you
+cancelling?
+
+**Cancel between last chunk and acknowledgement** — the operation may already
+have succeeded.
+
+**Retry after a timeout** — the server may still be working on attempt one.
+Week 8's timeout row, arriving with consequences.
+
+Each is a place where the honest guarantee is **weaker** than the one you would
+like to make. Weakening the sentence is the correct move.
+
+---
+
+## Worked example — the test that can break
+
+```js
+// Guarantee: no bytes are retained after cancel() returns.
+test.each(["transferring", "stalled", "awaiting-ack"])("from %s", async (from) => {
+  const sim = new Upload(); await sim.driveTo(from); await sim.cancel();
+  expect(sim.retainedBytes).toBe(0);            // ✓ the guarantee
+});
+```
+
+Compare the test that protects a bug — it passes now and **fails the day you fix
+it**:
+
+```js
+expect(sim.retainedBytes).toBe(24_000_000);     // ✗ today's behaviour
+```
+
+```comment
+`Upload` is the shipped course prototype's simulated client; no network is involved.
+```
+
+---
+
+## Your turn — the build
+
+1. **Two guarantees**, one sentence each, as a comment **above** each handler,
+   written **before** the handler.
+2. **Cancel and retry** that keep them, from all three awkward paths.
+3. **One test per guarantee**, reaching its assertion by at least two entry
+   states.
+4. **Pre-commitment text** in the interface: *"Cancel (nothing is kept)"*,
+   *"Retry from 24 MB"* — readable before the button is pressed.
+
+Then swap prototypes and try to falsify your partner's sentences.
+
+---
+
+## The mistake to expect
+
+Fixing the sentence instead of the code, silently.
+
+When the pair swap breaks your guarantee you have two honest moves — **change
+the code**, or **weaken the sentence in writing**. Both are legitimate. Leaving
+the pair disagreeing is not.
+
+Also expect one state in your week 2 model with **no defined cancel behaviour**.
+It is usually a verifying state, and it is usually the one nobody considered.
+
+---
+
+## What this week cannot tell you
+
+Whether the guarantee is the one the user **wanted**.
+
+"Retry resumes from stage 3" may be excellent and still wrong for someone on a
+metered connection who would rather be asked.
+
+And a limit you cannot cross from here: your guarantees are about a simulator you
+control. On a real service, cancellation is a **request**, not an instruction —
+the truthful sentence would be weaker again.
+
+---
+
+## What leaves the room
+
+- two written guarantees and the code that keeps them
+- two tests that assert a claim, not a behaviour
+- pre-commitment text on both controls
+
+**Where it goes:** *"Cancel and retry keep the guarantees written above their
+handlers"* is a spec line of **Assignment 3**, and a marker will read your
+sentence and then try to break it.

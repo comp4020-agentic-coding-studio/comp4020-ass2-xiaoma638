@@ -92,6 +92,10 @@ Pick one of those three. Write it down. That sentence is your completion
 criterion, and for the rest of the semester everything on your screen has to
 agree with it.
 
+**[View this week's slides](/decks/week-02/)** — the 14:00 framing runs from these. They carry the worked example and the exercise brief.
+On a phone they are small — the deck is built for a projector, and this
+page carries the same material as prose.
+
 ## In the room
 
 Thursday 4 March, 14:00–17:00. No lecture in week 2.
@@ -102,6 +106,15 @@ Thursday 4 March, 14:00–17:00. No lecture in week 2.
 | 14:25 | **Reading (15 min).** The S3 multipart lifecycle below. Read it for one thing only: which of those events a *browser client* can observe, and which it can only infer. |
 | 14:40 | **Build.** The work below, with the tutor circulating. |
 | 16:30 | **Round the room.** Three people put a state diagram on the projector and name the state they were surprised to need. |
+
+## What you start with
+
+- Your `upload-ui` from week 1, with the single `isUploading` boolean in
+  `src/upload.js` untouched.
+- The simulator's event log, which already emits named events — you have simply
+  not been reading them.
+- An annotated excerpt of a real object-storage upload lifecycle, supplied for
+  the 14:25 reading.
 
 ## What you build
 
@@ -114,6 +127,28 @@ Thursday 4 March, 14:00–17:00. No lecture in week 2.
 3. **A completion criterion**, one sentence, committed as a comment directly
    above the state that claims completion.
 
+## A worked example
+
+What the simulator actually emits on a default run, and the three sentences
+hiding inside it:
+
+```
+t=0.41s  transfer:last-chunk-sent   → "the last byte left this machine"
+t=0.93s  transfer:acknowledged      → "the service has it in memory"
+t=2.10s  storage:committed          → "it would survive a power cut"
+```
+
+**1.7 seconds** separate the first from the last. A completion criterion picks
+one of those three and commits to it:
+
+```js
+// Complete = storage:committed. Acknowledgement is not enough: the service
+// can still reject the object during verification.
+COMMITTED: "committed",
+```
+
+Simulated timings from the shipped trace, not a measurement of a real service.
+
 ## Done when
 
 - A classmate can drive your interface into **every** state you declared, using
@@ -121,6 +156,19 @@ Thursday 4 March, 14:00–17:00. No lecture in week 2.
 - Your debug readout never displays a state absent from the enumeration.
 - For each state you can point at the line that produces the event behind it —
   or say out loud that you cannot, which is a finding rather than a failure.
+
+## The mistake to expect
+
+**Naming states after what the bar is doing.**
+
+```js
+const State = { IDLE, STARTING, MOVING, NEARLY_DONE, DONE };   // phases
+const State = { IDLE, READING, HASHING, SENDING, VERIFYING,
+                COMMITTED, REJECTED, CANCELLED };              // states
+```
+
+The tell is `NEARLY_DONE`: no event produces it. If you cannot point at the line
+that emits a state, it is a phase wearing a state's name.
 
 ## Before next week
 

@@ -1,0 +1,139 @@
+---
+title: Saying nothing, precisely
+description: SLOP2805 week 4 — three honest registers when there is no denominator, and the fractional-reading trap
+---
+
+# Saying nothing, precisely
+
+SLOP2805 · Week 4 · Lecture
+
+There is no total. There will not be one. The interface still has to
+show something.
+
+---
+
+## Where we were, and where we are going
+
+**Week 3** established that a denominator is a countable source event, and that
+the platform tells you when one exists.
+
+**This week** is the case where it does not: `lengthComputable === false`.
+
+By the end you can:
+
+- separate *not knowing the duration* from *having nothing to say*
+- build liveness, elapsed and named-stage feedback
+- spot a fractional reading in a display containing no numbers
+
+---
+
+## Three honest registers
+
+| Register | Asserts | Needs | Says nothing about |
+| --- | --- | --- | --- |
+| **Liveness** | something is still happening | a heartbeat event | position, duration, success |
+| **Elapsed** | you have waited this long | a clock | the process at all |
+| **Named stage** | *this* is happening now | the week 2 model | how many remain |
+
+---
+
+## Elapsed is the one people skip
+
+It is the only register that **cannot be wrong**. It is a fact about the user,
+not a prediction about the process.
+
+It also does something no error handler does:
+
+> A counter reading **0:45** on a process that usually takes **0:06** has
+> communicated a problem — with no stall detection written at all.
+
+---
+
+## The fractional-reading trap
+
+An indeterminate display must not admit a **ratio**. The test is what a reader
+can take, not what the code intends.
+
+- a spinner that **slows down** → "nearly there"
+- three dots, on the third → "two-thirds"
+- a bar that **sweeps** left to right → position
+- "Step 2" with no total → readers estimate the total from the ordinal
+
+If a user can form a fraction from it, you made a determinate claim with
+indeterminate data.
+
+---
+
+## Worked example — same run, three treatments
+
+Simulated unknown-length stream, `upload-ui` with `lengthComputable = false`:
+
+```
+liveness      ◆ ◆ ◆ ◆            "Still uploading"
+elapsed       0:12               "Uploading — 12 seconds so far"
+named stage   ▣ read ▣ hash ▶ transfer    "Transferring"
+```
+
+All three are true at t = 12 s. None of them implies a fraction.
+
+The fourth thing most people build — a bar creeping to 90% and waiting — implies
+one, and has no event behind it.
+
+```comment
+The stream length is withheld by the shipped simulator; it is not a real transfer.
+```
+
+---
+
+## Your turn — the build
+
+1. **Three treatments** against the unknown-length stream, independently
+   selectable.
+2. A **fraction audit** of your own three, including the **document title** and
+   the **favicon**.
+3. A **permission rule**, one paragraph: which treatment is allowed when.
+
+Shape of a rule: *named stage when the model can name the current stage; elapsed
+always; liveness only when neither of the others is available.*
+
+---
+
+## The mistake to expect
+
+Reaching for `value="0"` when there is no value.
+
+```html
+<div role="progressbar" aria-valuenow="0">        <!-- ✗ "nothing has happened" -->
+<div role="progressbar" aria-valuetext="Transferring, total unknown">
+                                                   <!-- ✓ indeterminate -->
+```
+
+Omitting `aria-valuenow` is how the platform spells *indeterminate*. Setting it
+to zero is a different claim, and usually a false one. This is audited in
+**week 7**.
+
+---
+
+## What this week cannot tell you
+
+Whether anyone **prefers** or **understands** any of these.
+
+You have built three truthful displays. Truthful is not comprehensible, and
+nothing today tested comprehension.
+
+There is also a cost you cannot measure yet: elapsed is the most honest register
+and the one that makes a wait feel longest. That trade is the course's subject
+and this week does not resolve it.
+
+---
+
+## What leaves the room
+
+- three indeterminate treatments
+- a fraction audit that reached the tab title
+- one written permission rule
+
+**Where it goes:** condition (c) of **Assignment 2** — *no fractional reading
+anywhere*, inside *Evidence discipline*, 25 marks. Each register needs a
+different `aria-valuetext` in **week 7**, and a stall is liveness that stopped
+being true in **week 8**.

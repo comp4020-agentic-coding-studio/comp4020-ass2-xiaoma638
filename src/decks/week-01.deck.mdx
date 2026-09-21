@@ -21,6 +21,20 @@ Which of those two things was the lie?
 
 ---
 
+## By the end of Thursday
+
+This is week 1, so there is nothing to build on. There is one move to learn, and
+you will use it for eleven more weeks.
+
+By 17:00 you can:
+
+- list every claim an interface makes, **including the ones made by motion and
+  by silence**
+- name an event that could support each, or say that none could
+- tell a claim that is false from one you simply cannot check from outside
+
+---
+
 ## A claim is anything the interface asserts
 
 - a **number** — "99%", "about 4 minutes remaining"
@@ -72,9 +86,76 @@ falsifiable.
 
 ---
 
-## Thursday
+## Worked example — four rows of a claims table
 
-Six recordings. One claims table. Bring the laptop that runs `upload-ui`.
+Simulated case, replayed from the course prototype: 40 MB, 99% in nine seconds,
+then eleven seconds of nothing, then **Upload failed**.
+
+| Claim | Possible source event | Verdict |
+| --- | --- | --- |
+| "99%" | `progress` with `loaded/total` | `sourced` |
+| bar still shimmering during the 11 s | *none — no event fires in that window* | `unsourceable` |
+| reaching 99% in 9 s implies ~0.1 s left | derived from the bar's own rate, not reported | `unsourceable` |
+| "Upload failed" | a server response we cannot see | `not determinable from outside` |
+
+The shimmer is the interesting row. It is the only claim on that screen that was
+**false for eleven seconds**, and it is made without a word.
+
+```comment
+The 40 MB case is a teaching construction replayed by the course simulator,
+not a recording of a particular product.
+```
+
+---
+
+## Your turn — Thursday
+
+1. **Setup (20 min).** Clone `upload-ui`, install, run it, trigger one simulated
+   upload. Raise a problem now rather than in week 3.
+2. **In pairs**, against one of six supplied recordings of real waiting
+   interfaces.
+3. **Swap** — take a recording another pair has done, build your table before
+   reading theirs.
+4. Everyone names the claim they found least defensible.
+
+Bring the laptop that runs `upload-ui`.
+
+---
+
+## The mistake to expect
+
+A table with only text in it.
+
+Motion and absence are claims, and a table that lists three strings and no
+movement is an incomplete table. It is the commonest way **Assignment 1** loses
+marks on *Evidence tracing* — 40 of its 100.
+
+The other one: reaching for `unsourceable` when the honest verdict is
+`not determinable from outside`. From out here you cannot tell a lie from a
+shortcut from a constraint you cannot see.
+
+---
+
+## What this week cannot tell you
+
+Whether any of these interfaces is **wrong**.
+
+An unsourceable claim is not automatically a bad one. A designer may have had an
+excellent reason to show a number nobody can justify.
+
+You are recording what is claimed and what could support it. Judgement comes
+later, and it comes with evidence.
+
+---
+
+## What leaves the room
+
+- one claims table, with at least one row of each verdict
+- `upload-ui` running on your machine
+
+**Where it goes:** the table **is** the method of
+**Assignment 1**, due Friday of week 3. The same move, turned on your own code
+with one verdict withdrawn, is **week 10**.
 
 > Nothing on your screen may assert more than your evidence supports.
 

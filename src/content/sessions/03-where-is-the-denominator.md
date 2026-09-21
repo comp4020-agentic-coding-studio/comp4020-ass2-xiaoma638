@@ -84,6 +84,10 @@ code reads `total` without checking. That flag is the platform telling you
 whether you have a denominator at all, and it is the subject of
 [week 4](/sessions/04-no-idea-how-long/).
 
+**[View this week's slides](/decks/week-03/)** — the 14:00 framing runs from these. They carry the worked example and the exercise brief.
+On a phone they are small — the deck is built for a projector, and this
+page carries the same material as prose.
+
 ## In the room
 
 Thursday 11 March, 14:00–17:00. No lecture this week.
@@ -94,6 +98,13 @@ Thursday 11 March, 14:00–17:00. No lecture this week.
 | 14:25 | **Build.** Two bars, one transfer. |
 | 16:00 | **Measure.** Find the moment the two readings are furthest apart. Write the number on the board. |
 | 16:30 | **Compare.** The spread of numbers across the room is the point — same simulator, same transfer, different models. |
+
+## What you start with
+
+- Your state enumeration and debug readout from week 2.
+- `trace-office-wifi.json`, a recorded 60 MB transfer shipped with the
+  prototype, and the replay harness that drives the simulator from it.
+- A byte-counted bar already wired to the transfer events.
 
 ## What you build
 
@@ -106,12 +117,44 @@ Thursday 11 March, 14:00–17:00. No lecture this week.
 4. **A shipping decision**: which denominator your prototype uses from now on,
    stated on screen along with what it excludes.
 
+## A worked example
+
+Both readings from one replay of `trace-office-wifi.json`, logged on one
+timeline:
+
+| t | byte-counted | stage-counted | gap |
+| --- | --- | --- | --- |
+| 4 s | 31% | 25% | 6 |
+| 9 s | 74% | 50% | 24 |
+| 14 s | **99%** | 50% | **49** |
+| 21 s | 99% | 75% | 24 |
+| 32 s | 100% | 100% | 0 |
+
+Largest disagreement: **49 points at t = 14 s** — the moment the bytes finished
+and verification had not started reporting. That is the 99% pause, in numbers.
+
+Recorded sample data shipped with the course, not a live capture.
+
 ## Done when
 
 - Both bars run from one press of Start, and neither is faked from a timer.
 - You can state the largest disagreement as a number and say when it happened.
 - Your on-screen denominator statement is specific: "bytes sent, which excludes
   server-side verification" rather than "upload progress".
+
+## The mistake to expect
+
+**Writing the exclusion as a category instead of a consequence.**
+
+> "Shows upload progress." — says nothing
+>
+> "Percentage of transfer." — still a category
+>
+> "Bytes sent. Does not include the server-side check, which on this trace took
+> a further eleven seconds." — a consequence
+
+The test: could a waiting user predict the 99% pause from your sentence? If not,
+it is decoration.
 
 ## Before next week
 

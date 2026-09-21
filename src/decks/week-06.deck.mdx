@@ -1,0 +1,129 @@
+---
+title: Motion, and how long it felt
+description: SLOP2805 week 6 — three animations over identical waits, and why the result you get today is weak
+---
+
+# Motion, and how long it felt
+
+SLOP2805 · Week 6 · Studio framing
+
+Does how the bar moves change how long the wait feels?
+
+And — the part that transfers — **how would you know?**
+
+---
+
+## Where we were, and where we are going
+
+**Week 5** left you with six instability figures and no way to choose between
+them. **This week** adds the other kind of evidence, and shows you its limits
+from the inside.
+
+By 17:00 you can:
+
+- build motion treatments that differ only in easing, over provably equal waits
+- run a class ranking and record it without cleaning it up
+- name **three specific** reasons your own result is weak
+
+---
+
+## What the published work actually measured
+
+Harrison and colleagues at Carnegie Mellon ran forced-choice comparisons between
+animations of **identical real duration**, with participants who did not know the
+durations matched.
+
+- the measure was **perceived duration**
+- reported effects sit in the range of **a few per cent** of perceived time
+- it is not a claim about trust, comprehension, or whether a number is better
+
+Their summary page is this week's reading. Read the effect sizes, not the
+headline.
+
+---
+
+## What twenty classmates can reproduce
+
+The **procedure**. Not the conditions. Five reasons, named now so the write-up
+is not hindsight:
+
+1. **Not blind** — you built the treatments and know which you expect to win
+2. **Order effects** — whoever sees the third has already waited a minute
+3. **Demand characteristics** — they know it is a week about animation
+4. **No stakes** — nobody is waiting for a file they need
+5. **n ≈ 20** against an effect of a few per cent
+
+---
+
+## Worked example — the assertion that makes it valid
+
+Three easings, one duration. The difference is invisible by eye, so assert it:
+
+```js
+const TREATMENTS = { linear: t => t,
+                     decelerate: t => 1 - (1 - t) ** 2,
+                     pulsed: t => t + 0.02 * Math.sin(t * 18 * Math.PI) };
+
+// A treatment 400ms longer than another invalidates the whole exercise.
+for (const ease of Object.values(TREATMENTS)) {
+  console.assert(Math.abs(ease(1) - 1) < 1e-9, "must finish at exactly 1");
+}
+```
+
+Easing changes the **shape** of the journey, never its length. If `ease(1) !== 1`
+you are comparing durations, not motions.
+
+```comment
+Simulated 20-second wait from the course prototype; no file is transferred.
+```
+
+---
+
+## Your turn — the build, then the run
+
+1. **Three treatments** — linear, decelerating, pulsed — over identical waits.
+2. **The duration assertion**, run and passing.
+3. Rotate in groups of five. Nobody is told the durations match.
+4. **The raw ranking table**, on the board, unadjusted.
+5. Ten minutes, individually: three weaknesses, before anyone interprets it.
+
+---
+
+## The mistake to expect
+
+Dropping a response.
+
+Someone ranks the pulsed bar fastest "because they weren't paying attention".
+The temptation to exclude them is the exercise.
+
+> If you were tempted to drop a response, **write the temptation down instead**.
+> That sentence is worth more than the cleaned table.
+
+Second mistake: writing "small sample size". Specific beats generic —
+*"n ≈ 20 against a published effect of a few per cent"* is a reason; the other
+is a phrase.
+
+---
+
+## What this week cannot tell you
+
+Almost anything about perceived duration. That is the intended outcome.
+
+If your three came out in the published order, that is **not replication** —
+with this design it is close to a coin landing the way you expected.
+
+What you get is calibration: you now know from the inside what a weak result
+feels like while you are collecting it.
+
+---
+
+## What leaves the room
+
+- three motion treatments and a passing duration assertion
+- one raw ranking table
+- three specific weaknesses, in your words
+
+**Where it goes:** the treatments are audited in **week 7** for whether they
+carried meaning or atmosphere. The weaknesses paragraph is the rehearsal for
+**Assignment 3**'s *Evaluation and revision*, 20 marks, which is scored on
+whether your conclusions are proportionate to your evidence.

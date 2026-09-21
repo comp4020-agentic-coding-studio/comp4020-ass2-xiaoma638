@@ -98,6 +98,10 @@ documentation. A guarantee they read on the button, or beside it, is part of the
 decision. "Cancel (nothing is kept)" and "Retry from 24 MB" are both short enough
 to fit.
 
+**[View this week's slides](/decks/week-09/)** — the 14:00 framing runs from these. They carry the worked example and the exercise brief.
+On a phone they are small — the deck is built for a projector, and this
+page carries the same material as prose.
+
 ## In the room
 
 Thursday 6 May, 14:00–17:00. No lecture this week.
@@ -108,6 +112,13 @@ Thursday 6 May, 14:00–17:00. No lecture this week.
 | 14:25 | **Build.** Guarantee comments first, then handlers, then tests. |
 | 15:45 | **Adversarial pairs (45 min).** Swap prototypes. Your job is to reach a state where your partner's written guarantee is false. Most pairs succeed, usually via the stall path. |
 | 16:30 | **Weaken or fix.** For each break: either the code changes or the sentence does. Both are legitimate; leaving the pair disagreeing is not. |
+
+## What you start with
+
+- Your prototype through week 8, with Cancel and Retry buttons **wired to empty
+  handlers** — they currently lie by existing.
+- A test file with two skipped tests in it.
+- The two guarantee sentences you drafted for last week's homework.
 
 ## What you build
 
@@ -120,6 +131,32 @@ Thursday 6 May, 14:00–17:00. No lecture this week.
 4. **Pre-commitment text** in the interface saying which guarantee applies,
    readable before the button is pressed.
 
+## A worked example
+
+A guarantee, and the test that can break it:
+
+```js
+// Guarantee: no bytes from this attempt are retained after cancel() returns.
+test.each(["transferring", "stalled", "awaiting-ack"])(
+  "cancel retains nothing, from %s",
+  async (from) => {
+    const sim = new Upload();
+    await sim.driveTo(from);
+    await sim.cancel();
+    expect(sim.retainedBytes).toBe(0);     // the guarantee
+  },
+);
+```
+
+Compare the test that protects a bug:
+
+```js
+expect(sim.retainedBytes).toBe(24_000_000);   // asserts today's behaviour
+```
+
+The second passes now and fails the day you fix it. `Upload` is the simulated
+client; no network is involved.
+
 ## Done when
 
 - Your partner tried to falsify both guarantees and the result is recorded:
@@ -127,6 +164,18 @@ Thursday 6 May, 14:00–17:00. No lecture this week.
 - Each test reaches its assertion by at least two different paths.
 - The interface states the retry semantics — from zero, or from stage *n* —
   before the user presses anything.
+
+## The mistake to expect
+
+**Fixing the sentence instead of the code, silently.**
+
+When the pair swap breaks your guarantee you have two honest moves: change the
+code, or weaken the sentence in writing. Both are legitimate. Leaving the pair
+disagreeing is not.
+
+Expect also to find one state in your week 2 model with **no defined cancel
+behaviour**. It is usually a verifying state, and it is usually the one nobody
+considered.
 
 ## Before next week
 

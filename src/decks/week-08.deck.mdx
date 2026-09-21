@@ -1,0 +1,136 @@
+---
+title: Stuck, timed out, disconnected
+description: SLOP2805 week 8 — three ways a transfer stops, and the three-part message each one owes the user
+---
+
+# Stuck, timed out, disconnected
+
+SLOP2805 · Week 8 · Studio framing
+
+Nothing has moved for thirty seconds.
+
+**What do you say?**
+
+---
+
+## Where we were, and where we are going
+
+**Assignment 2** went in on Tuesday. This week starts clean — and starts by
+breaking everything you just shipped.
+
+By 17:00 you can:
+
+- tell the three failures apart by what can **still** be happening
+- write a message that names the consequence for the user's file
+- detect a stall without an estimator
+- stop an indicator from implying progress after progress has stopped
+
+---
+
+## The taxonomy, by what is still possible
+
+| Failure | Connection | Server may still be working | Resumes itself | Safe to retry |
+| --- | --- | --- | --- | --- |
+| **Stall** | up | yes | possibly | not yet |
+| **Timeout** | up | **yes, unknown** | no — you stopped | only if idempotent |
+| **Disconnection** | gone | unknown | no | from last ack |
+
+---
+
+## The timeout row is the one that catches people
+
+A timeout is a decision **you** made about how long to wait.
+
+It says nothing about the server, which may be thirty seconds into a two-minute
+virus scan and about to succeed.
+
+> An interface that reports a timeout as **"Upload failed"** has asserted
+> something it does not know.
+
+---
+
+## Detection is not estimation
+
+```js
+// stall: one timestamp, no rate, no prediction
+if (now - lastProgressEvent > STALL_AFTER_MS) enter("stalled");
+```
+
+That is the whole mechanism. No estimator is involved, which is why week 5's
+estimators could stay simple.
+
+**Two clean mechanisms beat one clever one.** Keep them apart.
+
+---
+
+## Worked example — write the message first
+
+The method, and it is not a style preference. Writing the handler first gives you
+messages that describe code.
+
+> ✗ **"Request aborted with status 0."**
+>
+> ✗ **"Connection lost."** — one part out of three
+>
+> ✓ **"The connection dropped after 24 of 40 MB. Nothing has been saved yet.
+> Retry will resume from the last completed chunk."**
+
+| Part | The sentence answers |
+| --- | --- |
+| What happened | the connection dropped after 24 of 40 MB |
+| What it means for the file | nothing has been saved yet |
+| What happens next | retry resumes from the last completed chunk |
+
+```comment
+24 of 40 MB is the shipped simulator's disconnection injector, not a real transfer.
+```
+
+---
+
+## Your turn — the build
+
+1. **Three injectors** in the simulator — stall, timeout, disconnection — each
+   independently triggerable from the exposed controls.
+2. **Stall detection** from the last-progress timestamp, threshold named on
+   screen.
+3. **Three messages, written on paper first**, each carrying all three parts.
+4. **Indicator suppression**: on entering any failure state the animation stops
+   asserting, and the state reaches the week 7 live region.
+
+---
+
+## The mistake to expect
+
+Leaving the shimmer on.
+
+A bar that keeps animating through a stall is asserting liveness that is false.
+It is **week 1's exact failure**, now in your own code, and it is the one thing
+that fails *Behaviour under abnormal conditions* outright in Assignment 3.
+
+The check: cover the first clause of each message. Does the rest still tell the
+user something about their file? If not, you wrote two parts, not three.
+
+---
+
+## What this week cannot tell you
+
+Whether the messages are **understood**.
+
+You wrote them, which makes you the worst available judge: you already hold the
+thing the sentence is trying to convey.
+
+Neighbours breaking each other's states tests **correctness** — does the message
+match the state — not comprehension. **Week 11** is the first time anyone reads
+one cold, and *stall* is the state they will be shown.
+
+---
+
+## What leaves the room
+
+- three reproducible failures
+- three messages that name a consequence for the file
+- an indicator that stops claiming
+
+**Where it goes:** *Behaviour under abnormal conditions* is 30 marks — the
+largest single criterion in **Assignment 3**. The per-state file guarantee is
+deliverable 2, the *State and message reference*.

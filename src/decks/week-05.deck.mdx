@@ -13,6 +13,21 @@ you are allowed to put on the screen once you know how big it is.
 
 ---
 
+## Where we were, and where we are going
+
+**Week 3** gave you a denominator and a number for what it excludes.
+
+**This week** turns that denominator into a time — and measures how much the
+time contradicts itself.
+
+By 17:00 you can:
+
+- compute a time-remaining estimate three ways from the same data
+- measure an estimator's instability as a number and compare estimators on it
+- say what each one assumes about the future, and name the traffic that breaks it
+
+---
+
 ## The case
 
 `trace-office-wifi.json` — a real-shaped upload, recorded once and replayed
@@ -113,14 +128,20 @@ Two clean mechanisms beat one clever one. Keep them apart.
 
 ---
 
-## Measuring instability
+## Worked example — instability, measured
 
 Same measure for all three, or you cannot compare them:
 
 > **mean absolute change in the displayed value between consecutive refreshes**,
 > in seconds
 
-Note what this does **not** measure: how close the estimate got to 94 seconds.
+| Estimator | office-wifi (with the stall) | steady (no stall) |
+| --- | --- | --- |
+| naive linear | **≈ 150 s** | **< 2 s** |
+| sliding window, 10 s | ≈ 34 s | ≈ 9 s |
+| exponential, α = 0.2 | ≈ 21 s | ≈ 4 s |
+
+Note what this does **not** measure: how close any of them got to 94 seconds.
 
 It measures what the user experiences — how much the number jumps.
 
@@ -151,12 +172,16 @@ connection. Someone who has already lost this file once.
 
 ---
 
-## What leaves this room
+## Your turn — the build, and what leaves the room
 
-1. Three `estimate()` bodies over two traces
+1. Three `estimate()` bodies over **both** traces — the trace and the plotting
+   harness are supplied; you write only the function bodies
 2. Six instability figures, one measure
 3. A decision, printed **on your interface**: which estimator, rounded to what,
    refreshed how often
 
-And the thing the table cannot decide for you: the calmest estimator is not the
-most honest one, and this course does not treat those as the same.
+**The mistake to expect:** a rounding rule that reduces nothing. If the display
+changes as often as the underlying estimate, the rule is doing no work.
+
+**Where it goes:** the named estimator is condition (b) of **Assignment 2**, and
+it is one of the first rows in the **week 10** claims register.

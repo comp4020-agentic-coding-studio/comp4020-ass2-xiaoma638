@@ -163,6 +163,59 @@ for (let i = 0; i < 6; i += 1) {
 }
 ok("390×844: the nav opens from the keyboard and reaches the week list", openedMenu);
 
+console.log("\n— decks: paging, clipping, and readable size —");
+// "Nothing is cut off" is not a readability verdict. Reveal lays a deck out on
+// a fixed 1280x720 canvas and scales it, so what matters is the CSS size times
+// that scale. Measured, reported, and asserted against a floor for each
+// viewport — the phone floor is deliberately low, because it is what this
+// platform can reach without clipping. See src/decks/theme.css for the three
+// mechanisms that were tried and measured before that conclusion.
+const DECK_PROBE = `
+  const sc = document.querySelector('.reveal .slides');
+  const m = getComputedStyle(sc).transform.match(/matrix\\(([-\\d.]+)/);
+  const scale = m ? parseFloat(m[1]) : 1;
+  const s = document.querySelector('.reveal .slides section.present');
+  if (!s) return { err: 1 };
+  const sizes = [...s.querySelectorAll('p,li,td,th,code,pre')]
+    .map(e => parseFloat(getComputedStyle(e).fontSize)).filter(Boolean);
+  const minCss = sizes.length ? Math.min(...sizes) : parseFloat(getComputedStyle(s).fontSize);
+  const r = s.getBoundingClientRect();
+  const clipped = [...s.querySelectorAll('*')].filter(e => {
+    const b = e.getBoundingClientRect();
+    return b.width > 0 && (b.right > r.right + 4 || b.bottom > r.bottom + 4);
+  }).length;
+  return { scale, effective: +(minCss * scale).toFixed(1), clipped,
+    idx: [...document.querySelectorAll('.reveal .slides section')].indexOf(s) };`;
+
+for (const [w, h, name, floor] of [[1920, 1080, "1920×1080", 24], [390, 844, "390×844", 7]]) {
+  await viewport(w, h);
+  const clipped = [];
+  const tooSmall = [];
+  const pagingBroken = [];
+  for (let n = 1; n <= 12; n += 1) {
+    const deck = `week-${String(n).padStart(2, "0")}`;
+    await go(`/decks/${deck}/`);
+    await send("Input.dispatchKeyEvent", { type: "rawKeyDown", key: "ArrowRight", code: "ArrowRight", windowsVirtualKeyCode: 39 });
+    await send("Input.dispatchKeyEvent", { type: "keyUp", key: "ArrowRight", code: "ArrowRight", windowsVirtualKeyCode: 39 });
+    await sleep(500);
+    let prev = -1;
+    for (let i = 0; i < 4; i += 1) {
+      const r = await js(DECK_PROBE);
+      if (r.err || r.idx <= prev) { pagingBroken.push(deck); break; }
+      prev = r.idx;
+      if (r.clipped > 0) clipped.push(`${deck} slide ${r.idx + 1}`);
+      if (r.effective < floor) tooSmall.push(`${deck} ${r.effective}px`);
+      await send("Input.dispatchKeyEvent", { type: "rawKeyDown", key: "ArrowRight", code: "ArrowRight", windowsVirtualKeyCode: 39 });
+      await send("Input.dispatchKeyEvent", { type: "keyUp", key: "ArrowRight", code: "ArrowRight", windowsVirtualKeyCode: 39 });
+      await sleep(400);
+    }
+  }
+  ok(`${name}: arrow keys page every deck`, pagingBroken.length === 0, [...new Set(pagingBroken)].join(", "));
+  ok(`${name}: no slide content is clipped`, clipped.length === 0, [...new Set(clipped)].slice(0, 4).join(", "));
+  ok(`${name}: text renders at or above ${floor}px effective`, tooSmall.length === 0,
+    [...new Set(tooSmall)].slice(0, 4).join(", "));
+}
+
 console.log("\n— horizontal overflow, both viewports —");
 const routes = ["/", "/overview/", "/calendar/", "/sessions/", "/sessions/02-what-counts-as-done/",
   "/sessions/05-why-the-estimate-jumps/", "/sessions/11-watching-someone-wait/",

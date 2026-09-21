@@ -7,11 +7,14 @@ week: 4
 date: 2027-03-16
 teachers:
   - marisol-quaye
+slides: /decks/week-04/
 related:
   - sessions/04-no-idea-how-long
   - sessions/03-where-is-the-denominator
   - sessions/08-stuck-timed-out-disconnected
 ---
+
+[Slides](/decks/week-04/)
 
 ## What this lecture carries
 

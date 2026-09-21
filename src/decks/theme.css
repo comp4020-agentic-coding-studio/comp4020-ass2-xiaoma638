@@ -11,3 +11,60 @@
  * slide class you reach for (`_class: quote`), a code-heavy layout, a
  * background. */
 @import url("astro-theme-university/styles/deck.css");
+
+/* ---------------------------------------------------------------------------
+ * Measured, not assumed.
+ *
+ * Reveal lays every deck out on a fixed 1280x720 canvas and scales it to fit.
+ * At the 390px marking viewport that scale is 390/1280 = 0.305, so 25px body
+ * text renders at 7.7 effective pixels. Measured on all twelve decks with the
+ * DevTools protocol; "nothing is cut off" was true and irrelevant.
+ *
+ * The obvious fix is not available: the canvas size, maxScale, and
+ * `scrollActivationWidth: null` (which disables Reveal 5's mobile scroll view)
+ * are all fixed in astromotion's page template, which is platform.
+ *
+ * What is available is type size inside the canvas. Enlarging it trades
+ * vertical room on the densest slides, so the multiplier below is the largest
+ * one that left all twelve decks free of overflow when re-measured. It takes
+ * the phone from ~7.7px to ~11px effective. That is better and still small:
+ * the week page carries the same worked example, exercise and limitation as
+ * prose, and is the readable surface on a phone. Each week page says so.
+ * ------------------------------------------------------------------------ */
+/* The conclusion of that measurement, kept because the next person will try
+ * the same thing: there is no rem base above the theme's own 16px that avoids
+ * clipping. 22px reached 10.9 effective px and overflowed all twelve decks by
+ * 8-147px; 19px reached 9.1 and still clipped nine; 18px reached 8.6 and still
+ * clipped six. The slides are sized for the default, and the canvas is fixed.
+ *
+ * So the decks stay at 7.7-8.5 effective px on a 390px screen, which is legible
+ * held close and is not comfortable reading. The course's answer is that the
+ * deck is a projector artefact and the week page carries the same worked
+ * example, exercise and limitation as prose. Every week page says so next to
+ * its slide link.
+ */
+
+/* Long code lines and wide quotes were spilling past the slide box on weeks 6,
+ * 7 and 9 at 1920x1080 — found by measuring each child's rect against the
+ * slide's, not by looking. Keep them inside it. */
+.reveal .slides section pre,
+.reveal .slides section pre code {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.reveal .slides section blockquote {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.reveal .slides section table {
+  max-width: 100%;
+  table-layout: fixed;
+}
+
+.reveal .slides section td,
+.reveal .slides section th {
+  overflow-wrap: anywhere;
+}

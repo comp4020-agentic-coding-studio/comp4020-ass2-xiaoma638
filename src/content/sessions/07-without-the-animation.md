@@ -97,6 +97,10 @@ If something did, that information was never in the interface — and this is th
 week your [week 6](/sessions/06-motion-and-the-felt-wait/) treatments are
 examined for whether they were carrying meaning or carrying atmosphere.
 
+**[View this week's slides](/decks/week-07/)** — Tuesday's lecture deck. Worth a pass before the studio, and the reference while you build.
+On a phone they are small — the deck is built for a projector, and this
+page carries the same material as prose.
+
 ## In the room
 
 Thursday 22 April, 14:00–17:00.
@@ -109,6 +113,15 @@ Thursday 22 April, 14:00–17:00.
 | 16:15 | **Fixes.** Repair what the swap found, while the person who found it is still in the room. |
 | 16:45 | **Two claims.** Each pair names one thing they were sure passed and did not. |
 
+## What you start with
+
+- Your prototype through week 6: a determinate bar, three indeterminate
+  registers, three motion treatments, and no accessibility work at all.
+- Tuesday's lecture, [Reading an Interface Without Looking at It](/lectures/week-07/).
+- **The audit sheet**, four lines, one page — the same sheet your partner will
+  fill in on your prototype.
+- Checklist v0, published in [week 2](/sessions/02-what-counts-as-done/).
+
 ## What you build
 
 1. **A completed audit sheet** for your own prototype, four lines, each marked
@@ -118,6 +131,27 @@ Thursday 22 April, 14:00–17:00.
 4. **A reduced-motion variant** of each week 6 treatment, which loses no
    information the default carried.
 
+## A worked example
+
+One defect, found and closed, on the week 4 indeterminate treatment. This is
+what a completed audit row looks like:
+
+| Step | What you do | What you find |
+| --- | --- | --- |
+| 1 | Tab to the bar and listen | "progress bar, 0 per cent" |
+| 2 | Read the DOM | `aria-valuenow="0"` on the unknown-length stream |
+| 3 | Name the claim | the interface says *nothing has happened*; four stages have |
+| 4 | Fix | remove `aria-valuenow`, add `aria-valuetext="Transferring, total unknown"` |
+| 5 | Re-check | "progress bar, transferring, total unknown" |
+
+```
+Line 2 — semantics        FAIL   aria-valuenow="0" during indeterminate stream
+                          fixed  14:52, verified by re-listening
+```
+
+Recorded as a **failure**, then a fix. That row scores. A row reading "Line 2 —
+pass" would not.
+
 ## Done when
 
 - Your partner completed an upload, hit a stall and read the outcome using only
@@ -126,6 +160,18 @@ Thursday 22 April, 14:00–17:00.
   at any moment you paused it.
 - **Your sheet has failures on it.** Four passes and no notes is evidence the
   audit was not run, and it is marked that way.
+
+## The mistake to expect
+
+**Recording a pass you cannot demonstrate.**
+
+A line recorded honestly as a failure scores. A line recorded as a pass that your
+marker can break does not, and costs more than the failure would have.
+
+The second is subtler: fixing line 1 in a way that breaks line 3. Moving focus
+when a control disappears is correct; moving it **without announcing why**
+replaces a silent failure with a confusing one. Re-run all four lines after any
+fix.
 
 ## Before next week
 

@@ -203,3 +203,76 @@ describe("every studio names its own limits", () => {
     expect(thin.map((s) => s.id)).toEqual([]);
   });
 });
+
+// ---------------------------------------------------------------------------
+// A week page has to be followable on its own: a student who never attends
+// still needs to know what they start with, what finished looks like, and what
+// usually goes wrong. These three sections were added after a read-through
+// found week pages that said "improve accessibility" without showing a defect.
+// ---------------------------------------------------------------------------
+describe("every studio page can be worked from without being in the room", () => {
+  const pageOf = (studio: ApiNode): string => {
+    const slug = studio.id.split("/").at(-1) ?? "";
+    return readFileSync(resolve("dist/sessions", slug, "index.html"), "utf8");
+  };
+
+  const sections: [string, RegExp][] = [
+    ["the materials you start with", /what you start with/i],
+    ["a worked example", /a worked example/i],
+    ["a named common error", /the mistake to expect/i],
+    ["a link to this week's slides", /view this week['\u2019]s slides/i],
+  ];
+
+  for (const [label, pattern] of sections) {
+    it(`names ${label}`, () => {
+      expect(studios.filter((s) => !pattern.test(pageOf(s))).map((s) => s.id)).toEqual([]);
+    });
+  }
+
+  it("shows the week's own deck, not another week's", () => {
+    const wrong = studios.filter((studio) => {
+      const week = String(studio.meta?.week).padStart(2, "0");
+      return !pageOf(studio).includes(`/decks/week-${week}/`);
+    });
+    expect(wrong.map((s) => s.id)).toEqual([]);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// The three assessments have to read as an accumulation rather than three
+// separate tasks, and A3 has to say where the marks above "it works" are.
+// ---------------------------------------------------------------------------
+describe("the assessments say how they build on each other", () => {
+  const html = (slug: string) =>
+    readFileSync(resolve("dist/assessments", slug, "index.html"), "utf8");
+  const slug = (n: ApiNode) => n.id.split("/").at(-1) as string;
+  const assessments = nodesOfType("assessments");
+
+  it("says, on every brief, what it hands on or what it inherits", () => {
+    const silent = assessments.filter((a) => {
+      const body = html(slug(a));
+      return !/Where this goes/i.test(body) && !/gives? you/i.test(body);
+    });
+    expect(silent.map((a) => a.id)).toEqual([]);
+  });
+
+  it("states that work is not resubmitted", () => {
+    const silent = assessments.filter((a) => !/resubmi/i.test(html(slug(a))));
+    expect(silent.map((a) => a.id)).toEqual([]);
+  });
+
+  it("gives the final assessment a meets-the-requirement / argues-it-well contrast", () => {
+    const final = assessments.reduce((latest, a) =>
+      String(a.meta?.due) > String(latest.meta?.due) ? a : latest,
+    );
+    const body = html(slug(final));
+    expect(/Meets the requirement/i.test(body)).toBe(true);
+    expect(/Argues it well/i.test(body)).toBe(true);
+    // one row per marked criterion, so no criterion is left without guidance
+    const criteria = (body.match(/<td[^>]*>\d{1,3}%<\/td>/g) ?? []).length;
+    // The match begins inside the header row, so every <tr> it finds is a body
+    // row — one per criterion.
+    const contrastRows = (body.match(/Argues it well[\s\S]*?<\/table>/)?.[0].match(/<tr>/g) ?? []).length;
+    expect(contrastRows, "a contrast row for every criterion").toBeGreaterThanOrEqual(criteria);
+  });
+});

@@ -76,6 +76,10 @@ find uncomfortable. A safe choice produces a safe two minutes and a low
 Defence mark. The room is not hostile and nobody is trying to catch you out; the
 criterion rewards the difficulty of the question you volunteered for.
 
+**[View this week's slides](/decks/week-12/)** — the 14:00 framing runs from these. They carry the worked example and the exercise brief.
+On a phone they are small — the deck is built for a projector, and this
+page carries the same material as prose.
+
 ## In the room
 
 Thursday 27 May, 14:00–17:00.
@@ -86,6 +90,13 @@ Thursday 27 May, 14:00–17:00.
 | 14:10 | **Showcases.** Eight minutes each, in two blocks with a break. |
 | 16:40 | **Close (20 min).** Everyone re-reads their own week 1 claims table. Nothing is submitted; it is the last ten minutes of the course and the comparison is the point. |
 
+## What you start with
+
+- Your deployed site, finished. Nothing is built today.
+- The `kept with reason` rows from your claims register — choose one before you
+  arrive.
+- Your week 1 claims table, for the last ten minutes of the course.
+
 ## What you build
 
 Nothing new. You demonstrate what exists:
@@ -95,6 +106,24 @@ Nothing new. You demonstrate what exists:
 2. **One kept claim**, named, with the reason and its cost.
 3. **Two challenges**, answered.
 
+## A worked example
+
+What a defence that earns the marks sounds like.
+
+**Claim kept:** the verification state is held on screen for 400 ms when it
+lasts about 80 ms.
+
+> **Challenge:** "So the interface is lying about a duration."
+>
+> **Answer:** "Yes, by up to 320 ms, and the register says so. I kept it because
+> at 80 ms the state reads as a flicker rather than a state. The cost is that
+> anyone comparing it with the elapsed counter sees them disagree. If I had
+> another week I would hold it only when the stage is shorter than 200 ms,
+> rather than always."
+
+It names the deception, the reason, the cost, and the thing not done. Compare
+the answer that scores nothing: *"it felt better."*
+
 ## Done when
 
 - The three paths ran on the deployed site, not on `localhost`, and not from a
@@ -103,6 +132,17 @@ Nothing new. You demonstrate what exists:
   progress bars.
 - Both challenges got an answer of one of the three shapes above. "I don't know,
   and here is how I'd find out" is a full-credit answer.
+
+## The mistake to expect
+
+**Rehearsing the happy path.**
+
+A demo that only shows a success has not shown the course. Three paths are in
+the spec line, and a stall you cannot trigger on demand is a stall you cannot
+claim to handle.
+
+The second: demoing from `localhost` because the deploy is slow. The deployed URL
+is what the criterion names, and base-path bugs only ever appear there.
 
 ## Before next week
 

@@ -86,6 +86,10 @@ observation and you will need this instinct there too.
 shortest". Ranking rather than seconds, because asking people for a duration
 estimate in seconds introduces a numeracy problem on top of everything else.
 
+**[View this week's slides](/decks/week-06/)** — the 14:00 framing runs from these. They carry the worked example and the exercise brief.
+On a phone they are small — the deck is built for a projector, and this
+page carries the same material as prose.
+
 ## In the room
 
 Thursday 1 April, 14:00–17:00. No lecture this week.
@@ -97,6 +101,13 @@ Thursday 1 April, 14:00–17:00. No lecture this week.
 | 15:40 | **Run it.** Rotating in groups of five. Nobody is told the durations match. Rankings go on paper. |
 | 16:20 | **Collate.** One table on the board, raw. No exclusions, no adjustments, no "that person wasn't paying attention". |
 | 16:40 | **Write the weaknesses.** Ten minutes, individually, before anyone interprets the table. |
+
+## What you start with
+
+- Your prototype through week 5, with one linear animation and an **easing hook
+  that is wired up and unused**.
+- A 20-second simulated wait that all three treatments will run over.
+- Printed ranking slips, and the Harrison summary page from the reading.
 
 ## What you build
 
@@ -110,6 +121,27 @@ Thursday 1 April, 14:00–17:00. No lecture this week.
 4. **A weaknesses paragraph** naming at least three specific reasons the result
    is weak, drawn from your own run rather than from the list above.
 
+## A worked example
+
+The three easings, and the assertion that makes the comparison valid:
+
+```js
+const TREATMENTS = {
+  linear:     t => t,
+  decelerate: t => 1 - (1 - t) ** 2,
+  pulsed:     t => t + 0.02 * Math.sin(t * 18 * Math.PI),
+};
+
+// A treatment 400 ms longer than another invalidates the whole exercise,
+// and the difference is invisible by eye.
+for (const ease of Object.values(TREATMENTS)) {
+  console.assert(Math.abs(ease(1) - 1) < 1e-9, "must finish at exactly 1");
+}
+```
+
+Easing changes the shape of the journey, never its length. If `ease(1) !== 1`
+you are comparing durations, not motions.
+
 ## Done when
 
 - Your duration assertion passes, and you have run it.
@@ -117,6 +149,17 @@ Thursday 1 April, 14:00–17:00. No lecture this week.
   temptation instead — that sentence is worth more than the cleaned table.
 - Your three weaknesses are about *this* run. "Small sample size" on its own does
   not count; "n≈20 against a published effect of a few per cent" does.
+
+## The mistake to expect
+
+**Dropping a response.**
+
+Someone ranks the pulsed bar fastest "because they weren't paying attention",
+and excluding them is very tempting. If you are tempted, **write the temptation
+down instead** — that sentence is worth more than the cleaned table.
+
+The second: writing "small sample size" as your weakness. *"n ≈ 20 against a
+published effect of a few per cent"* is a reason. The other is a phrase.
 
 ## Before next week
 

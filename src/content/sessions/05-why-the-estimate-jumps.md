@@ -44,9 +44,6 @@ Every one of those numbers was correctly computed. The user watched the estimate
 more than triple and then fall back, and concluded the software had no idea what
 it was doing — which, for twelve seconds, was exactly right.
 
-This week has a deck: **[slides for week 5](/decks/week-05/)**. The 14:00
-framing runs from it.
-
 ## By the end of this week
 
 You can:
@@ -96,6 +93,10 @@ more annoying. Deciding which you want is not a technical question, and it is
 one of the few places this course asks you to make a judgement call and then
 defend it.
 
+**[View this week's slides](/decks/week-05/)** — the 14:00 framing runs from these. They carry the worked example and the exercise brief.
+On a phone they are small — the deck is built for a projector, and this
+page carries the same material as prose.
+
 ## In the room
 
 Thursday 25 March, 14:00–17:00. No lecture; the deck runs at 14:00.
@@ -108,6 +109,15 @@ Thursday 25 March, 14:00–17:00. No lecture; the deck runs at 14:00.
 | 16:15 | **Discussion (25 min).** The prompt is on the last slide: *a smooth estimate that is wrong for twenty seconds, or a correct estimate that visibly panics — which do you ship, and who does your answer disadvantage?* |
 | 16:45 | **Decide.** Estimator, rounding rule, refresh interval, written down. |
 
+## What you start with
+
+- Your prototype through week 4.
+- **Two recorded traces**: `trace-office-wifi.json` (60 MB, 94 s, with a 12-second
+  stall around t = 40 s) and `trace-steady.json` (60 MB, no stall).
+- A **plotting harness** that replays a trace and graphs whatever your estimator
+  returns.
+- Three `estimate()` stubs in `src/estimators.js`, all returning `null`.
+
 ## What you build
 
 1. **Three estimators** in `src/estimators.js`, each a pure function of the trace
@@ -117,6 +127,27 @@ Thursday 25 March, 14:00–17:00. No lecture; the deck runs at 14:00.
    usually reverses, and noticing that is part of the exercise.
 4. **A shipping decision** displayed in your prototype: which estimator, rounded
    to what, refreshed how often.
+
+## A worked example
+
+What the naive estimator displays as the office-wifi trace crosses its stall,
+refreshed every two seconds:
+
+| t | displayed |
+| --- | --- |
+| 36 s | 41 s remaining |
+| 40 s | 39 s remaining |
+| 44 s | **2 min 10 s** |
+| 48 s | **6 min 40 s** |
+| 52 s | **11 min** |
+| 56 s | 3 min 20 s |
+| 60 s | 52 s |
+
+Every one of those was correctly computed. Instability, by this week's measure —
+mean absolute change between consecutive refreshes — is about **150 s**. The
+same estimator over `trace-steady.json` scores under 2 s.
+
+Recorded sample data, not a live measurement.
 
 ## Done when
 
@@ -128,6 +159,18 @@ Thursday 25 March, 14:00–17:00. No lecture; the deck runs at 14:00.
   remaining".
 - Your rounding rule makes the displayed number change less often than the
   underlying estimate. If it does not, it is not doing anything.
+
+## The mistake to expect
+
+**Rounding that does not reduce anything.**
+
+A rounding rule exists to make the *displayed* number change less often than the
+underlying estimate. Rounding to the nearest second, then refreshing every
+second, changes nothing — you have written a rule that does no work.
+
+The second: treating the lowest instability figure as the winner. The calmest
+estimator is not the most honest one, and this course does not treat those as
+the same thing.
 
 ## Before next week
 

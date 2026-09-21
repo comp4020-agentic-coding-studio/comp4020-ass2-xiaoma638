@@ -1,0 +1,161 @@
+---
+title: Reading an interface without looking at it
+description: SLOP2805 week 7 — status as text and semantics, live regions that do not flood, and reduced motion as a diagnostic
+---
+
+# Reading an interface without looking at it
+
+SLOP2805 · Week 7 · Lecture
+
+Turn the animation off. Can you still tell what is happening?
+
+---
+
+## Where we were, and where we are going
+
+**Week 4** gave you three indeterminate registers. **Week 6** gave you three
+motion treatments. Today both are examined for whether they were carrying
+**information** or **atmosphere**.
+
+This is the lecture **Assignment 2** is marked against — 25 of its 100 marks are
+the audit sheet, and everything on that sheet appears here first.
+
+---
+
+## Audit line 1 — the keyboard path
+
+Not a tab order. A **state machine**: at each state, what is reachable, and
+where does focus go when the state changes underneath the user?
+
+The classic failure:
+
+```
+[Cancel] has focus → upload completes → [Cancel] removed from the DOM
+                   → focus falls to <body>, nothing announced
+```
+
+The user does not know it finished. They know their keyboard stopped working.
+
+---
+
+## Audit line 2 — semantics for a value you may not have
+
+```html
+<!-- determinate -->
+<div role="progressbar" aria-valuemin="0" aria-valuemax="100"
+     aria-valuenow="43" aria-valuetext="43% — transferring"></div>
+
+<!-- indeterminate: omit the value -->
+<div role="progressbar" aria-valuetext="Transferring, total unknown"></div>
+```
+
+`aria-valuetext` is for when the bare number is unhelpful — **"3 of 7 files"**
+beats **"43"**.
+
+**Omitting `aria-valuenow`** = indeterminate. **`aria-valuenow="0"`** = nothing
+has happened. Different claims.
+
+---
+
+## Audit line 3 — the announcement flood
+
+The failure mode is not silence. It is **volume**.
+
+```js
+bar.setAttribute("aria-valuenow", pct);
+live.textContent = `${pct}%`;      // ✗ ~100 announcements per upload
+```
+
+```js
+if (state !== lastState) {          // ✓ 4 or 5 per upload
+  live.textContent = MESSAGES[state];
+  lastState = state;
+}
+```
+
+**Announce transitions. Never increments.** A bar that announces every integer
+has not been made accessible — the three transitions that mattered are buried.
+
+---
+
+## Audit line 4 — reduced motion as a diagnostic
+
+Usually taught as a courtesy. Treat it as a **test**.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .bar-fill { transition: none; animation: none; }
+}
+```
+
+Turn it off, then ask: **what information left with it?**
+
+If something did, that information was never in your interface. It was in the
+animation, and an animation is not something everybody gets.
+
+---
+
+## Worked example — one defect, found and closed
+
+Run the audit on the week 4 indeterminate treatment:
+
+| Step | Finding |
+| --- | --- |
+| Listen | "progress bar **0 per cent**" |
+| Read the DOM | `aria-valuenow="0"` on the unknown-length stream |
+| Name the claim | it says *nothing has happened*; four stages have |
+| Fix | drop `aria-valuenow`, add `aria-valuetext="Transferring, total unknown"` |
+| Re-check | "progress bar, transferring, total unknown" |
+
+Recorded as a **FAIL, then a fix**. Four passes and no notes reads as an audit
+that was not run.
+
+---
+
+## Your turn — the workshop, Thursday
+
+1. **Self-audit**, one line at a time. Do not fix while auditing.
+2. **Pair swap** — you audit a classmate's, they audit yours. You may **not**
+   explain your interface while it is being audited.
+3. **Fix** what the swap found, while the person who found it is in the room.
+4. Each pair names one thing they were sure passed and did not.
+
+---
+
+## The mistake to expect
+
+Recording a pass you cannot demonstrate.
+
+> A line recorded honestly as a **failure scores**.
+> A line recorded as a **pass that your marker can break does not** — and costs
+> more than the failure would have.
+
+The second-commonest: fixing line 1 in a way that breaks line 3. Moving focus on
+completion is correct; moving it **without announcing why** replaces a silent
+failure with a confusing one. Re-run all four lines after any fix.
+
+---
+
+## What this week cannot tell you
+
+Two people at adjacent desks are not a test of whether this works for the people
+it excludes.
+
+A checklist is a record of failures somebody has **already** had. It cannot
+report one nobody has written down yet. Neither of you uses a screen reader
+daily, so you have established the announcements exist and are sane — not that
+they are good.
+
+Write that sentence on the sheet.
+
+---
+
+## What leaves the room
+
+- two completed audit sheets — yours, and the one done on you
+- the fixes, committed the same day
+- a `prefers-reduced-motion` variant that loses nothing
+
+**Where it goes:** straight into **Assignment 2**, due the Tuesday of week 8 —
+*Accessibility audit*, 25 marks. Failure states in **week 8** and cancellation in
+**week 9** have to reach the same channels.

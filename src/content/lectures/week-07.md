@@ -8,6 +8,7 @@ week: 7
 date: 2027-04-20
 teachers:
   - marisol-quaye
+slides: /decks/week-07/
 related:
   - sessions/07-without-the-animation
   - sessions/04-no-idea-how-long
@@ -17,6 +18,8 @@ related:
 
 This is the lecture [Assignment 2](/assessments/waiting-interface-prototype/) is
 marked against. Everything on the audit sheet appears here first.
+
+[Slides](/decks/week-07/)
 
 ## What this lecture carries
 

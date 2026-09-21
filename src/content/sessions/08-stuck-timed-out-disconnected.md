@@ -107,6 +107,10 @@ stall is asserting liveness that is false. This is
 [week 1](/sessions/01-what-99-percent-promises/)'s exact failure, now in your own
 code.
 
+**[View this week's slides](/decks/week-08/)** — the 14:00 framing runs from these. They carry the worked example and the exercise brief.
+On a phone they are small — the deck is built for a projector, and this
+page carries the same material as prose.
+
 ## In the room
 
 Thursday 29 April, 14:00–17:00. No lecture this week.
@@ -117,6 +121,14 @@ Thursday 29 April, 14:00–17:00. No lecture this week.
 | 14:25 | **Messages first (30 min).** Write all three messages before writing any handler. On paper. Swap with a neighbour and mark any part that describes code rather than consequence. |
 | 14:55 | **Build.** Injectors, then detection, then handlers that make the messages true. |
 | 16:30 | **Break each other's.** Pairs try to reach a state whose message is wrong. |
+
+## What you start with
+
+- Your prototype as submitted for
+  [Assignment 2](/assessments/waiting-interface-prototype/) on Tuesday.
+- **Three failure injectors** already present in the simulator and entirely
+  unhandled — trigger one and the bar animates forever.
+- The live region you built in [week 7](/sessions/07-without-the-animation/).
 
 ## What you build
 
@@ -129,6 +141,31 @@ Thursday 29 April, 14:00–17:00. No lecture this week.
    asserting and the state is announced through the live region built in
    [week 7](/sessions/07-without-the-animation/).
 
+## A worked example
+
+The same failure, written three ways. Only the third has all three parts:
+
+> "Request aborted with status 0." — describes the code
+>
+> "Connection lost." — one part of three
+>
+> **"The connection dropped after 24 of 40 MB. Nothing has been saved yet. Retry
+> will resume from the last completed chunk."**
+
+| Part | The sentence answers |
+| --- | --- |
+| What happened | the connection dropped after 24 of 40 MB |
+| What it means for the file | nothing has been saved yet |
+| What happens next | retry resumes from the last completed chunk |
+
+And the detection behind it — one timestamp, no estimator:
+
+```js
+if (now - lastProgressEvent > STALL_AFTER_MS) enter("stalled");
+```
+
+24 of 40 MB is the simulator's disconnection injector, not a real transfer.
+
 ## Done when
 
 - A marker can trigger each of the three separately, without reading your code.
@@ -137,6 +174,18 @@ Thursday 29 April, 14:00–17:00. No lecture this week.
 - Nothing shimmers, sweeps or creeps during a failure state.
 - All three failures are announced, not only displayed — verify with the live
   region, not by looking.
+
+## The mistake to expect
+
+**Leaving the shimmer on.**
+
+A bar that keeps animating through a stall is asserting liveness that is false.
+It is [week 1](/sessions/01-what-99-percent-promises/)'s exact failure, now in
+your own code, and it is the one thing that fails *Behaviour under abnormal
+conditions* outright in [Assignment 3](/assessments/honest-waiting-kit/).
+
+The check on your messages: cover the first clause of each. Does the rest still
+tell the user something about their file? If not, you wrote two parts.
 
 ## Before next week
 

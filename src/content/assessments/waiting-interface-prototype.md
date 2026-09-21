@@ -56,6 +56,18 @@ There is no class on the day this is due, and the
 [week 8 studio](/sessions/08-stuck-timed-out-disconnected/) on the Thursday is
 not shortened for it.
 
+## What Assignment 1 gives you
+
+This is not a second attempt at the autopsy. It is the first time the same
+reasoning is applied to something you built.
+
+- the **claims table method** becomes *Evidence discipline* — you are now the
+  designer whose numbers get traced
+- the **state model** you inferred from outside becomes the one you own, and
+  condition (d) asks you to publish its completion criterion
+- the **limits section** becomes the audit sheet, where "fail" is a scoring
+  answer
+
 ## What you submit
 
 The deployed prototype, plus an `/audit/` page in the repository.
@@ -107,6 +119,23 @@ reads as an audit that was not run.
 **Both viewports (15).** Bar, text and controls all work at 1920×1080 and
 390×844. The usual failure is a control row that wraps behind the bar at 390px,
 which is invisible until you look.
+
+## Where this goes
+
+Again, nothing is resubmitted. [Assignment 3](/assessments/honest-waiting-kit/)
+marks different things about a changed artefact:
+
+| From this assignment | Becomes, in Assignment 3 |
+| --- | --- |
+| the four working conditions | the **normal path** that weeks 8 and 9 interrupt. A3 marks what happens when it *stops*, which is not assessed here at all |
+| the **audit sheet**, failures included | *Accessibility and both viewports*, 15 marks — the same four lines, re-run after the failure states and the cancel path have been added, because a fix in week 8 routinely breaks line 3 |
+| the named **estimator, denominator and completion criterion** | three of the first rows in the week 10 claims register, now with a verdict against them |
+| every line you recorded as a **fail** | the shortlist of things to fix before A3, and the reason an honest sheet is worth more than a clean one |
+
+The criteria do not repeat: *Behaviour across the four conditions* is marked
+here and never again, and *Behaviour under abnormal conditions* is marked in A3
+and not here. A prototype that is unchanged between the two will score on
+neither.
 
 ## What is not assessed here
 

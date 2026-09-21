@@ -251,8 +251,56 @@ describe("every deck a page links has real slides behind it", () => {
   };
   collect(".");
 
-  it("links at least the two decks the course promises", () => {
-    expect([...linked.keys()].sort()).toEqual(["week-01", "week-05"]);
+  it("gives all twelve weeks a deck, and links each from its own week page", () => {
+    const want = Array.from({ length: 12 }, (_, i) => `week-${String(i + 1).padStart(2, "0")}`);
+    expect([...linked.keys()].sort()).toEqual(want);
+
+    // A deck must be reachable from the week it belongs to, not only from the
+    // index — a student lands on the week page, not on a directory.
+    const orphans = want.filter((deck) => {
+      const week = Number(deck.slice(-2));
+      const studio = studios.find((s) => Number(s.meta?.week) === week);
+      return !studio || !(linked.get(deck) ?? []).some((from) => from.endsWith(slugOf(studio)));
+    });
+    expect(orphans, "deck not linked from its own week page").toEqual([]);
+  });
+
+  it("lists every deck on the studios index, so the directory is complete", () => {
+    const index = readFileSync(dist("sessions", "index.html"), "utf8");
+    const missing = [...linked.keys()].filter((d) => !index.includes(`/decks/${d}/`));
+    expect(missing).toEqual([]);
+  });
+
+  it("gives every deck between 8 and 13 slides", () => {
+    const wrong: string[] = [];
+    for (const deck of linked.keys()) {
+      const html = readFileSync(dist("decks", deck, "index.html"), "utf8");
+      const n = html.match(/<section/g)?.length ?? 0;
+      if (n < 8 || n > 13) wrong.push(`${deck}: ${n} slides`);
+    }
+    expect(wrong).toEqual([]);
+  });
+
+  it("gives every deck the parts a teaching deck needs", () => {
+    // Written against the brief for these decks: a problem, a link back and
+    // objectives, a worked example, an exercise, a limitation, and where the
+    // week's output goes. Checked on the rendered slides, loosely enough to
+    // survive rewording and tightly enough to catch a deck that is headings.
+    const required: [string, RegExp][] = [
+      ["a link back and objectives", /where we were|by 17:00|by the end/i],
+      ["a worked example", /worked example|your turn/i],
+      ["an exercise", /your turn|the build|thursday/i],
+      ["a limitation or common error", /mistake to expect|cannot tell you|weak/i],
+      ["where the output goes", /what leaves the room|where it goes/i],
+    ];
+    const thin: string[] = [];
+    for (const deck of linked.keys()) {
+      const body = text(readFileSync(dist("decks", deck, "index.html"), "utf8"));
+      for (const [label, re] of required) if (!re.test(body)) thin.push(`${deck}: no ${label}`);
+      const words = body.split(" ").filter(Boolean).length;
+      if (words < 350) thin.push(`${deck}: ${words} words — headings, not a deck`);
+    }
+    expect(thin).toEqual([]);
   });
 
   it("builds each linked deck with slides on it, not an empty shell", () => {

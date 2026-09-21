@@ -1,0 +1,138 @@
+---
+title: Where is the denominator?
+description: SLOP2805 week 3 — percent of what, and what each denominator quietly leaves out
+---
+
+# Where is the denominator?
+
+SLOP2805 · Week 3 · Studio framing
+
+When your bar says 40%, forty per cent of **what** has happened?
+
+---
+
+## Where we were, and where we are going
+
+**Week 2** gave you states. **This week** turns them into a number — and finds
+out what the number leaves out.
+
+By 17:00 you can:
+
+- name the denominator behind any percentage, or show there isn't one
+- measure where two honest denominators disagree, on the same run
+- say in one sentence what your chosen denominator excludes
+
+---
+
+## Back to the case from week 1
+
+40 MB. Bar reaches 99% in nine seconds. Then eleven seconds of nothing.
+
+**One ordinary explanation:** the bar was counting bytes handed to the network
+stack. All 40 MB went into a buffer in nine seconds. The eleven seconds were the
+server hashing and writing.
+
+The bar was not lying. It was answering a different question from the one the
+user was asking.
+
+---
+
+## Two denominators, both honest
+
+**Byte-counted** — `loaded / total`, straight from the platform.
+Cheap, smooth, frequent. Excludes everything that is not transfer.
+
+**Stage-counted** — `stagesDone / stagesTotal`, from your week 2 model.
+Covers the whole process. Moves in lurches, and assumes all stages are the same
+size, which they never are.
+
+**Weighted stages** are honest only if the weights were measured. A guessed
+weight is a number with no source event.
+
+---
+
+## The platform is blunt about this
+
+```js
+xhr.upload.addEventListener("progress", (e) => {
+  if (!e.lengthComputable) return showIndeterminate();  // no denominator
+  setPercent((e.loaded / e.total) * 100);
+});
+```
+
+`lengthComputable` is the platform telling you whether a denominator exists at
+all. Most code reads `e.total` without checking.
+
+That flag is next week.
+
+---
+
+## Worked example — where they part company
+
+Simulated run, `trace-office-wifi.json`, both readings on one timeline:
+
+| t | bytes | stages | gap |
+| --- | --- | --- | --- |
+| 4 s | 31% | 25% | 6 |
+| 9 s | 74% | 50% | 24 |
+| 14 s | **99%** | 50% | **49** |
+| 21 s | 99% | 75% | 24 |
+| 32 s | 100% | 100% | 0 |
+
+Largest disagreement: **49 points, at t = 14 s** — the moment the bytes finished
+and the verification had not started reporting.
+
+```comment
+Recorded sample data shipped with the course prototype, not a live capture.
+```
+
+---
+
+## Your turn — the build
+
+1. Two bars over **one** simulated run: byte-counted and stage-counted, both
+   visible, both driven by the same events.
+2. Log both readings on one timeline.
+3. Find your largest gap. Write down the number and the moment.
+4. Decide which one ships, and **say on screen what it excludes**.
+
+---
+
+## The mistake to expect
+
+Writing the exclusion as a category instead of a consequence:
+
+> ✗ "Shows upload progress."
+>
+> ✗ "Percentage of transfer."
+>
+> ✓ "Bytes sent. Does not include the server-side check, which on this trace
+> took a further eleven seconds."
+
+The test: could a waiting user predict the 99% pause from your sentence? If not,
+the sentence is decoration.
+
+---
+
+## What this week cannot tell you
+
+Which denominator is **right**.
+
+Nothing measured today settles that, because "right" depends on what the user is
+waiting to find out, and nobody has asked one. You now know what each choice
+omits and what that omission is worth in points — on one recorded trace.
+
+The first outside reaction to your choice is **week 11**.
+
+---
+
+## What leaves the room
+
+- two working bars and one timeline log
+- one number: your largest disagreement
+- a denominator statement on screen
+
+**Where it goes:** the shipped denominator is condition (a) of
+**Assignment 2** — *Behaviour across the four conditions*, 35 marks — and your
+exclusion sentence is the first row most people write in the **week 10** claims
+register.

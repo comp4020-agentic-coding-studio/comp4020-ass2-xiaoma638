@@ -1,0 +1,129 @@
+---
+title: Numbers without sources
+description: SLOP2805 week 10 — week 1 turned inward, with one verdict withdrawn and one added
+---
+
+# Numbers without sources
+
+SLOP2805 · Week 10 · Studio framing
+
+Week 1, turned inward.
+
+**Which of the promises your interface makes can you actually keep?**
+
+---
+
+## Where we were, and where we are going
+
+In **week 1** you stood outside an interface you did not build and asked what
+*could* support what it said.
+
+Today you have the source, your state model, your denominator, your estimator
+and its measured instability, and every failure on demand.
+
+So the question sharpens — and the verdicts change with it.
+
+---
+
+## What changed since week 1
+
+| Week 1 | Week 10 |
+| --- | --- |
+| `sourced` — some event could support it | `holds` — **this** event does, and you can name the line |
+| `unsourceable` — nothing could | `removed` — nothing does, so it is gone from the screen |
+| `not determinable from outside` | **withdrawn — you are inside now** |
+
+Losing the third verdict is the week working. *"I cannot tell"* was honest in
+week 1 and is an evasion today.
+
+---
+
+## The verdict week 1 had no use for
+
+**`kept with reason`** — a claim with no source event that you are displaying
+anyway, knowingly.
+
+A rounded figure. A minimum display duration. A reassuring phrase during
+verification.
+
+That can be a good decision. It stops being one the moment it is unexamined.
+
+---
+
+## Three near-misses that are not source events
+
+- **a value from a timer.** A bar advancing on `setInterval` reports that time
+  passed, while appearing to report that work happened.
+- **a constant measured once,** on your machine, in week 5. Evidence then. A
+  hardcoded number now, unless the code re-measures.
+- **a library default** that arrived and was never chosen.
+
+---
+
+## Worked example — one row, three ways
+
+| Rendered | Source event | Verdict |
+| --- | --- | --- |
+| "Verifying…" held 400 ms | `verify:start`, but the state lasts ~80 ms | **kept with reason** |
+
+> The verification state completes in under 80 ms. A state that flashes for
+> 80 ms is harder to read than one held for 400 ms, so this state is displayed
+> **longer than it exists**. The cost is that a reader comparing it with the
+> elapsed counter will see them disagree by up to 320 ms.
+
+Names the deception, the justification, **and the price**. A marker may still
+disagree — a reason you can lose an argument about is still a reason.
+
+> ✗ "It looks better." ✗ "Users expect it." ✗ "It felt too abrupt."
+
+```comment
+The 80 ms figure is the shipped simulator's verify stage, not a measured service.
+```
+
+---
+
+## Your turn — inventory before judgement
+
+1. **Enumerate everything rendered** — every string, number and motion, in
+   every state, at both viewports. Before judging any of it.
+2. **Trace** each row to an event, or not.
+3. **Verdict** on every row; a reason on every `kept with reason`.
+4. Read your **week 1 table** beside your new one. Ten minutes, no discussion.
+
+Build it at `/claims/` — it ships as deliverable 4 of Assignment 3.
+
+---
+
+## The mistake to expect
+
+Going straight to the suspicious number.
+
+The claims you are least likely to examine are the ones you wrote so early you no
+longer see them. Most people's worst row is something added in **week 2** and
+never looked at again.
+
+Second mistake: marking a row `removed` in the register while it is still on the
+screen. The register describes the deployed interface, not your intentions.
+
+---
+
+## What this week cannot tell you
+
+Whether the claims that survive are **understood**.
+
+Every number now has an event behind it. Nothing establishes that a reader takes
+from it what you meant.
+
+*"Resumes from stage 3"* is impeccably sourced and means nothing to somebody who
+has never seen your stage names. That gap is **week 11**.
+
+---
+
+## What leaves the room
+
+- a claims register at `/claims/`, complete against the deployed screen
+- your week 1 table, read again
+
+**Where it goes:** *Claims register* is 25 marks in **Assignment 3** — the second
+largest criterion. The row you find least comfortable is the one you should
+volunteer to defend in **week 12**.

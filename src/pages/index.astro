@@ -4,6 +4,7 @@ import CardGrid from "astro-theme-university/components/CardGrid.astro";
 import ContentLayout from "astro-theme-university/layouts/ContentLayout.astro";
 import "../styles/focus.css";
 import heroImage from "../assets/images/hero-home.avif";
+import { href } from "../lib/links";
 import { courseMeta } from "../course-config";
 import { sessionLabels, siteConfig } from "../site-config";
 
@@ -62,6 +63,95 @@ import { sessionLabels, siteConfig } from "../site-config";
     subject can be taught at all.
   </p>
 
+  <h2>The bar says 99%. What is left?</h2>
+
+  <p>
+    That is the whole course, and it has an answer. Three different things are
+    usually being confused, and an interface that keeps them apart stops needing
+    to sit at 99% at all.
+  </p>
+
+  <dl class="three-things">
+    <dt>The percentage</dt>
+    <dd>
+      A fraction, and a fraction needs a <strong>denominator</strong>. Most bars
+      count bytes handed to the network. On a fast connection that finishes
+      early, and everything after it &mdash; hashing, checking, storing &mdash;
+      is outside the number.
+    </dd>
+
+    <dt>The stages</dt>
+    <dd>
+      What the process is actually doing: read, hash, transfer, verify. A bar
+      counting bytes is blind to three of those four. A bar counting stages sees
+      all of them and moves in lurches, because the stages are not the same
+      size.
+    </dd>
+
+    <dt>The completion condition</dt>
+    <dd>
+      The sentence that says when the interface may claim <em>done</em>. &ldquo;The
+      last byte left this machine&rdquo;, &ldquo;the service acknowledged it&rdquo; and
+      &ldquo;it would survive a power cut&rdquo; are three different sentences, seconds
+      apart, and only the last one is what the user came for.
+    </dd>
+  </dl>
+
+  <p>
+    <strong>A bar stuck at 99% is usually a denominator that ran out.</strong>
+    The transfer it was counting has finished; the work the user is waiting for
+    has not; and the interface has no vocabulary for the difference. Twelve
+    weeks on that.
+  </p>
+
+  <h2>See it happen</h2>
+
+  <p>
+    The <a href={href("/simulator/")}>progress simulator</a> runs the five
+    behaviours this course works through &mdash; a steady upload, stages at
+    different speeds, an upload with no known total, a stall that recovers, and
+    a failure you can retry. Everything in it is simulated in your browser; no
+    file is read and no request is made.
+  </p>
+
+  <p>
+    The one worth a minute is <strong>&ldquo;Stall, then recover&rdquo;</strong>.
+    Here is what it does, so the page is worth reading even if you never press
+    Start:
+  </p>
+
+  <ol class="walkthrough">
+    <li>
+      The bar advances normally to <strong>45%</strong> &mdash; 45 of the 100
+      work units the four stages are worth.
+    </li>
+    <li>
+      Then the transfer stops reporting. <strong>The bar freezes and stops
+      animating entirely</strong>, because a moving bar would be claiming
+      something is happening when nothing is.
+    </li>
+    <li>
+      The elapsed counter keeps running. That, and not an error, is what tells
+      you something is wrong &mdash; a counter reading 0:45 on a job that
+      normally takes 0:06 has communicated a problem with no error handling at
+      all.
+    </li>
+    <li>
+      Eight seconds later the transfer resumes on its own and the bar picks up
+      from 45%.
+    </li>
+    <li>
+      It reaches <strong>100% only when a <code>committed</code> event
+      arrives</strong> &mdash; not when the bytes finish. The page prints that
+      condition next to the bar, which is the standard every student prototype
+      is held to.
+    </li>
+  </ol>
+
+  <p>
+    There is a ×4 speed control. A site about waiting should not make you do any.
+  </p>
+
   <h2>How it runs</h2>
 
   <p>
@@ -106,6 +196,9 @@ import { sessionLabels, siteConfig } from "../site-config";
     <Card title="Lectures" href="/lectures/">
       <p>All four of them, and what each one carries.</p>
     </Card>
+    <Card title="Progress simulator" href="/simulator/">
+      <p>The five behaviours of a waiting interface, in one page.</p>
+    </Card>
     <Card title="Assessment" href="/assessments/">
       <p>Three pieces, 20/30/50, none of them a final exam.</p>
     </Card>
@@ -131,6 +224,29 @@ import { sessionLabels, siteConfig } from "../site-config";
     color: var(--at-text-secondary);
     background: var(--at-bg-alt);
     font-size: 0.9rem;
+  }
+
+  .three-things {
+    display: grid;
+    gap: 0.35rem 1.25rem;
+    margin-block: 1rem 1.75rem;
+  }
+
+  .three-things dt {
+    font-weight: 700;
+    color: var(--at-text-secondary);
+  }
+
+  .three-things dd {
+    margin: 0 0 0.9rem;
+  }
+
+  .walkthrough {
+    margin-block: 1rem 1.5rem;
+  }
+
+  .walkthrough li {
+    margin-block-end: 0.5rem;
   }
 
   .lede {

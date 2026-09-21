@@ -85,6 +85,10 @@ the code intends:
 If a user can form a ratio from it, you have made a determinate claim with
 indeterminate data. That is the one hard constraint on today's work.
 
+**[View this week's slides](/decks/week-04/)** — Tuesday's lecture deck. Worth a pass before the studio, and the reference while you build.
+On a phone they are small — the deck is built for a projector, and this
+page carries the same material as prose.
+
 ## In the room
 
 Thursday 18 March, 14:00–17:00. Tuesday's lecture is the teaching; today is the
@@ -97,6 +101,14 @@ build.
 | 16:15 | **Rule-writing (20 min).** In pairs, draft the permission rule. Swap and try to find a case your partner's rule handles wrongly. |
 | 16:45 | **Read two rules aloud.** |
 
+## What you start with
+
+- Your prototype through week 3, with a working determinate bar.
+- The simulator's **unknown-length stream**, already wired and currently
+  rendering a bar stuck at zero. That behaviour is the starting point, not a bug
+  to report.
+- Tuesday's lecture, [Saying Nothing, Precisely](/lectures/week-04/).
+
 ## What you build
 
 1. **Three treatments** against the unknown-length stream: liveness, elapsed,
@@ -108,6 +120,22 @@ build.
    liveness only when neither of the others is available" is the shape. Yours
    should differ and should be defensible.
 
+## A worked example
+
+The same moment in the unknown-length stream, in each of the three registers:
+
+```
+liveness      ◆ ◆ ◆ ◆         "Still uploading"
+elapsed       0:12            "Uploading — 12 seconds so far"
+named stage   ▣ read ▣ hash ▶ transfer     "Transferring"
+```
+
+All three are true at t = 12 s, and none implies a fraction. The fourth thing
+most people build — a bar creeping to 90% and waiting — implies one, and has no
+event behind it.
+
+The stream's length is withheld by the simulator; nothing is transferred.
+
 ## Done when
 
 - Your three treatments run against a stream whose total is genuinely unknown to
@@ -115,6 +143,19 @@ build.
 - Nothing anywhere admits a fractional reading. Check the tab title.
 - Your rule decides the awkward case: what happens when a stage becomes
   nameable partway through.
+
+## The mistake to expect
+
+**Reaching for `value="0"` when there is no value.**
+
+```html
+<div role="progressbar" aria-valuenow="0">              <!-- "nothing has happened" -->
+<div role="progressbar" aria-valuetext="Transferring, total unknown">
+```
+
+Omitting `aria-valuenow` is how the platform spells *indeterminate*. Setting it
+to zero is a different claim, and on a stream four stages in it is a false one.
+This exact line is audited in [week 7](/sessions/07-without-the-animation/).
 
 ## Before next week
 
