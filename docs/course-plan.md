@@ -1,10 +1,9 @@
 # SLOP2805 课程方案
 
-> **v3 状态(实现完成后)。** v2 的规划已全部落地,以下三处与 v2 文本不同,以仓库为准:
-> 上课日改为 **Lecture 周二 11:00 / Studio 周四 14:00**(v2 写反了,会让 W4/W7/W11 的练习早于讲授);
-> A2 截止定为 **周二 2027-04-27 10:00**;页面数从 27 增至 **33 个内容页 + 2 个 deck**
-> (新增 overview / calendar / readings / glossary / simulator)。
-> 实施过程中的问题与验证记录在 [worklog.md](worklog.md)。
+> **v4 状态(幻灯片补齐后)。** 以仓库为准,与 v2 正文的差异:
+> 上课日为 **Lecture 周二 11:00 / Studio 周四 14:00**(v2 写反了,会让 W4/W7/W11 的练习早于讲授);
+> A2 截止 **周二 2027-04-27 10:00**;页面规模为 **32 个内容页 + 12 套幻灯片 + 404**。
+> 实施与验收过程、以及每次失败的尝试,记录在 [worklog.md](worklog.md)。
 
 
 
@@ -228,30 +227,37 @@ evaluation record 是 W11 的 studio 产出。第 12 周只做组装与辩护。
 
 ---
 
-## 8. 网站页面清单(从构建产物核实,非估算)
+## 8. 网站页面清单(从构建产物核实)
 
-`find dist -name index.html` 的实际结果:**27 个内容页** + deck + 404。
-27 不是凑出来的,是"12 studio + 4 lecture + 3 assessment + 4 个索引 + 首页 + 2 人 + policies"的结果。
+`find dist -name index.html` 的实际结果:**32 个内容页 + 12 套幻灯片 + 404**。
 
 | # | 路由 | 承担的任务 |
 |---|---|---|
-| 1 | `/` | 立场、范围、划界、导航 |
-| 2 | `/sessions/` | **导航价值**:十二周按"问题"列表(不是按周次标题)、哪几周有 lecture、日期;Checklist v0 全文 |
-| 3–14 | `/sessions/01…12-…/` | 12 个 studio:问题 / In the room(计时) / What you build / If you are joining late / **What this week cannot tell you** |
-| 15 | `/lectures/` | **导航价值**:"This course has four lectures" 的理由,四场各自承担什么的对照表 |
-| 16–19 | `/lectures/week-01,04,07,11/` | 概念;W1 挂 deck |
-| 20 | `/assessments/` | 权重、日期 |
-| 21–23 | `/assessments/…/` | A1 / A2 / A3 |
-| 24 | `/people/` | 教学团队 |
-| 25–26 | `/people/…/` | 2 人 |
-| 27 | `/policies/` | 延期、诚信、**W11 同意与数据处理**、模拟器边界 |
+| 1 | `/` | 立场、范围、划界;**"99% 还剩什么" —— 百分比 / 阶段 / 完成条件三者关系**;模拟器 stall 场景的静态讲解 |
+| 2 | `/overview/` | 研究什么、适合谁、做出什么、四条 LO、学期怎么跑、考核概览(权重与日期从集合读) |
+| 3 | `/calendar/` | 全部教学日与截止日一张表,含两周休、公众假日说明;数据与周页面同源 |
+| 4 | `/sessions/` | Studios 索引:十二周按**问题**列表 + **Slides 列(12 套幻灯片目录)** + Checklist v0 |
+| 5–16 | `/sessions/01…12-…/` | 12 个 studio。每页九节:问题 / 本周能做到什么 / 概念讲解 / 计时课堂 / **开始前拿到什么** / 产出 / **完成样例** / **常见错误** / 完成标准 / 课后任务 / 阅读 / 迟到检查点 / 本周测不出什么 |
+| 17 | `/lectures/` | 四场 lecture 的理由与对照表 |
+| 18–21 | `/lectures/week-01,04,07,11/` | 概念 / 依赖 / 接到哪里 / **概念实例** / **这堂课定不了什么** / 缺席怎么补;各挂 `slides:` |
+| 22 | `/assessments/` | 三卷如何累积、反馈往哪里去、"达标 vs 论证充分"的位置 |
+| 23–25 | `/assessments/…/` | A1 / A2 / A3,各含累积关系、完成样例、常见错误;A3 另有五条准则的达标对照 |
+| 26 | `/readings/` | 21 条已核验阅读,按周分组,各写与本周的关系 |
+| 27 | `/glossary/` | 本课收窄了的 16 个术语,标明哪些是课程自造词 |
+| 28 | `/simulator/` | 五种行为的纯前端模拟器;完成条件印在旁边;数据标为模拟 |
+| 29 | `/people/` | 在哪找人、带什么来、谁教什么 |
+| 30–31 | `/people/…/` | 2 人 |
+| 32 | `/policies/` | 延期、诚信、**W11 同意与数据处理**、原型的边界 |
+| — | `/decks/week-01…12/` | **12 套幻灯片**,9–13 页,每套从其所属周页面链接 |
+| — | `/404` | |
 
-另:`/decks/week-01/`、`/404`。
+**导航封在 8 项**(Overview / Calendar / Studios / Lectures / Assessment / Simulator / People / Policies),这是 390px 下仍可扫读的上限;Readings 与 Glossary 从 Overview、每周页面和第 12 周可达。
 
-**studio 与 lecture 的分工已写成硬规则**(CLAUDE.md):studio 拥有练习,lecture 拥有概念。
-lecture 页若开始讲怎么做练习,或 studio 页若从零讲概念,边界就塌了,两页之一变成冗余。
+### 幻灯片
 
----
+四场 lecture 的 deck 通过 `slides:` 声明(平台方式),其余八周的 deck 由 studio 页面以 markdown 链接。**补齐 12 套没有改动四场 lecture 的课表。**
+
+每套含:本周问题 / 与上周衔接与本周目标 / 概念 / 一个基于共用 `upload-ui` 的实例(模拟数据已标注)/ 学生练习 / 常见错误 / 证据局限 / 产出流向哪项考核。
 
 ## 9. 决策记录(v1 §7 的三个取舍)
 
@@ -269,6 +275,8 @@ lecture 页若开始讲怎么做练习,或 studio 页若从零讲概念,边界�
 |---|---|---|
 | `data-integrity.test.ts` | starter 自带 | 所有日期落在教学期内 |
 | `assignment-2.test.ts` | 已有(官方 spec 转测试) | 保留 805、12 周有日期、deck ≥5 slide 并被 lecture 链接、权重合计 100 |
+| **`course-integrity.test.ts`** | v3 新增 | 跨页一致性:周编号/日期/顺序、恰好一次两周休、lecture 早于 studio、**正文星期用日历算术独立验证**、权重三页一致、**标注 "Week N" 的链接必须指向第 N 周**、deck 有真实内容、模拟器发布产物与页面契约一致 |
+| **`readings.test.ts`** | v3 新增 | 站点设置的每条阅读都必须在 `docs/verified-readings.tsv` 里以 2xx 背书 |
 | **`course-shape.test.ts`** | **v2 新增** | **① 先教后考**(assessment 的每个 LO 都有更早日期的 studio 教过);② LO1–LO4 各自既被教也被考;③ 每周恰好一个 studio,slug 周数与 frontmatter 一致;④ **没有两周问同一个问题**;⑤ 每个 studio 渲染页含 "what this week cannot tell you";⑥ 每个 studio ≥2 条 `spec:` |
 
 **①已做过反向验证:**把 A2 的可访问性 LO 挂到 A1 上,套件变红并输出

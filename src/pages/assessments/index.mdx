@@ -1,13 +1,48 @@
 ---
 title: Assessment
 description:
-  "Every piece of graded work in the course, what it is worth, and when it is
-  due."
+  "Three pieces of graded work, no examination, and each one built from what the
+  one before it produced."
 heroTitle: Assessment
 ---
 
 import AssessmentsGrid from "../../components/AssessmentsGrid.astro";
 
-Weights should sum to 100.
+Three pieces of work, no examination, and nothing submitted twice.
+
+## They accumulate
+
+The assessments are not three separate tasks that happen to be in the same
+course. Each is the same analytic move applied to a harder object, and each one
+is built out of something the previous one produced.
+
+| Assessment | What it asks | Built from |
+| --- | --- | --- |
+| **Progress Bar Autopsy** | analyse a waiting interface **you did not build** | nothing — this is where the method is learned |
+| **Waiting Interface Prototype** | apply that analysis to **your own** interface, working | the autopsy's claim-and-source method, and the state model it made you infer |
+| **Honest Waiting Kit** | make that interface survive **failure**, and account for every claim left on it | the prototype, its audit sheet's failures, and the studio deliverables from weeks 10 and 11 |
+
+Each brief says explicitly what it hands on and what it inherits. The criteria do
+not overlap: *Behaviour across the four conditions* is marked in Assignment 2 and
+never again; *Behaviour under abnormal conditions* is marked in Assignment 3 and
+not before it. A prototype that does not change between the two scores on
+neither.
+
+## What that means for feedback
+
+Because nothing is resubmitted, feedback has somewhere to go. A correction to
+your reasoning in the autopsy lands on your own screen four weeks later, where
+the same reasoning is marked on something you built. A line your marker breaks
+on the Assignment 2 audit sheet is the first row of your Assignment 3 claims
+register.
+
+## How marks are earned above "it works"
+
+Assignment 3 carries half the course, and its brief sets out the difference
+between **meeting the requirement** and **arguing it well**, criterion by
+criterion. The short version: the requirement is about the artefact, the
+argument is about the decision behind it.
+
+## The three
 
 <AssessmentsGrid />

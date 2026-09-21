@@ -276,3 +276,78 @@ describe("the assessments say how they build on each other", () => {
     expect(contrastRows, "a contrast row for every criterion").toBeGreaterThanOrEqual(criteria);
   });
 });
+
+// ---------------------------------------------------------------------------
+// The lecture pages were the thinnest teaching pages on the site once the week
+// pages grew. These four sections are what was added, and the boundary rule
+// still holds: a lecture gains an example *of the concept* and a statement of
+// what it cannot settle, never an exercise — that belongs to the studio.
+// ---------------------------------------------------------------------------
+describe("every lecture page carries its concept beyond a summary", () => {
+  const lectures = nodesOfType("lectures");
+  const pageOf = (l: ApiNode) =>
+    readFileSync(resolve("dist/lectures", l.id.split("/").at(-1) ?? "", "index.html"), "utf8");
+
+  const sections: [string, RegExp][] = [
+    ["what it carries", /what this lecture carries/i],
+    // Week 1 rests on the prerequisites rather than on an earlier week, and
+    // says so under "What it assumes". Either answers the same question.
+    ["what it rests on", /what it builds on|what it assumes/i],
+    ["where it lands", /what it sets up/i],
+    ["a worked example of the concept", /a worked example/i],
+    ["what it cannot settle", /cannot settle/i],
+    ["a way to catch up", /if you miss the hour/i],
+  ];
+
+  for (const [label, pattern] of sections) {
+    it(`states ${label}`, () => {
+      expect(lectures.filter((l) => !pattern.test(pageOf(l))).map((l) => l.id)).toEqual([]);
+    });
+  }
+
+  it("links its own deck", () => {
+    const wrong = lectures.filter((l) => {
+      const week = String(l.meta?.week).padStart(2, "0");
+      return !pageOf(l).includes(`/decks/week-${week}/`);
+    });
+    expect(wrong.map((l) => l.id)).toEqual([]);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Every brief carries the same two things every week page carries, so a reader
+// does not meet two densities of material in one course.
+// ---------------------------------------------------------------------------
+describe("every assessment brief shows one and warns about one", () => {
+  const assessments = nodesOfType("assessments");
+  const pageOf = (a: ApiNode) =>
+    readFileSync(resolve("dist/assessments", a.id.split("/").at(-1) ?? "", "index.html"), "utf8");
+
+  it("carries a worked example", () => {
+    expect(assessments.filter((a) => !/a worked example/i.test(pageOf(a))).map((a) => a.id)).toEqual([]);
+  });
+
+  it("names the mistake to expect", () => {
+    expect(assessments.filter((a) => !/the mistake to expect/i.test(pageOf(a))).map((a) => a.id)).toEqual([]);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// The two index pages were one line of leftover scaffolding each. An index that
+// only renders a grid tells a reader nothing the grid did not.
+// ---------------------------------------------------------------------------
+describe("index pages say something the listing does not", () => {
+  const words = (route: string) =>
+    readFileSync(resolve("dist", route, "index.html"), "utf8")
+      .replace(/<(script|style|svg|nav|footer|header)\b[\s\S]*?<\/\1>/gi, " ")
+      .replace(/<[^>]+>/g, " ")
+      .split(/\s+/)
+      .filter((w) => /[A-Za-z0-9]/.test(w)).length;
+
+  it.each(["assessments", "people", "lectures", "sessions", "readings", "glossary"])(
+    "/%s/ carries more than a bare listing",
+    (route) => {
+      expect(words(route)).toBeGreaterThan(200);
+    },
+  );
+});

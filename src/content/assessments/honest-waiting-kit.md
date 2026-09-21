@@ -90,6 +90,40 @@ or `kept with reason`.
 [week 12 studio](/sessions/12-the-last-percent/) on Thursday 27 May, the day
 before this is due.
 
+## A worked example
+
+Deliverable 2, the state and message reference, is the one most people have not
+written before. One row, complete:
+
+| State | What it means | What the user sees | What is guaranteed about their file |
+| --- | --- | --- | --- |
+| `verifying` | every byte has arrived; the service is checking the object before accepting it | *Checking the file… 0:14 so far* | **Nothing yet.** The bytes are on the service but the object does not exist. This stage can still reject it. Cancelling now discards them. |
+
+The fourth column is the one being marked, and it is the one interfaces normally
+omit. "Checking the file" tells a user what the software is busy with. "The
+object does not exist yet and this can still fail" tells them whether to close
+the laptop.
+
+Write one of those rows for every state in your enumeration, including the ones
+a user never sees for more than a moment.
+
+## The mistake to expect
+
+**A register that stopped matching the screen.**
+
+The claims register is written in week 10 and the interface changes in week 11.
+Every year a register is submitted describing a screen that no longer exists
+&mdash; a row marked `removed` for something still rendering, or a string that
+was reworded after the register was written. It is marked against the deployed
+site, so a drifted register loses marks on the criterion worth 25.
+
+The fix is mechanical: after your last change, walk every state with the
+simulator controls, at both viewports, with the register open beside the screen.
+
+**The second:** a rate. "Two of three participants" is a count of who was in the
+room. Three observations support *at least one person did X* and never *most
+people do X*, at any n you will reach.
+
 ## How the criteria are read
 
 **Behaviour under abnormal conditions (30).** Every failure you name is

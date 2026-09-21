@@ -57,3 +57,37 @@ interface.
 
 Nothing. If you can write a function that takes a callback, you have the
 prerequisites.
+
+## A worked example
+
+Take one claim from the case this lecture opens with — a bar that reaches 99%
+in nine seconds — and run it through the three terms rather than the table.
+
+The **claim** is not "99%". It is the *rate*: a bar that covers 99 points in nine
+seconds tells a reader the last point takes about a tenth of a second. Nobody
+wrote that sentence; the movement asserts it.
+
+The **source event** would have to be something that reports how long the
+remaining work takes. No such event exists — the process reports bytes, and the
+last point is not bytes.
+
+So the **verdict** is `unsourceable`, and notice what that does not mean. It does
+not mean the designer lied. It means the screen carried a claim the system had
+no way of supporting, which is a different and much more common thing.
+
+## What this lecture cannot settle
+
+This move tells you what a claim rests on. It does not tell you whether the
+interface is any good.
+
+An `unsourceable` claim can be the right design decision — taken knowingly, for a
+reason, with a cost. Week 10 gives that case its own verdict. Until then, resist
+converting an analysis into a judgement: you are building the instrument, not
+using it to condemn anything.
+
+## If you miss the hour
+
+The [slides](/decks/week-01/) carry the argument in the order it was made, and this week's
+reading is listed on the [studio page](/sessions/). The studio on Thursday
+assumes the vocabulary above rather than re-teaching it, so read the deck before
+you arrive rather than after.

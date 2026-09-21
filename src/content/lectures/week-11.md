@@ -69,3 +69,39 @@ place.
 | [Week 11 studio](/sessions/11-watching-someone-wait/), two days later | the rotation, or the walkthrough |
 | [Assignment 3](/assessments/honest-waiting-kit/) | the evaluation record, and 20 of its 100 marks |
 | [Week 12](/sessions/12-the-last-percent/) | the defence, where a claim beyond your evidence gets challenged out loud |
+
+## A worked example
+
+One observation, written two ways. Only one of them is supportable.
+
+> A participant reaches for Cancel during the stall, stops, and says *"is it
+> frozen or is it just slow"*.
+
+**Supportable:** *at least one person could not tell a stall from slow progress.*
+That is an existence proof. One observation establishes it, it is reportable, and
+it is often enough to act on.
+
+**Not supportable:** *users cannot tell a stall from slow progress.* No number of
+classmates gets you there. Nor does *two of three*, which is a count of who was
+in the room.
+
+The first sentence licenses a change. The second licenses a claim, and you do not
+have one.
+
+## What this lecture cannot settle
+
+This lecture tells you what you cannot conclude. It cannot tell you what is
+worth watching for.
+
+That comes from the claims register you built in week 10: the rows you marked
+`kept with reason` are the ones where your own judgement was doing the work, and
+they are where an outside reaction is most informative. Arriving on Thursday
+without having decided what to look at produces three pleasant sessions and no
+findings.
+
+## If you miss the hour
+
+The [slides](/decks/week-11/) carry the argument in the order it was made, and this week's
+reading is listed on the [studio page](/sessions/). The studio on Thursday
+assumes the vocabulary above rather than re-teaching it, so read the deck before
+you arrive rather than after.

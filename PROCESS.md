@@ -1,53 +1,13 @@
-# Process overview
+# Process
 
-<!-- TEMPLATE: this file is a shape to fill in, not a form. Replace everything
-     in it with your own overview, and delete this comment — `pnpm
-     check:evidence` will remind you if it's still here. -->
+For this project, a good course meant three things: each week has a clear purpose, students practise before they are assessed, and later work uses earlier results. I used AI to help develop Still Loading around one question: what does a progress bar promise before a task is finished? One shared upload interface connects the twelve weeks. Four lectures introduce key ideas, with studio teaching and practice between them. Reusing one interface keeps the focus on decisions and their effects ([`54e38dd`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass2-xiaoma638/commit/54e38dd)).
 
-Written by you, for a reader: how you got from the brief to the harness and
-agentic workflow behind this submission. Markers read this file and follow its
-citations; they don't trawl the repo for evidence you didn't point at.
+I asked to move Assignment 2 from week 7 to early week 8, giving students time to apply the accessibility lesson. Publishing a checklist in week 2 did not mean that its skills had been taught. I also changed the week 11 task from three required changes to three evidence-backed decisions, with at most three changes. Keeping the current behaviour can be a sound decision. Requiring changes regardless of evidence would contradict the course's purpose ([`a910041`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass2-xiaoma638/commit/a910041)).
 
-This file is the shape; the course site's
-[assessment page](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/#what-you-submit)
-is the requirement, and its
-[word counts](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/#word-counts)
-cover every deliverable.
+These decisions shaped how I directed the agent. CLAUDE.md records what must stay true about the course and separates automatic checks from human judgement. Tests connect learning outcomes to teaching weeks and assessment deadlines ([`e2d39dc`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass2-xiaoma638/commit/e2d39dc)). They can detect an outcome assessed before its first teaching date. They cannot prove that the lesson gives enough practice. I kept course coherence, useful examples and fair workload as review questions. A section heading can pass a test while the section teaches very little.
 
-## What I built
+I requested an audit of the rendered pages and student tasks. It found three contradictions, including conflicting dates, and a theme button with no visible keyboard focus indicator. Existing checks had passed. The first focus fix reached only some pages; a shared stylesheet then covered the site. The fixes also added checks against rendered content ([`8c49eed`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass2-xiaoma638/commit/8c49eed)). This showed why I needed evidence from page reading and browser behaviour alongside the build result.
 
-One paragraph: the thing, and the idea behind it.
+I then asked for slides for every week and clearer teaching materials. There had been only two decks. Ten were added and the original two revised, without adding scheduled lectures. Each week gained starting materials, a worked example and a common mistake. Assessment pages now explain how earlier work feeds into later tasks. However, the mobile slide text still measured about eight pixels. Attempts to enlarge it caused clipping and were reverted. Written material on the week pages provides another reading option, but slide readability remains unresolved. The recorded local results were 67 passing tests and 21 browser checks ([`737f547`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass2-xiaoma638/commit/737f547)).
 
-## How I got here
-
-The account of the process: how the work actually went, and how you knew the
-result was right. Tell it in whatever order makes it clear. A weekly prototype
-needs a paragraph or two; an assignment needs more.
-
-Cite the record as you go, as links whose text is the commit hash or range and
-whose target is this repo's commit or compare URL, so a reader clicks straight
-to the evidence:
-
-- one commit: [`a1b2c3d`](https://github.com/YOUR-ORG/YOUR-REPO/commit/a1b2c3d)
-- a range:
-  [`a1b2c3d...e4f5a6b`](https://github.com/YOUR-ORG/YOUR-REPO/compare/a1b2c3d...e4f5a6b)
-
-To pair a prompt with the commit it produced, quote the prompt (curated, not a
-full transcript) next to the citation:
-
-> the prompt, verbatim
-
-Screenshots are welcome where one carries the point better than a sentence does.
-Commit the file to this repo and link it with a **relative** path, which is what
-makes it render on GitHub: `![alt text](docs/before.png)`. Images don't count
-towards the word count and don't replace the citation.
-
-## Before you ship
-
-`pnpm check:evidence` verifies that this comment is gone, that your citations
-resolve to real commits, that a crit week's reflection entry is in
-`reflections/`, and that your `CLAUDE.md` is there. It checks that your account
-is traceable, not that it is good: that is the marker's call.
-
-Images aren't checked: unlike a citation whose SHA doesn't resolve, a broken
-image is visible the moment this file is rendered on GitHub.
+I relied on the agent's check reports. Browser testing used headless Chrome. The results support the specific behaviours tested; they do not establish complete usability. Screen-reader use and the deployed site were still untested at this stage. I therefore treat local checks as partial evidence. Calling the work finished requires the same care that this course asks students to apply to a progress bar.

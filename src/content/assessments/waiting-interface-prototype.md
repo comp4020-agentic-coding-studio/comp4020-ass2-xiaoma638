@@ -100,6 +100,45 @@ Checklist v0 completed, plus the week 7 audit sheet: keyboard path, progressbar
 semantics, live-region behaviour, reduced-motion variant. Each line marked
 **pass / fail / not applicable**, with the evidence that settled it.
 
+## A worked example
+
+The four conditions are marked on what a marker can read on your screen, not on
+what your code does. Here is the same prototype, in the four states, with the
+sentences that make each one gradeable:
+
+| Condition | On screen |
+| --- | --- |
+| (a) known size | `62% — bytes sent of 40.0 MB.` &nbsp; *Does not include server-side verification.* |
+| (b) time remaining | `about 40 seconds left` &nbsp; *Sliding window, 10 s. Rounded to 10 s, refreshed every 2 s.* |
+| (c) unknown size | `Transferring — 0:12 so far. Total unknown.` &nbsp; *(no bar fill, no percentage, no fraction in the tab title)* |
+| (d) completion | `Stored.` &nbsp; *Complete means the storage service has confirmed the object is durable.* |
+
+Each of the four italic lines is the part being marked. Without it, (a) is a
+number with no denominator, (b) is a guess with no method, and (d) is a word
+that could mean three different things.
+
+And the audit sheet, in the form that scores &mdash; one line, recorded honestly:
+
+```
+Line 2 — semantics     FAIL   aria-valuenow="0" during the unknown-size case
+                       fixed  removed it; added aria-valuetext
+                       re-checked by listening: "transferring, total unknown"
+```
+
+## The mistake to expect
+
+**A condition that works but cannot be triggered.**
+
+Every year, someone builds all four correctly and exposes controls for three of
+them. A marker cannot distinguish a condition they cannot reach from one that
+does not work, and it is marked as the second. Before you submit, hand the URL
+to somebody who has not seen your code and ask them to reach all four. If they
+need a hint, the controls are not exposed.
+
+**The second:** an unverifiable pass on the audit sheet. A line recorded honestly
+as a failure scores. A pass your marker can break does not, and costs more than
+the failure would have.
+
 ## How the criteria are read
 
 **Behaviour across the four conditions (35).** A marker reproduces all four using

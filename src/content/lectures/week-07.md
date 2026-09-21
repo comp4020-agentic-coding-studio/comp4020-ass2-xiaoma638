@@ -67,3 +67,37 @@ be tested for whether they were information.
 | [Week 7 studio](/sessions/07-without-the-animation/), two days later | the audit workshop and the pair swap |
 | [Assignment 2](/assessments/waiting-interface-prototype/), due the Tuesday of week 8 | 25 of its 100 marks are the audit sheet |
 | [Weeks 8](/sessions/08-stuck-timed-out-disconnected/) and [9](/sessions/09-cancel-and-retry/) | failure and cancellation have to reach the same channels — a failure that is only visible is a failure that is only visible to some people |
+
+## A worked example
+
+The announcement flood, in numbers, because the scale is the argument.
+
+A 40 MB upload on a slow connection emits a progress event roughly every 200 ms:
+about **450 events**. Wire a live region to `aria-valuenow` and a screen-reader
+user hears a number read aloud, over and over, for ninety seconds.
+
+Wire it to state transitions instead and the same upload announces **five
+things**: reading, hashing, transferring, verifying, stored.
+
+Both interfaces are "accessible" in the sense that the information reaches the
+accessibility tree. Only one of them is usable, and the difference is not a
+missing attribute — it is a decision about what counts as a change worth
+reporting.
+
+## What this lecture cannot settle
+
+Conformance is not usability, and this lecture only gets you the first.
+
+Every criterion covered here can be satisfied by an interface that is still
+unpleasant to use without sight. A checklist is a record of failures somebody has
+already had and written down; it cannot report one nobody has. The audit on
+Thursday will find real defects and will not tell you whether the result is
+good — nobody in the room uses a screen reader daily, and saying so on the sheet
+is part of the work.
+
+## If you miss the hour
+
+The [slides](/decks/week-07/) carry the argument in the order it was made, and this week's
+reading is listed on the [studio page](/sessions/). The studio on Thursday
+assumes the vocabulary above rather than re-teaching it, so read the deck before
+you arrive rather than after.

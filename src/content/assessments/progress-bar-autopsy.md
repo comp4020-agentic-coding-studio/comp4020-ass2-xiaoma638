@@ -120,6 +120,21 @@ way to use it is to apply the correction to your **own** interface in weeks 4 to
 marker says a verdict was asserted past the evidence, the place that shows up
 next is your on-screen denominator statement.
 
+## The mistake to expect
+
+**A table with only text in it.**
+
+Motion and absence are claims. A bar that shimmers while nothing changes asserts
+the process is alive; a screen with no error asserts there is nothing to report.
+A table listing three strings and no movement is an incomplete table, and it is
+the commonest way this assignment loses marks on *Evidence tracing* &mdash; 40 of
+its 100.
+
+**The second:** reaching for `unsourceable` when the honest verdict is
+`not determinable from outside`. From outside a system you cannot tell a lie
+from a shortcut from a constraint you cannot see, and saying so is a marked
+skill rather than a hedge.
+
 ## A worked example
 
 The [week 1 studio](/sessions/01-what-99-percent-promises/) opens with a worked

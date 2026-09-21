@@ -211,17 +211,155 @@ second method.
 
 ---
 
+## Stage 5 — acceptance pass
+
+Requested: check the site the way a student would use it, at both marking
+viewports, and check whether the course holds together. The instruction was not
+to rely on the previous completion report, which turned out to matter.
+
+### A claim in the previous report was wrong
+
+That report said the navigation links were "visible" at 390px. They are not
+reachable: the theme wraps them in a container carrying `inert`, which keeps
+layout but removes them from the tab order and from pointer events. The earlier
+probe had checked `display`, `visibility` and `opacity` and not `inert`. The
+correct finding is that the nav sits behind the Menu button and opens from the
+keyboard — verified by pressing Enter on it and tabbing to Studios.
+
+### Three cross-page contradictions, all found by reading
+
+None of these was visible to any check.
+
+1. Week 7 said Assignment 2 was due "the Tuesday after next". From the week 7
+   studio on Thursday 22 April that is 4 May; it is due 27 April, which is what
+   the calendar, the overview, the brief and the week 7 lecture all said. The
+   earlier date sweep missed it because the phrase broke across two lines and the
+   pattern used a literal space.
+2. Week 2's room plan said "both tutors circulating"; its frontmatter listed one.
+3. The convenor's biography enumerated the four weeks she teaches; the data listed
+   her on seven. Rewritten not to restate a fact the calendar owns.
+
+### A focus indicator missing from every page
+
+Walking the tab order found the theme's footer theme-toggle reaching focus with
+no outline and no box-shadow, at both viewports. axe has no automatic rule for
+this, so it had passed every build.
+
+Two wrong turns, both measured:
+
+- A `:where()` floor in `PageLayout.astro` had no effect on that control:
+  `.at-footer-theme-toggle` is declared `all: unset`, which resets `outline`, and
+  one class beats a zero-specificity list.
+- Naming the control fixed it on five pages out of thirty-three. `PageLayout` is
+  reached only by the MDX pages; every `.astro` page imports the theme's
+  ContentLayout directly.
+
+Resolved by moving both rules into `src/styles/focus.css` and importing it from
+every page. Re-walked: no control without an indicator at either viewport.
+
+### A link that named a week and went somewhere else
+
+The simulator's scenario index carried five links reading "Week 3", "Week 4",
+"Week 8", "Week 9" — every one pointing at `/sessions/`. The link checker was
+satisfied, because `/sessions/` exists.
+
+Changed: look the week up by number from the collection, so a renamed week cannot
+leave the link pointing elsewhere. `spec/course-integrity.test.ts` now fails on a
+link whose label names one week and whose href is another.
+
+### Checks added, each falsified before being trusted
+
+`spec/course-integrity.test.ts`. Three deliberate breakages confirmed it can
+fail: altering the simulator's stage weights so they do not sum to 100 (red);
+changing a prose weekday to Wednesday (red, naming the correct weekday); moving a
+week's date so ordering breaks (two tests red). All reverted.
+
+`scripts/verify-in-browser.mjs` was added for the behaviour vitest cannot reach.
+
+---
+
+## Stage 6 — twelve decks, and the pages that surround them
+
+**[decided]** Weekly slides for all twelve weeks, sharing the site's existing
+deck tooling and styling, with the four-lecture timetable unchanged. Also: the
+home page must state the relationship between the percentage, the stages and the
+completion condition; week pages must say what a student starts with and what
+finished looks like; assessment pages must say how they accumulate.
+
+Ten decks written, weeks 1 and 5 brought to the same shape. Each carries the
+week's problem, what it builds on and this week's objectives, the concepts, one
+worked example on the shared `upload-ui` with its simulated data labelled, the
+exercise, a named common error, the evidence limits, and where the output lands.
+
+### Problem: slides that fit are not slides that can be read
+
+The brief was explicit that "nothing is cut off" would not count as a readability
+verdict, and it was right to be.
+
+Measured at both viewports with the DevTools protocol, reading each element's
+computed font size and multiplying by Reveal's scale transform:
+
+| Viewport | Reveal scale | Effective text |
+| --- | --- | --- |
+| 1920×1080 | 1.5 | 37.8–42 px |
+| 390×844 | 0.305 | **7.7–8.5 px** |
+
+Reveal lays every deck on a fixed 1280×720 canvas and scales it to fit, so a
+390px screen gets 390/1280.
+
+Three mechanisms tried, each measured, each discarded:
+
+| Attempt | Result |
+| --- | --- |
+| `font-size` on `.reveal` | **worse** — 4.4 effective px. It replaces the theme's absolute base with a relative one |
+| `--r-main-font-size` | no change. The theme sizes paragraphs, list items and table cells in absolute `rem`, not from that variable |
+| larger rem base, 22px | 10.9 px, and **all twelve decks clipped** by 8–147px |
+| larger rem base, 19px | 9.1 px, nine decks still clipped |
+| larger rem base, 18px | 8.6 px, six decks still clipped |
+
+The obvious fix is not available: canvas size, `maxScale`, and
+`scrollActivationWidth: null` — which disables Reveal 5's mobile scroll view —
+are all fixed in astromotion's page template, which is platform.
+
+Reverted to the default. The finding and the three dead ends are recorded in
+`src/decks/theme.css` so the next person does not repeat them, and every week
+page now tells a phone reader that the page carries the same material as prose.
+**This is a mitigation, not a fix, and the issue stays open.**
+
+### Real clipping, at desktop, found by measuring
+
+Three slides exceeded the canvas: week 7's audit table by 117px, week 9's test
+by 48px, week 7's focus example by 25px. Trimmed. The +4px tolerance in the probe
+was added afterwards to stop chasing sub-pixel rounding on scrollable `pre`.
+
+### A fourth empty table header
+
+`| | |` failed axe again, this time in two decks and later in the assessments
+index. The sweep script written in stage 3 only covered `src/content`; it now
+covers everything under `src/`. Recording this because the rule has been in
+CLAUDE.md since stage 2 and was still broken three times after.
+
+---
+
 ## Known open items
 
-- `PROCESS.md` is untouched and `pnpm check:evidence` fails on it. It is the
-  author's own account and is not the agent's to write.
-- Seven of the twelve week pages share the framing sentence *"No lecture this
-  week; the studio opens with a 25-minute framing…"*. Measured 6-gram overlap
-  between studio pages peaks at about 8%, all of it section scaffolding. Worth
-  varying.
-- The alt text for the hero describes a final short tick that sits at the very
-  edge of the frame and is cropped at wide viewports. Accurate for the file,
-  marginal on the page.
-- Nothing checks slide legibility. Both decks were opened at 1920×1080 and
-  390×844; reveal.js letterboxes at phone width and the content stayed readable,
-  but that is one person's judgement, not a check.
+- **Nothing is pushed.** `origin/main` is at `b4243c9`; the local branch is nine
+  commits ahead. `check:evidence` passes because it resolves SHAs against the
+  local repository — every citation in `PROCESS.md` is a 404 for a reader until
+  the branch is pushed.
+- **The site has never been deployed.** No live URL, and CI has never run: both
+  jobs are gated on the repository being public.
+- **Slides on a phone render at 7.7–8.5 effective px.** The platform's fixed
+  canvas makes this the best achievable without clipping; see stage 6.
+- **No screen reader has been used.** Semantics and announcements were verified
+  to exist and be sane, which is not the same as being good.
+- **The marking environment has not been used.** Everything was verified in
+  headless Chrome over the DevTools protocol against a local production preview.
+- `pnpm test:template` fails four assertions because the starter images were
+  replaced or deleted, which `check-evidence` explicitly permits. CI runs that
+  suite only for template repositories.
+- **`PROCESS.md` is the author's own text**, installed verbatim. Three
+  suggestions were given about it and not acted on by the agent: it does not yet
+  state what the author decided a good course looks like, it does not mention the
+  agent proposals the author overrode, and seven sentences take the agent as
+  their subject.

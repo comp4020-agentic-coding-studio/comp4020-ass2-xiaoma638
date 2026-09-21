@@ -57,3 +57,34 @@ case where no such event exists — which, on a real upload, is most of the time
 | [Week 5](/sessions/05-why-the-estimate-jumps/) | the mirror case — a denominator exists, and the estimate derived from it is still unstable |
 | [Week 7](/sessions/07-without-the-animation/) | each register needs a different `aria-valuetext`, and "no value" is not the same as "nothing to say" |
 | [Week 8](/sessions/08-stuck-timed-out-disconnected/) | a stall is liveness that has stopped being true |
+
+## A worked example
+
+Four displays, none containing a number. Which of them make a fractional claim?
+
+- **A spinner at constant speed.** No. It asserts liveness and nothing else.
+- **A spinner that slows near the end.** Yes. "Near the end" is the reader's
+  conclusion, and the animation invited it.
+- **Three dots, animating in sequence.** Yes, on the third dot. Readers count.
+- **"Checking your file"** with no timer. No — but it also asserts nothing about
+  duration, which is why elapsed usually belongs beside it.
+
+The test is never what the code intends. It is what a reader can construct from
+what they see.
+
+## What this lecture cannot settle
+
+The three registers are exhaustive for *what you may truthfully say*. They are
+not a ranking.
+
+Nothing in this lecture establishes which of them a user would rather have, and
+there is a real cost hiding in the answer: elapsed time is the most honest
+register and the one that makes a wait feel longest. Week 6 puts that trade in
+front of the class and fails to settle it, on purpose.
+
+## If you miss the hour
+
+The [slides](/decks/week-04/) carry the argument in the order it was made, and this week's
+reading is listed on the [studio page](/sessions/). The studio on Thursday
+assumes the vocabulary above rather than re-teaching it, so read the deck before
+you arrive rather than after.
